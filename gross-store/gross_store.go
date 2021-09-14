@@ -2,15 +2,14 @@ package gross
 
 // Units store the Gross Store unit measurement
 func Units() map[string]int {
-	units := map[string]int{}
-	units["quarter_of_a_dozen"] = 3
-	units["half_of_a_dozen"] 	 	= 6
-	units["dozen"] 						 	= 12
-	units["small_gross"] 			 	= 120
-	units["gross"] 						 	= 144
-	units["great_gross"] 			 	= 1728
-
-	return units
+	return map[string]int{
+		"quarter_of_a_dozen": 3,
+		"half_of_a_dozen": 6,
+		"dozen": 12,
+		"small_gross": 120,
+		"gross": 144,
+		"great_gross": 1728,
+	}
 }
 
 // NewBill create a new bill
