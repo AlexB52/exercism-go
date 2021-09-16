@@ -30,7 +30,7 @@ func PrefilledSlice(value, length int) []int {
 	if length <= 0 { return nil }
 
 	slice := make([]int, length)
-	for i, _ := range slice { slice[i] = value }
+	for i := range slice { slice[i] = value }
 	return slice
 }
 
@@ -38,5 +38,5 @@ func PrefilledSlice(value, length int) []int {
 func RemoveItem(slice []int, index int) []int {
 	if IsOutOfRange(slice, index) { return slice }
 
-	return append(slice[0:(index)], slice[(index + 1):len(slice)]...)
+	return append(slice[:index], slice[index + 1:]...)
 }
