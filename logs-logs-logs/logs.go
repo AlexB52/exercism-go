@@ -6,15 +6,24 @@ import (
 	"regexp"
 )
 
-func parseLog(line string) []string {
+type Log struct {
+	message string
+	level string
+}
+
+func parseLog(line string) Log {
 	re := regexp.MustCompile(`\[(.*)\]:(.*)`)
-	return re.FindStringSubmatch(line)
+	match := re.FindStringSubmatch(line)
+
+	return Log{
+		message: strings.TrimSpace(match[2]),
+		level: strings.ToLower(match[1]),
+	}
 }
 
 // Message extracts the message from the provided log line.
 func Message(line string) string {
-	match := parseLog(line)
-	return strings.TrimSpace(match[2])
+	return parseLog(line).message
 }
 
 // MessageLen counts the amount of characters (runes) in the message of the log line.
@@ -24,8 +33,7 @@ func MessageLen(line string) int {
 
 // LogLevel extracts the log level string from the provided log line.
 func LogLevel(line string) string {
-	match := parseLog(line)
-	return strings.ToLower(match[1])
+	return parseLog(line).level
 }
 
 // Reformat reformats the log line in the format `message (logLevel)`.
