@@ -7,8 +7,11 @@ func Distance(a, b string) (distance int, er error) {
 		return 0, errors.New("a & b of different length")
 	}
 
-	for index := range a {
-		if a[index] != b[index] {
+	runeA := []rune(a)
+	runeB := []rune(b)
+
+	for index := range runeA {
+		if runeA[index] != runeB[index] {
 			distance++
 		}
 	}
