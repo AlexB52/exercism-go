@@ -56,32 +56,32 @@ func TestCountInRank(t *testing.T) {
 	}
 }
 
-func TestCountInFile(t *testing.T) {
-	cb := newChessboard()
-	for _, test := range []struct {
-		in  int
-		out int
-	}{
-		{1, 2},
-		{2, 1},
-		{3, 3},
-		{4, 2},
-		{5, 2},
-		{6, 2},
-		{7, 0},
-		{8, 3},
-		{100, 0},
-	} {
-		if out := CountInFile(cb, test.in); out != test.out {
-			t.Errorf(
-				"CountInFile(chessboard, %v) returned %v while %v was expected\n",
-				test.in,
-				out,
-				test.out,
-			)
-		}
-	}
-}
+// func TestCountInFile(t *testing.T) {
+// 	cb := newChessboard()
+// 	for _, test := range []struct {
+// 		in  int
+// 		out int
+// 	}{
+// 		{1, 2},
+// 		{2, 1},
+// 		{3, 3},
+// 		{4, 2},
+// 		{5, 2},
+// 		{6, 2},
+// 		{7, 0},
+// 		{8, 3},
+// 		{100, 0},
+// 	} {
+// 		if out := CountInFile(cb, test.in); out != test.out {
+// 			t.Errorf(
+// 				"CountInFile(chessboard, %v) returned %v while %v was expected\n",
+// 				test.in,
+// 				out,
+// 				test.out,
+// 			)
+// 		}
+// 	}
+// }
 
 func TestCountAll(t *testing.T) {
 	cb := newChessboard()
