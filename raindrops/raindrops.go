@@ -1,6 +1,6 @@
 package raindrops
 
-import "fmt"
+import "strconv"
 
 func Convert(num int) string {
 	result := ""
@@ -20,6 +20,6 @@ func Convert(num int) string {
 	if len(result) > 0 {
 		return result
 	} else {
-		return fmt.Sprintf("%d", num)
+		return strconv.Itoa(num)
 	}
 }
