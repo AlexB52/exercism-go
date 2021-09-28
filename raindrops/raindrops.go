@@ -3,7 +3,7 @@ package raindrops
 import "strconv"
 
 func Convert(num int) string {
-	result := ""
+	var result string
 
 	if num%3 == 0 {
 		result += "Pling"
