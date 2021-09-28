@@ -2,9 +2,7 @@ package raindrops
 
 import "strconv"
 
-func Convert(num int) string {
-	var result string
-
+func Convert(num int) (result string) {
 	if num%3 == 0 {
 		result += "Pling"
 	}
