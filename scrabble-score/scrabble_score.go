@@ -13,8 +13,8 @@ var LetterScores = map[string]int{
 }
 
 func Score(word string) (score int) {
-	for _, value := range word {
-		score += LetterScores[strings.ToUpper(string(value))]
+	for _, value := range strings.ToUpper(word) {
+		score += LetterScores[string(value)]
 	}
 
 	return score
