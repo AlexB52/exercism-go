@@ -12,7 +12,7 @@ func NewVoteCounter(initialVotes int) *int {
 
 // VoteCount extracts the number of votes from a counter.
 func VoteCount(counter *int) int {
-	if (counter == nil) {
+	if counter == nil {
 		return 0
 	}
 
@@ -27,7 +27,7 @@ func IncrementVoteCount(counter *int, increment int) {
 // NewElectionResult creates a new election result
 func NewElectionResult(candidateName string, votes int) *ElectionResult {
 	return &ElectionResult{
-		Name: candidateName,
+		Name:  candidateName,
 		Votes: votes,
 	}
 }
