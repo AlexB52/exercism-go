@@ -26,10 +26,7 @@ func IncrementVoteCount(counter *int, increment int) {
 
 // NewElectionResult creates a new election result
 func NewElectionResult(candidateName string, votes int) *ElectionResult {
-	return &ElectionResult{
-		Name:  candidateName,
-		Votes: votes,
-	}
+	return &ElectionResult{candidateName, votes}
 }
 
 // DisplayResult creates a message with the result to be displayed
@@ -39,5 +36,5 @@ func DisplayResult(result *ElectionResult) string {
 
 // DecrementVotesOfCandidate decrements by one the vote count of a candidate in a map
 func DecrementVotesOfCandidate(results map[string]int, candidate string) {
-	results[candidate] -= 1
+	results[candidate]--
 }
