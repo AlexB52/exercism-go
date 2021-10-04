@@ -31,7 +31,7 @@ func AddSecretIngredient(friendsList []string, myList []string) []string {
 // TODO: define the 'ScaleRecipe()' function
 func ScaleRecipe(quantities []float64, numberOfPeople int) (result []float64) {
 	for _, value := range quantities {
-		result = append(result, value / 2.0 * float64(numberOfPeople))
+		result = append(result, value/2.0*float64(numberOfPeople))
 	}
 
 	return result
