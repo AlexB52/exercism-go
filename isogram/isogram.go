@@ -2,16 +2,14 @@ package isogram
 
 import (
 	"strings"
+	"unicode"
 )
 
 func IsIsogram(word string) bool {
-	letterCount := make(map[rune]int)
-	trimedWord := strings.ReplaceAll(strings.ReplaceAll(strings.ToLower(word), "-", ""), " ", "")
+	word = strings.ToLower(word)
 
-	for _, letter := range trimedWord {
-		letterCount[letter]++
-
-		if letterCount[letter] > 1 {
+	for index, letter := range word {
+		if unicode.IsLetter(letter) && strings.ContainsRune(word[index+1:], letter) {
 			return false
 		}
 	}
