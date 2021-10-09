@@ -39,10 +39,9 @@ func InvalidFormat(card string) bool {
 
 func MappingLuhnNumber(position int, number int) int {
 	if position%2 == 0 {
-		if (number * 2) > 9 {
-			return (number * 2) - 9
-		} else {
-			return (number * 2)
+		number *= 2
+		if number > 9 {
+			number -= 9
 		}
 	}
 
