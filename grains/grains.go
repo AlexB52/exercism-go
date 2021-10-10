@@ -1,8 +1,8 @@
 package grains
 
 import (
-	"math"
 	"errors"
+	"math"
 )
 
 func Square(number int) (uint64, error) {
@@ -10,7 +10,7 @@ func Square(number int) (uint64, error) {
 		return 0, errors.New("number is not within a valid range of [1, 64]")
 	}
 
-	return uint64(math.Exp2(float64(number -1))), nil
+	return uint64(math.Exp2(float64(number - 1))), nil
 
 }
 
