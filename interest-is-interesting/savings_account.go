@@ -27,8 +27,11 @@ func AnnualBalanceUpdate(balance float64) float64 {
 }
 
 // YearsBeforeDesiredBalance calculates the minimum number of years required to reach the desired balance:
-func YearsBeforeDesiredBalance(balance, targetBalance float64) int {
-	numberOfYears := 0
+func YearsBeforeDesiredBalance(balance, targetBalance float64) (numberOfYears int) {
+	// // Recursion method seen in community solutions
+	// if balance > targetBalance { return 0 }
+	// return YearsBeforeDesiredBalance(AnnualBalanceUpdate(balance), targetBalance) + 1
+
 	for balance < targetBalance {
 		balance = AnnualBalanceUpdate(balance)
 		numberOfYears++
