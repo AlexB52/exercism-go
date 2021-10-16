@@ -4,13 +4,14 @@ import "math"
 
 // InterestRate returns the interest rate for the provided balance.
 func InterestRate(balance float64) float32 {
-	if balance < 0 {
+	switch {
+	case balance < 0:
 		return -3.213
-	} else if balance < 1000 {
+	case balance < 1000:
 		return 0.5
-	} else if balance < 5000 {
+	case balance < 5000:
 		return 1.621
-	} else {
+	default:
 		return 2.475
 	}
 }
