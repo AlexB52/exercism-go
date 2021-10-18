@@ -16,17 +16,11 @@ func (clock Clock) String() string {
 }
 
 func (clock Clock) Add(minutes int) Clock {
-	clock.hour, clock.minute = ConvertMinutes(clock.TotalMinutes() + minutes)
-	return clock
+	return New(clock.hour, clock.minute + minutes)
 }
 
 func (clock Clock) Subtract(minutes int) Clock {
-	clock.hour, clock.minute = ConvertMinutes(clock.TotalMinutes() - minutes)
-	return clock
-}
-
-func (clock Clock) TotalMinutes() int {
-	return clock.hour*60 + clock.minute
+	return New(clock.hour, clock.minute - minutes)
 }
 
 func ConvertMinutes(minutes int) (hour, minute int) {
