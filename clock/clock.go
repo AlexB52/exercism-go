@@ -11,6 +11,24 @@ func New(hour, minute int) Clock {
 	return Clock{hour, minute}
 }
 
+func (clock Clock) String() string {
+	return fmt.Sprintf("%02d:%02d", clock.hour, clock.minute)
+}
+
+func (clock Clock) Add(minutes int) Clock {
+	clock.hour, clock.minute = ConvertMinutes(clock.TotalMinutes() + minutes)
+	return clock
+}
+
+func (clock Clock) Subtract(minutes int) Clock {
+	clock.hour, clock.minute = ConvertMinutes(clock.TotalMinutes() - minutes)
+	return clock
+}
+
+func (clock Clock) TotalMinutes() int {
+	return clock.hour*60 + clock.minute
+}
+
 func ConvertMinutes(minutes int) (hour, minute int) {
 	hour = minutes / 60 % 24
 	minute = minutes % 60
@@ -25,22 +43,4 @@ func ConvertMinutes(minutes int) (hour, minute int) {
 	}
 
 	return hour, minute
-}
-
-func (clock Clock) String() string {
-	return fmt.Sprintf("%02d:%02d", clock.hour, clock.minute)
-}
-
-func (clock Clock) TotalMinutes() int {
-	return clock.hour*60 + clock.minute
-}
-
-func (clock Clock) Add(minutes int) Clock {
-	clock.hour, clock.minute = ConvertMinutes(clock.TotalMinutes() + minutes)
-	return clock
-}
-
-func (clock Clock) Subtract(minutes int) Clock {
-	clock.hour, clock.minute = ConvertMinutes(clock.TotalMinutes() - minutes)
-	return clock
 }
