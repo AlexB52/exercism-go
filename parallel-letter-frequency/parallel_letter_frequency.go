@@ -13,22 +13,16 @@ func Frequency(s string) FreqMap {
 	return m
 }
 
-func longRunningTask(s string) <-chan FreqMap {
-	r := make(chan FreqMap)
-
-	go func() {
-		defer close(r)
-		r <- Frequency(s)
-	}()
-
-	return r
-}
-
 func ConcurrentFrequency(s []string) FreqMap {
+	c := make(chan FreqMap)
 	m := FreqMap{}
 
-	for _, r := range s {
-		for k, v := range <-longRunningTask(r) {
+	for _, str := range s {
+		go func(r string) { c <- Frequency(r) }(str)
+	}
+
+	for i := 0; i < len(s); i++ {
+		for k, v := range <-c {
 			m[k] += v
 		}
 	}
