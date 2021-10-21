@@ -27,13 +27,12 @@ func BuildNode(records []Record, node *Node) *Node {
 		if node.ID == record.ID {
 			continue
 		}
+
 		if node.ID != record.Parent {
 			continue
 		}
 
-		newNode := &Node{ID: record.ID}
-		BuildNode(records, newNode)
-		node.Children = append(node.Children, newNode)
+		node.Children = append(node.Children, BuildNode(records, &Node{ID: record.ID}))
 	}
 
 	return node
