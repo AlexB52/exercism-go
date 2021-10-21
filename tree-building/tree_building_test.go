@@ -237,17 +237,17 @@ func TestMakeTreeSuccess(t *testing.T) {
 	}
 }
 
-// func TestMakeTreeFailure(t *testing.T) {
-// 	for _, tt := range failureTestCases {
-// 		t.Run(tt.name, func(t *testing.T) {
-// 			actual, err := Build(tt.input)
-// 			if err == nil {
-// 				t.Fatalf("Build for test case %q returned %s but was expected to fail.",
-// 					tt.name, actual)
-// 			}
-// 		})
-// 	}
-// }
+func TestMakeTreeFailure(t *testing.T) {
+	for _, tt := range failureTestCases {
+		t.Run(tt.name, func(t *testing.T) {
+			actual, err := Build(tt.input)
+			if err == nil {
+				t.Fatalf("Build for test case %q returned %s but was expected to fail.",
+					tt.name, actual)
+			}
+		})
+	}
+}
 
 func shuffleRecords(records []Record) []Record {
 	gen := rand.New(rand.NewSource(42))
