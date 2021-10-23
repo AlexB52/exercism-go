@@ -21,56 +21,48 @@ func Build(records []Record) (*Node, error) {
 		return nil, nil
 	}
 
-	err := ValidateTree(records)
-	if err != nil {
+	if ok, err := ValidateRootNode(records[0]); !ok {
 		return nil, err
 	}
 
-	return BuildNode(records, &Node{ID: 0}), nil
+	nodes := make([]*Node, len(records))
+	nodes[0] = &Node{ID: 0}
+
+	for i := 1; i < len(records); i++ {
+		if ok, err := ValidateRecord(i, records[i]); !ok {
+			return nil, err
+		}
+
+		nodes[i] = &Node{ID: records[i].ID}
+		parent := nodes[records[i].Parent]
+		parent.Children = append(parent.Children, nodes[i])
+	}
+
+	return nodes[0], nil
 }
 
-func ValidateTree(records []Record) error {
-	if records[0].Parent != 0 {
-		return errors.New("root node has parent")
+func ValidateRecord(index int, record Record) (bool, error) {
+	if index != record.ID {
+		return false, errors.New("non-continuous")
 	}
 
-	if records[0].ID != 0 {
-		return errors.New("no root node")
+	if record.Parent != 0 && record.ID <= record.Parent {
+		return false, errors.New("higher id parent of lower id")
 	}
 
-	duplicates := make(map[int]int)
-	for i, record := range records {
-		if i != record.ID {
-			return errors.New("non-continuous")
-		}
-
-		if record.Parent != 0 && record.ID <= record.Parent {
-			return errors.New("higher id parent of lower id")
-		}
-
-		duplicates[record.ID]++
-		if duplicates[record.ID] > 1 {
-			return errors.New("duplicate node")
-		}
-	}
-
-	return nil
+	return true, nil
 }
 
-func BuildNode(records []Record, node *Node) *Node {
-	for _, record := range records {
-		if node.ID == record.ID {
-			continue
-		}
-
-		if node.ID != record.Parent {
-			continue
-		}
-
-		node.Children = append(node.Children, BuildNode(records, &Node{ID: record.ID}))
+func ValidateRootNode(record Record) (bool, error) {
+	if record.Parent != 0 {
+		return false, errors.New("root node has parent")
 	}
 
-	return node
+	if record.ID != 0 {
+		return false, errors.New("no root node")
+	}
+
+	return true, nil
 }
 
 func RecordSortingMethod(records []Record) func(i, j int) bool {
