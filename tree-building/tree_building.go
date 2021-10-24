@@ -2,6 +2,7 @@ package tree
 
 import (
 	"errors"
+	"fmt"
 	"sort"
 )
 
@@ -15,7 +16,7 @@ type Node struct {
 }
 
 func Build(records []Record) (*Node, error) {
-	sort.Slice(records, RecordSortingMethod(records))
+	SortRecords(records)
 
 	if len(records) == 0 {
 		return nil, nil
@@ -43,11 +44,11 @@ func Build(records []Record) (*Node, error) {
 
 func ValidateRecord(index int, record Record) (bool, error) {
 	if index != record.ID {
-		return false, errors.New("non-continuous")
+		return false, fmt.Errorf("non-contiguous record ID: %+v", record)
 	}
 
 	if record.Parent != 0 && record.ID <= record.Parent {
-		return false, errors.New("higher id parent of lower id")
+		return false, fmt.Errorf("higher parent id than record id: %+v", record)
 	}
 
 	return true, nil
@@ -65,8 +66,8 @@ func ValidateRootNode(record Record) (bool, error) {
 	return true, nil
 }
 
-func RecordSortingMethod(records []Record) func(i, j int) bool {
-	return func(i, j int) bool {
+func SortRecords(records []Record) {
+	sort.Slice(records, func(i, j int) bool {
 		return records[i].ID < records[j].ID
-	}
+	})
 }
