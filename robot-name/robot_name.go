@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-var existNames = make(map[string]bool)
+var namesUsed = make(map[string]bool)
 
 type Robot struct {
 	name string
@@ -19,25 +19,23 @@ func (robot *Robot) Reset() *Robot {
 
 func (robot *Robot) Name() (string, error) {
 	if robot.name == "" {
-		robot.name = getRandomName()
+		robot.name = randomName()
 	}
 
 	return robot.name, nil
 }
 
-func getRandomName() string {
+func randomName() string {
 	rand.Seed(time.Now().UnixNano())
 	name := ""
 	name += randomLetter()
 	name += randomLetter()
 	name += randomNumber()
-	name += randomNumber()
-	name += randomNumber()
 
-	if existNames[name] {
-		name = getRandomName()
+	if namesUsed[name] {
+		name = randomName()
 	} else {
-		existNames[name] = true
+		namesUsed[name] = true
 	}
 
 	return name
@@ -48,5 +46,5 @@ func randomLetter() string {
 }
 
 func randomNumber() string {
-	return fmt.Sprintf("%d", rand.Intn(10))
+	return fmt.Sprintf("%03d", rand.Intn(1000))
 }
