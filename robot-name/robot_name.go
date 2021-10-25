@@ -8,6 +8,10 @@ import (
 
 var namesUsed = make(map[string]bool)
 
+var maxNamesCount int = 26 * 26 * 10 * 10 * 10 // 676,000
+var randomNames = generateNames()
+var nameIndex = 0
+
 type Robot struct {
 	name string
 }
@@ -19,32 +23,44 @@ func (robot *Robot) Reset() *Robot {
 
 func (robot *Robot) Name() (string, error) {
 	if robot.name == "" {
-		robot.name = randomName()
+		name, error := randomName()
+		if error != nil {
+			return "", error
+		}
+		robot.name = name
 	}
 
 	return robot.name, nil
 }
 
-func randomName() string {
-	rand.Seed(time.Now().UnixNano())
-	name := ""
-	name += randomLetter()
-	name += randomLetter()
-	name += randomNumber()
-
-	if namesUsed[name] {
-		name = randomName()
-	} else {
-		namesUsed[name] = true
+func randomName() (string, error) {
+	if nameIndex >= maxNamesCount {
+		return "", fmt.Errorf("no more names available")
 	}
 
-	return name
+	result := randomNames[nameIndex]
+	nameIndex++
+	return result, nil
 }
 
-func randomLetter() string {
-	return fmt.Sprintf("%c", 'A'+rune(rand.Intn(26)))
-}
+func generateNames() []string {
+	var names = make([]string, maxNamesCount)
+	var position int
 
-func randomNumber() string {
-	return fmt.Sprintf("%03d", rand.Intn(1000))
+	for i := 0; i < 26; i++ {
+		for j := 0; j < 26; j++ {
+			for n := 0; n < 1000; n++ {
+				var name string
+				name += fmt.Sprintf("%c", 'A'+i)
+				name += fmt.Sprintf("%c", 'A'+j)
+				name += fmt.Sprintf("%03d", n)
+				names[position] = name
+				position++
+			}
+		}
+	}
+
+	rand.Seed(time.Now().UnixNano())
+	rand.Shuffle(maxNamesCount, func(i, j int) { names[i], names[j] = names[j], names[i] })
+	return names
 }
