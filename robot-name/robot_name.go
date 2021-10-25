@@ -23,24 +23,23 @@ func (robot *Robot) Reset() *Robot {
 
 func (robot *Robot) Name() (string, error) {
 	if robot.name == "" {
-		name, error := randomName()
-		if error != nil {
-			return "", error
+		robot.name = randomName()
+		if robot.name == "" {
+			return "", fmt.Errorf("no more names available")
 		}
-		robot.name = name
 	}
 
 	return robot.name, nil
 }
 
-func randomName() (string, error) {
+func randomName() string {
 	if nameIndex >= maxNamesCount {
-		return "", fmt.Errorf("no more names available")
+		return ""
 	}
 
 	result := randomNames[nameIndex]
 	nameIndex++
-	return result, nil
+	return result
 }
 
 func generateNames() []string {
