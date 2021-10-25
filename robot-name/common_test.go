@@ -8,7 +8,7 @@ import (
 var namePat = regexp.MustCompile(`^[A-Z]{2}\d{3}$`)
 var seen = map[string]int{}
 
-// func New() *Robot { return new(Robot) }
+func New() *Robot { return new(Robot) }
 
 // getName is a test helper function to facilitate optionally checking for seen
 // robot names.
