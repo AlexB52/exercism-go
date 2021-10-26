@@ -6,8 +6,6 @@ import (
 	"time"
 )
 
-var namesUsed = make(map[string]bool)
-
 var maxNamesCount int = 26 * 26 * 10 * 10 * 10 // 676,000
 var randomNames = generateNames()
 var nameIndex = 0
@@ -24,9 +22,10 @@ func (robot *Robot) Reset() *Robot {
 func (robot *Robot) Name() (string, error) {
 	if robot.name == "" {
 		robot.name = randomName()
-		if robot.name == "" {
-			return "", fmt.Errorf("no more names available")
-		}
+	}
+
+	if robot.name == "" {
+		return "", fmt.Errorf("no more names available")
 	}
 
 	return robot.name, nil
