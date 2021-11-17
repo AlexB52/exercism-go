@@ -6,11 +6,7 @@ import (
 
 // NeedsLicense determines whether a license is need to drive a type of vehicle. Only "car" and "truck" require a license.
 func NeedsLicense(kind string) bool {
-	if kind == "car" || kind == "truck" {
-		return true
-	}
-
-	return false
+	return (kind == "car" || kind == "truck")
 }
 
 // ChooseVehicle recommends a vehicle for selection. It always recommends the vehicle that comes first in dictionary order.
@@ -30,12 +26,13 @@ func CalculateResellPrice(originalPrice, age float64) float64 {
 	return originalPrice * AgeDepreciation(age)
 }
 
-func AgeDepreciation(age float64) float64 {
+func AgeDepreciation(age float64) (result float64) {
 	if age < 3 {
-		return 0.8
+		result = 0.8
 	} else if age < 9 {
-		return 0.7
+		result = 0.7
 	} else {
-		return 0.5
+		result = 0.5
 	}
+	return result
 }
