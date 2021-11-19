@@ -23,19 +23,15 @@ var Gifts = []string{
 }
 
 func Song() string {
-	var song string
+	verses := make([]string, 12)
 	for i := 1; i < 13; i++ {
-		song += Verse(i)
-		if i != 12 {
-			song += "\n"
-		}
+		verses[i-1] = Verse(i)
 	}
-	return song
+	return strings.Join(verses, "\n")
 }
 
 func Verse(i int) string {
-	giftList := FormatGiftsList(GiftList(i))
-	return fmt.Sprintf("On the %s day of Christmas my true love gave to me: %s.", DayNumbers[i], giftList)
+	return fmt.Sprintf("On the %s day of Christmas my true love gave to me: %s.", DayNumbers[i], FormatGiftsList(GiftList(i)))
 }
 
 func FormatGiftsList(gifts []string) string {
