@@ -2,8 +2,34 @@ package matrix
 
 // Define the Matrix type here.
 
+import (
+	"fmt"
+	"strings"
+	"strconv"
+)
+
+type Matrix struct {}
+
 func New(s string) (*Matrix, error) {
-	panic("Please implement the New function")
+	rows := strings.Split(s, "\n")
+	numbers := make([][]int, len(rows))
+
+	for i, row := range rows {
+		cols := strings.Split(strings.TrimSpace(row), " ")
+		cells := make([]int, len(cols))
+
+		for j, cell := range cols {
+			integer, err := strconv.Atoi(cell)
+			if err != nil {
+				return nil, err
+			}
+			cells[j] = integer
+		}
+		numbers[i] = cells
+	}
+
+	fmt.Println(numbers)
+	return &Matrix{}, nil
 }
 
 // Cols and Rows must return the results without affecting the matrix.
