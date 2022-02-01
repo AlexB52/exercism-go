@@ -24,28 +24,24 @@ var divisionByZero = errors.New("division by zero")
 func DivideFood(weightFodder WeightFodder, cows int) (float64, error) {
 	fodder, err := weightFodder.FodderAmount()
 
-	if cows == 0 {
-		return 0, divisionByZero
-	}
-
-	if cows < 0 {
-		return 0, &SillyNephewError{number: cows}
-	}
-
-	if err != nil && err != ErrScaleMalfunction {
-		return 0, err
+	if err != nil {
+		if err == ErrScaleMalfunction {
+			fodder *= 2.0
+		} else {
+			return 0, err
+		}
 	}
 
 	if fodder < 0 {
 		return 0, negativeFodder
 	}
 
-	if err == ErrScaleMalfunction && fodder > 0 {
-		return fodder * 2.0 / float64(cows), nil
+	if cows == 0 {
+		return 0, divisionByZero
 	}
 
-	if err != nil {
-		return 0, err
+	if cows < 0 {
+		return 0, &SillyNephewError{number: cows}
 	}
 
 	return fodder / float64(cows), nil
