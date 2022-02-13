@@ -175,32 +175,32 @@ func TestRows(t *testing.T) {
 	}
 }
 
-// func TestCols(t *testing.T) {
-// 	for _, test := range tests {
-// 		if !test.ok {
-// 			continue
-// 		}
-// 		m, err := New(test.in)
-// 		if err != nil {
-// 			t.Skip("Need working New for TestCols")
-// 		}
-// 		c := m.Cols()
-// 		if len(c) == 0 && len(test.cols) == 0 {
-// 			continue // agreement, and nothing more to test
-// 		}
-// 		if !reflect.DeepEqual(c, test.cols) {
-// 			t.Fatalf("New(%q).Cols() = %v (type %T), want %v (type %T)", test.in, c, c, test.cols, test.cols)
-// 		}
-// 		if len(c[0]) == 0 {
-// 			continue // not currently in test data, but anyway
-// 		}
-// 		c[0][0]++
-// 		if !reflect.DeepEqual(m.Cols(), test.cols) {
-// 			t.Fatalf("Matrix.Cols() returned slice based on Matrix " +
-// 				"representation.  Want independent copy of element data.")
-// 		}
-// 	}
-// }
+func TestCols(t *testing.T) {
+	for _, test := range tests {
+		if !test.ok {
+			continue
+		}
+		m, err := New(test.in)
+		if err != nil {
+			t.Skip("Need working New for TestCols")
+		}
+		c := m.Cols()
+		if len(c) == 0 && len(test.cols) == 0 {
+			continue // agreement, and nothing more to test
+		}
+		if !reflect.DeepEqual(c, test.cols) {
+			t.Fatalf("New(%q).Cols() = %v (type %T), want %v (type %T)", test.in, c, c, test.cols, test.cols)
+		}
+		if len(c[0]) == 0 {
+			continue // not currently in test data, but anyway
+		}
+		c[0][0]++
+		if !reflect.DeepEqual(m.Cols(), test.cols) {
+			t.Fatalf("Matrix.Cols() returned slice based on Matrix " +
+				"representation.  Want independent copy of element data.")
+		}
+	}
+}
 
 // func TestSet(t *testing.T) {
 // 	s := "1 2 3\n4 5 6\n7 8 9"

@@ -43,7 +43,19 @@ func New(s string) (*Matrix, error) {
 
 // Cols and Rows must return the results without affecting the matrix.
 func (m *Matrix) Cols() [][]int {
-	panic("Please implement the Cols function")
+	numberOfRows := len(m.cells) / m.columnNumber
+	result := make([][]int, m.columnNumber)
+
+	for i := 0; i < m.columnNumber; i++ {
+		result[i] = make([]int, numberOfRows)
+	}
+
+	for index, cell := range m.cells {
+		i, j := index/m.columnNumber, index%m.columnNumber
+		result[j][i] = cell
+	}
+
+	return result
 }
 
 func (m *Matrix) Rows() [][]int {
