@@ -13,6 +13,10 @@ type Matrix struct {
 	cells        []int
 }
 
+func (m *Matrix) rowNumber() int {
+	return len(m.cells) / m.columnNumber
+}
+
 func New(s string) (*Matrix, error) {
 	// var result []int
 	rows := strings.Split(s, "\n")
@@ -43,11 +47,10 @@ func New(s string) (*Matrix, error) {
 
 // Cols and Rows must return the results without affecting the matrix.
 func (m *Matrix) Cols() [][]int {
-	numberOfRows := len(m.cells) / m.columnNumber
 	result := make([][]int, m.columnNumber)
 
 	for i := 0; i < m.columnNumber; i++ {
-		result[i] = make([]int, numberOfRows)
+		result[i] = make([]int, m.rowNumber())
 	}
 
 	for index, cell := range m.cells {
@@ -59,10 +62,9 @@ func (m *Matrix) Cols() [][]int {
 }
 
 func (m *Matrix) Rows() [][]int {
-	numberOfRows := len(m.cells) / m.columnNumber
-	result := make([][]int, numberOfRows)
+	result := make([][]int, m.rowNumber())
 
-	for i := 0; i < numberOfRows; i++ {
+	for i := 0; i < m.rowNumber(); i++ {
 		result[i] = make([]int, m.columnNumber)
 	}
 
@@ -75,5 +77,18 @@ func (m *Matrix) Rows() [][]int {
 }
 
 func (m *Matrix) Set(row, col, val int) bool {
-	panic("Please implement the Set function")
+	if row < 0 || row > m.rowNumber() {
+		return false
+	}
+
+	if col < 0 || col >= m.columnNumber {
+		return false
+	}
+
+	if val <= 0 {
+		return false
+	}
+
+	m.cells[row*m.rowNumber()+col] = val
+	return true
 }

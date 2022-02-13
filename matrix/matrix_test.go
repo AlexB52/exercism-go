@@ -202,56 +202,56 @@ func TestCols(t *testing.T) {
 	}
 }
 
-// func TestSet(t *testing.T) {
-// 	s := "1 2 3\n4 5 6\n7 8 9"
-// 	m, err := New(s)
-// 	if err != nil {
-// 		t.Skip("Need working New for TestSet")
-// 	}
-// 	xr := [][]int{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}
-// 	if !reflect.DeepEqual(m.Rows(), xr) {
-// 		t.Skip("Need working Rows for TestSet")
-// 	}
-// 	xc := [][]int{{1, 4, 7}, {2, 5, 8}, {3, 6, 9}}
-// 	if !reflect.DeepEqual(m.Cols(), xc) {
-// 		t.Skip("Need working Cols for TestSet")
-// 	}
-// 	// test each corner, each side, and an interior element
-// 	for r := 0; r < 3; r++ {
-// 		for c := 0; c < 3; c++ {
-// 			m, _ = New(s)
-// 			val := 10 + r*3 + c
-// 			if ok := m.Set(r, c, val); !ok {
-// 				t.Fatalf("Matrix(%q).Set(%d, %d, %d) returned !ok, want ok.",
-// 					s, r, c, val)
-// 			}
-// 			xr = [][]int{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}
-// 			xc = [][]int{{1, 4, 7}, {2, 5, 8}, {3, 6, 9}}
-// 			xr[r][c] = val
-// 			xc[c][r] = val
-// 			if res := m.Rows(); !reflect.DeepEqual(res, xr) {
-// 				t.Fatalf("Matrix(%q).Set(%d, %d, %d), Rows() = %v, want %v",
-// 					s, r, c, val, res, xr)
-// 			}
-// 			if res := m.Cols(); !reflect.DeepEqual(res, xc) {
-// 				t.Fatalf("Matrix(%q).Set(%d, %d, %d), Cols() = %v, want %v",
-// 					s, r, c, val, res, xc)
-// 			}
-// 		}
-// 	}
-// 	// test 1 and 2 off each corner and side
-// 	m, _ = New(s)
-// 	for _, r := range []int{-2, -1, 0, 3, 4} {
-// 		for _, c := range []int{-2, -1, 0, 3, 4} {
-// 			if r == 0 && c == 0 {
-// 				continue
-// 			}
-// 			if ok := m.Set(r, c, 0); ok {
-// 				t.Fatalf("Matrix(%q).Set(%d, %d, 0) = ok, want !ok", s, r, c)
-// 			}
-// 		}
-// 	}
-// }
+func TestSet(t *testing.T) {
+	s := "1 2 3\n4 5 6\n7 8 9"
+	m, err := New(s)
+	if err != nil {
+		t.Skip("Need working New for TestSet")
+	}
+	xr := [][]int{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}
+	if !reflect.DeepEqual(m.Rows(), xr) {
+		t.Skip("Need working Rows for TestSet")
+	}
+	xc := [][]int{{1, 4, 7}, {2, 5, 8}, {3, 6, 9}}
+	if !reflect.DeepEqual(m.Cols(), xc) {
+		t.Skip("Need working Cols for TestSet")
+	}
+	// test each corner, each side, and an interior element
+	for r := 0; r < 3; r++ {
+		for c := 0; c < 3; c++ {
+			m, _ = New(s)
+			val := 10 + r*3 + c
+			if ok := m.Set(r, c, val); !ok {
+				t.Fatalf("Matrix(%q).Set(%d, %d, %d) returned !ok, want ok.",
+					s, r, c, val)
+			}
+			xr = [][]int{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}
+			xc = [][]int{{1, 4, 7}, {2, 5, 8}, {3, 6, 9}}
+			xr[r][c] = val
+			xc[c][r] = val
+			if res := m.Rows(); !reflect.DeepEqual(res, xr) {
+				t.Fatalf("Matrix(%q).Set(%d, %d, %d), Rows() = %v, want %v",
+					s, r, c, val, res, xr)
+			}
+			if res := m.Cols(); !reflect.DeepEqual(res, xc) {
+				t.Fatalf("Matrix(%q).Set(%d, %d, %d), Cols() = %v, want %v",
+					s, r, c, val, res, xc)
+			}
+		}
+	}
+	// test 1 and 2 off each corner and side
+	m, _ = New(s)
+	for _, r := range []int{-2, -1, 0, 3, 4} {
+		for _, c := range []int{-2, -1, 0, 3, 4} {
+			if r == 0 && c == 0 {
+				continue
+			}
+			if ok := m.Set(r, c, 0); ok {
+				t.Fatalf("Matrix(%q).Set(%d, %d, 0) = ok, want !ok", s, r, c)
+			}
+		}
+	}
+}
 
 func BenchmarkNew(b *testing.B) {
 	if testing.Short() {
