@@ -1,35 +1,44 @@
 package matrix
 
-// Define the Matrix type here.
-
 import (
-	"fmt"
-	"strings"
+	"errors"
 	"strconv"
+	"strings"
 )
 
-type Matrix struct {}
+// Define the Matrix type here.
+
+type Matrix struct {
+	columnNumber int
+	cells        []int
+}
 
 func New(s string) (*Matrix, error) {
+	// var result []int
 	rows := strings.Split(s, "\n")
-	numbers := make([][]int, len(rows))
+	var columnNumber int
+	var numbers []int
 
-	for i, row := range rows {
-		cols := strings.Split(strings.TrimSpace(row), " ")
-		cells := make([]int, len(cols))
+	for _, cell := range rows {
+		cells := strings.Split(strings.TrimSpace(cell), " ")
 
-		for j, cell := range cols {
-			integer, err := strconv.Atoi(cell)
-			if err != nil {
-				return nil, err
-			}
-			cells[j] = integer
+		if columnNumber != 0 && columnNumber != len(cells) {
+			return nil, errors.New("Invalid matrix columns")
 		}
-		numbers[i] = cells
+
+		columnNumber = len(cells)
+
+		for _, strNumber := range cells {
+			number, err := strconv.Atoi(strNumber)
+			if err != nil {
+				return nil, errors.New("Invalid input passed")
+			}
+
+			numbers = append(numbers, number)
+		}
 	}
 
-	fmt.Println(numbers)
-	return &Matrix{}, nil
+	return &Matrix{columnNumber, numbers}, nil
 }
 
 // Cols and Rows must return the results without affecting the matrix.
