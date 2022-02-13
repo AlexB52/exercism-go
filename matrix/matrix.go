@@ -47,7 +47,19 @@ func (m *Matrix) Cols() [][]int {
 }
 
 func (m *Matrix) Rows() [][]int {
-	panic("Please implement the Rows function")
+	numberOfRows := len(m.cells) / m.columnNumber
+	result := make([][]int, numberOfRows)
+
+	for i := 0; i < numberOfRows; i++ {
+		result[i] = make([]int, m.columnNumber)
+	}
+
+	for index, cell := range m.cells {
+		i, j := index/m.columnNumber, index%m.columnNumber
+		result[i][j] = cell
+	}
+
+	return result
 }
 
 func (m *Matrix) Set(row, col, val int) bool {
