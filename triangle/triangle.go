@@ -5,10 +5,10 @@ import "sort"
 type Kind int
 
 const (
-	NaT = iota // not a triangle
-	Equ        // equilateral
-	Iso        // isosceles
-	Sca        // scalene
+	NaT Kind = iota // not a triangle
+	Equ             // equilateral
+	Iso             // isosceles
+	Sca             // scalene
 )
 
 func KindFromSides(a, b, c float64) Kind {
