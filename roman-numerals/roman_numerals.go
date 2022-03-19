@@ -20,15 +20,9 @@ func ToRomanNumeral(input int) (string, error) {
 		return "", errors.New("Invalid input")
 	}
 
-	numeralOrder := [7]int{1000, 500, 100, 50, 10, 5, 1}
-
 	var result string
-	for _, i := range numeralOrder {
-		for {
-			if input-i < 0 {
-				break
-			}
-
+	for _, i := range [7]int{1000, 500, 100, 50, 10, 5, 1} {
+		for input >= i {
 			input -= i
 			result += ArabicToRoman[i]
 		}
