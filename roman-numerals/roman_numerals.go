@@ -2,22 +2,17 @@ package romannumerals
 
 import (
 	"errors"
+	"strings"
 )
 
 func ToRomanNumeral(input int) (string, error) {
-	DecimalToRomanNumeral := map[int]string{
+	ArabicToRoman := map[int]string{
 		1000: "M",
-		900:  "CM",
 		500:  "D",
-		400:  "CD",
 		100:  "C",
-		90:   "XC",
 		50:   "L",
-		40:   "XL",
 		10:   "X",
-		9:    "IX",
 		5:    "V",
-		4:    "IV",
 		1:    "I",
 	}
 
@@ -25,7 +20,7 @@ func ToRomanNumeral(input int) (string, error) {
 		return "", errors.New("Invalid input")
 	}
 
-	numeralOrder := [13]int{1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1}
+	numeralOrder := [7]int{1000, 500, 100, 50, 10, 5, 1}
 
 	var result string
 	for _, i := range numeralOrder {
@@ -35,9 +30,20 @@ func ToRomanNumeral(input int) (string, error) {
 			}
 
 			input -= i
-			result += DecimalToRomanNumeral[i]
+			result += ArabicToRoman[i]
 		}
 	}
+
+	// It appears that the long version of roman numerals was a valid one.
+	// The short version replaced these patterns with their short equivalent.
+	// Source: https://sandimetz.com/blog/2016/6/9/make-everything-the-same
+
+	result = strings.Replace(result, "DCCCC", "CM", 1)
+	result = strings.Replace(result, "CCCC", "CD", 1)
+	result = strings.Replace(result, "LXXXX", "XC", 1)
+	result = strings.Replace(result, "XXXX", "XL", 1)
+	result = strings.Replace(result, "VIIII", "IX", 1)
+	result = strings.Replace(result, "IIII", "IV", 1)
 
 	return result, nil
 }
