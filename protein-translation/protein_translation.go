@@ -25,6 +25,20 @@ translation:
 
 func FromCodon(codon string) (string, error) {
 	switch codon {
+	case "AUG":
+		return "Methionine", nil
+	case "UUU", "UUC":
+		return "Phenylalanine", nil
+	case "UUA", "UUG":
+		return "Leucine", nil
+	case "UCU", "UCG":
+		return "Serine", nil
+	case "UAU", "UAC":
+		return "Tyrosine", nil
+	case "UGU":
+		return "Cysteine", nil
+	case "UGG":
+		return "Tryptophan", nil
 	case "UAG", "UGA", "UAA":
 		return "", ErrStop
 	case "AUG":
