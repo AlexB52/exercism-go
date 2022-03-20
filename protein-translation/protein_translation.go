@@ -7,20 +7,6 @@ import (
 var ErrStop = errors.New("ErrStop")
 var ErrInvalidBase = errors.New("ErrInvalidBase")
 
-var RNATranslations = map[string]string{
-	"AUG": "Methionine",
-	"UUU": "Phenylalanine",
-	"UUC": "Phenylalanine",
-	"UUA": "Leucine",
-	"UUG": "Leucine",
-	"UCU": "Serine",
-	"UCG": "Serine",
-	"UAU": "Tyrosine",
-	"UAC": "Tyrosine",
-	"UGU": "Cysteine",
-	"UGG": "Tryptophan",
-}
-
 func FromRNA(rna string) ([]string, error) {
 	var result []string
 translation:
@@ -41,11 +27,21 @@ func FromCodon(codon string) (string, error) {
 	switch codon {
 	case "UAG", "UGA", "UAA":
 		return "", ErrStop
+	case "AUG":
+		return "Methionine", nil
+	case "UUU", "UUC":
+		return "Phenylalanine", nil
+	case "UUA", "UUG":
+		return "Leucine", nil
+	case "UCU", "UCG":
+		return "Serine", nil
+	case "UAU", "UAC":
+		return "Tyrosine", nil
+	case "UGU":
+		return "Cysteine", nil
+	case "UGG":
+		return "Tryptophan", nil
 	default:
-		if t, ok := RNATranslations[codon]; ok {
-			return t, nil
-		} else {
-			return "", ErrInvalidBase
-		}
+		return "", ErrInvalidBase
 	}
 }
