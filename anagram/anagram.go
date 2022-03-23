@@ -5,21 +5,19 @@ import (
 	"strings"
 )
 
-func Detect(subject string, candidates []string) []string {
-	anagrams := map[string][]string{}
-
+func Detect(subject string, candidates []string) (result []string) {
 	for _, candidate := range candidates {
-		if strings.ToLower(candidate) == strings.ToLower(subject) {
-			continue
-		}
-		anagrams[AnagramForm(candidate)] = append(anagrams[AnagramForm(candidate)], candidate)
-	}
+		c, s := strings.ToLower(candidate), strings.ToLower(subject)
 
-	return anagrams[AnagramForm(subject)]
+		if c != s && AnagramForm(c) == AnagramForm(s) {
+			result = append(result, candidate)
+		}
+	}
+	return result
 }
 
 func AnagramForm(s string) string {
-	runes := []rune(strings.ToLower(s))
+	runes := []rune(s)
 	sort.Slice(runes, func(i, j int) bool {
 		return runes[i] < runes[j]
 	})
