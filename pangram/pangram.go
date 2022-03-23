@@ -5,14 +5,9 @@ import (
 )
 
 func IsPangram(input string) bool {
-	result := map[rune]bool{}
-
-	for _, r := range strings.ToLower(input) {
-		result[r] = true
-	}
-
+	input = strings.ToLower(input)
 	for l := 'a'; l < 'z'; l++ {
-		if !result[l] {
+		if !strings.ContainsRune(input, l) {
 			return false
 		}
 	}
