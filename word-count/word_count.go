@@ -8,12 +8,12 @@ import (
 type Frequency map[string]int
 
 func WordCount(phrase string) Frequency {
-	regex := regexp.MustCompile("[a-z|'|0-9]+")
+	regex := regexp.MustCompile(`\b[\w']+\b`)
 	words := regex.FindAll([]byte(strings.ToLower(phrase)), -1)
 
 	result := Frequency{}
 	for _, word := range words {
-		result[strings.Trim(string(word), "'")]++
+		result[string(word)]++
 	}
 	return result
 }
