@@ -1,10 +1,10 @@
 package reverse
 
-func Reverse(input string) (result string) {
-	runes, rInputs := []rune{}, []rune(input)
+func Reverse(input string) string {
+	runes, inputRunes := []rune{}, []rune(input)
 
-	for r := len(rInputs) - 1; r >= 0; r-- {
-		runes = append(runes, rInputs[r])
+	for r := len(inputRunes) - 1; r >= 0; r-- {
+		runes = append(runes, inputRunes[r])
 	}
 
 	return string(runes)
