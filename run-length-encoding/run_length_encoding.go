@@ -7,39 +7,26 @@ import (
 	"strings"
 )
 
-type Fragment struct {
-	count  int
-	letter byte
-}
-
-func (f *Fragment) ToCode() (result string) {
-	if f.count == 1 {
-		return string(f.letter)
-	} else {
-		return fmt.Sprintf("%d%s", f.count, string(f.letter))
-	}
-}
-
 func RunLengthEncode(input string) (result string) {
 	if len(input) == 0 {
 		return ""
 	}
 
-	fragments := []*Fragment{&Fragment{1, input[0]}}
-
-	for i := 1; i < len(input); i++ {
-		current := fragments[len(fragments)-1]
-
-		if input[i] == current.letter {
-			current.count++
-			continue
+	for i := 0; i < len(input); {
+		j := i + 1
+		for j < len(input) && input[i] == input[j] {
+			j++
 		}
 
-		fragments = append(fragments, &Fragment{1, input[i]})
-	}
+		letter, count := string(input[i]), j-i
 
-	for _, f := range fragments {
-		result += f.ToCode()
+		if count > 1 {
+			result += fmt.Sprintf("%d%s", count, letter)
+		} else {
+			result += letter
+		}
+
+		i = j
 	}
 
 	return result
