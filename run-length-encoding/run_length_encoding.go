@@ -4,18 +4,12 @@ import (
 	"fmt"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
 type Fragment struct {
 	count  int
 	letter byte
-}
-
-func (f *Fragment) ToString() (result string) {
-	for i := 1; i <= f.count; i++ {
-		result += string(f.letter)
-	}
-	return result
 }
 
 func (f *Fragment) ToCode() (result string) {
@@ -31,38 +25,37 @@ func RunLengthEncode(input string) (result string) {
 		return ""
 	}
 
-	var fragments = []*Fragment{&Fragment{1, input[0]}}
-	for i := 1; i < len(input); i++ {
-		f := fragments[len(fragments)-1]
+	fragments := []*Fragment{&Fragment{1, input[0]}}
 
-		if input[i] == f.letter {
-			f.count++
-		} else {
-			fragments = append(fragments, &Fragment{1, input[i]})
+	for i := 1; i < len(input); i++ {
+		current := fragments[len(fragments)-1]
+
+		if input[i] == current.letter {
+			current.count++
+			continue
 		}
+
+		fragments = append(fragments, &Fragment{1, input[i]})
 	}
 
 	for _, f := range fragments {
 		result += f.ToCode()
 	}
+
 	return result
 }
 
 func RunLengthDecode(input string) (result string) {
 	re := regexp.MustCompile(`\d+[\w\s]|[\w\s]`)
-	matches := re.FindAll([]byte(input), -1)
 
-	for _, match := range matches {
-		var f Fragment
+	for _, match := range re.FindAll([]byte(input), -1) {
+		letter := string(match[len(match)-1])
 		count, err := strconv.Atoi(string(match[:len(match)-1]))
-
-		if err == nil {
-			f = Fragment{count, match[len(match)-1]}
-		} else {
-			f = Fragment{1, match[0]}
+		if err != nil {
+			count = 1
 		}
 
-		result += f.ToString()
+		result += strings.Repeat(letter, count)
 	}
 
 	return result
