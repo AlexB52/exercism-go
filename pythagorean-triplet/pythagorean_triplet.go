@@ -6,11 +6,8 @@ import (
 
 type Triplet [3]int
 
-func (t Triplet) Sum() (result int) {
-	for _, i := range t {
-		result += i
-	}
-	return result
+func hypotenuse(a, b int) float64 {
+	return math.Sqrt(float64(a*a + b*b))
 }
 
 func Range(min, max int) (result []Triplet) {
@@ -26,13 +23,9 @@ func Range(min, max int) (result []Triplet) {
 
 func Sum(p int) (result []Triplet) {
 	for _, t := range Range(1, p/2) {
-		if t.Sum() == p {
+		if t[0]+t[1]+t[2] == p {
 			result = append(result, t)
 		}
 	}
 	return result
-}
-
-func hypotenuse(a, b int) float64 {
-	return math.Sqrt(float64(a*a + b*b))
 }
