@@ -6,19 +6,17 @@ func Nth(n int) (int, bool) {
 	}
 
 	primes := []int{}
+
+findPrimes:
 	for i := 2; len(primes) < n; i++ {
 
-		isPrime := true
 		for _, p := range primes {
 			if i%p == 0 {
-				isPrime = false
-				break
+				continue findPrimes
 			}
 		}
 
-		if isPrime {
-			primes = append(primes, i)
-		}
+		primes = append(primes, i)
 	}
 
 	return primes[len(primes)-1], true
