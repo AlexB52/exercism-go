@@ -1,14 +1,38 @@
 package pythagorean
 
+import (
+	"math"
+)
+
 type Triplet [3]int
 
-// Range generates list of all Pythagorean triplets with side lengths
-// in the provided range.
-func Range(min, max int) []Triplet {
-	panic("Please implement the Range function")
+func (t Triplet) Sum() (result int) {
+	for _, i := range t {
+		result += i
+	}
+	return result
 }
 
-// Sum returns a list of all Pythagorean triplets with a certain perimeter.
-func Sum(p int) []Triplet {
-	panic("Please implement the Sum function")
+func Range(min, max int) (result []Triplet) {
+	for a := min; a <= max; a++ {
+		for b := a + 1; hypotenuse(a, b) <= float64(max); b++ {
+			if c := hypotenuse(a, b); c == float64(int(c)) {
+				result = append(result, Triplet{a, b, int(c)})
+			}
+		}
+	}
+	return result
+}
+
+func Sum(p int) (result []Triplet) {
+	for _, t := range Range(1, p/2) {
+		if t.Sum() == p {
+			result = append(result, t)
+		}
+	}
+	return result
+}
+
+func hypotenuse(a, b int) float64 {
+	return math.Sqrt(float64(a*a + b*b))
 }
