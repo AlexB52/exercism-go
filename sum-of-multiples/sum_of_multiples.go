@@ -1,18 +1,14 @@
 package summultiples
 
 func SumMultiples(limit int, divisors ...int) (result int) {
-	var numbers = map[int]bool{}
-
-	for _, divisor := range divisors {
-		for i := 0; i < limit; i++ {
+OUTER:
+	for i := 0; i < limit; i++ {
+		for _, divisor := range divisors {
 			if divisor != 0 && i%divisor == 0 {
-				numbers[i] = true
+				result += i
+				continue OUTER
 			}
 		}
-	}
-
-	for n, _ := range numbers {
-		result += n
 	}
 	return result
 }
