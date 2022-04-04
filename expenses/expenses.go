@@ -60,9 +60,5 @@ func CategoryExpenses(in []Record, p DaysPeriod, c string) (result float64, err 
 	if len(in) == 0 {
 		return 0, errors.New("there are no records for this category")
 	}
-
-	for _, r := range Filter(in, ByDaysPeriod(p)) {
-		result += r.Amount
-	}
-	return result, nil
+	return TotalByPeriod(in, p), nil
 }
