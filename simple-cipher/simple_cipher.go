@@ -6,10 +6,7 @@ import (
 	"unicode"
 )
 
-type vigenere struct {
-	Cipher
-	key string
-}
+type vigenere string
 
 func NewCaesar() Cipher {
 	return NewVigenere("d")
@@ -19,7 +16,8 @@ func NewShift(distance int) Cipher {
 	if distance == 0 || distance/26 != 0 {
 		return nil
 	}
-	return NewVigenere(string(transform('a', distance/distance, distance)))
+	key := string(transform('a', distance/distance, distance))
+	return NewVigenere(key)
 }
 
 func NewVigenere(key string) Cipher {
@@ -27,7 +25,7 @@ func NewVigenere(key string) Cipher {
 	if len(key) == 0 || len(re.FindAllString(key, -1)) != 1 {
 		return nil
 	}
-	return vigenere{key: key}
+	return vigenere(key)
 }
 
 func (v vigenere) Encode(input string) string {
@@ -44,7 +42,7 @@ func (v vigenere) Code(input string, sign int) string {
 	var result []rune
 	for i, r := range strings.ToLower(input) {
 		if unicode.IsLetter(r) {
-			distance := int(v.key[i%len(v.key)] - 'a')
+			distance := int(v[i%len(v)] - 'a')
 			result = append(result, transform(r, sign, distance))
 		}
 	}
