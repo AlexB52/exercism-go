@@ -9,6 +9,12 @@ import (
 // Define the shift and vigenere types here.
 // Both types should satisfy the Cipher interface.
 
+type Cipher interface {
+	Encode(string) string
+	Decode(string) string
+	Distance(int) int
+}
+
 type shift struct {
 	Cipher
 	offset int
