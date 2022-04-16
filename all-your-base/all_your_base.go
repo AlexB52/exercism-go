@@ -34,9 +34,8 @@ func ConvertToBase(inputBase int, inputDigits []int, outputBase int) ([]int, err
 
 	var result []int
 	for number > 0 {
-		r := number % outputBase
-		result = append([]int{r}, result...)
-		number = number / outputBase
+		result = append([]int{number % outputBase}, result...)
+		number /= outputBase
 	}
 	return result, nil
 }
