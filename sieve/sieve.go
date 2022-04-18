@@ -2,15 +2,23 @@ package sieve
 
 func Sieve(limit int) []int {
 	var primes []int
+	var sieve = map[int]bool{}
 
-findPrimes:
 	for i := 2; i <= limit; i++ {
-		for _, p := range primes {
-			if i%p == 0 {
-				continue findPrimes
-			}
+		s, ok := sieve[i]
+
+		if !ok {
+			primes = append(primes, i)
+			s = true
 		}
-		primes = append(primes, i)
+
+		if !s {
+			continue
+		}
+
+		for j := 2; j*i <= limit; j++ {
+			sieve[i*j] = false
+		}
 	}
 
 	return primes
