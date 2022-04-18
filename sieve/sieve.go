@@ -16,7 +16,7 @@ func Sieve(limit int) []int {
 			continue
 		}
 
-		for j := 2; j*i <= limit; j++ {
+		for j := i; j*i <= limit; j++ {
 			sieve[i*j] = false
 		}
 	}
