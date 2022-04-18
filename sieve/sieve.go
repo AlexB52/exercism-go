@@ -5,19 +5,13 @@ func Sieve(limit int) []int {
 	var sieve = map[int]bool{}
 
 	for i := 2; i <= limit; i++ {
-		s, ok := sieve[i]
+		_, ok := sieve[i]
 
 		if !ok {
 			primes = append(primes, i)
-			s = true
-		}
-
-		if !s {
-			continue
-		}
-
-		for j := i; j*i <= limit; j++ {
-			sieve[i*j] = false
+			for j := i; j*i <= limit; j++ {
+				sieve[i*j] = false
+			}
 		}
 	}
 
