@@ -1,31 +1,26 @@
 package allergies
 
-var ALLERGIES = []string{
-	"eggs",
-	"peanuts",
-	"shellfish",
-	"strawberries",
-	"tomatoes",
-	"chocolate",
-	"pollen",
-	"cats",
+var ALLERGIES = map[string]uint{
+	"eggs":         1,
+	"peanuts":      2,
+	"shellfish":    4,
+	"strawberries": 8,
+	"tomatoes":     16,
+	"chocolate":    32,
+	"pollen":       64,
+	"cats":         128,
 }
 
 func Allergies(allergies uint) []string {
 	var out []string
-	for i, a := range ALLERGIES {
-		if allergies&(1<<i) != 0 {
-			out = append(out, a)
+	for allergen, _ := range ALLERGIES {
+		if AllergicTo(allergies, allergen) {
+			out = append(out, allergen)
 		}
 	}
 	return out
 }
 
 func AllergicTo(allergies uint, allergen string) bool {
-	for _, a := range Allergies(allergies) {
-		if a == allergen {
-			return true
-		}
-	}
-	return false
+	return allergies&ALLERGIES[allergen] > 0
 }
