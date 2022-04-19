@@ -9,15 +9,18 @@ var handshakeSigns = map[uint]string{
 
 func Handshake(code uint) []string {
 	var result []string
-	for i, s := range handshakeSigns {
-		if code&i > 0 {
-			result = append(result, s)
-		}
-	}
 
-	if code&16 > 0 {
-		for i, j := 0, len(result)-1; i < j; i, j = i+1, j-1 {
-			result[i], result[j] = result[j], result[i]
+	if code&16 == 0 {
+		for i := uint(1); i <= 8; i *= 2 {
+			if code&i > 0 {
+				result = append(result, handshakeSigns[i])
+			}
+		}
+	} else {
+		for i := uint(8); i >= 1; i /= 2 {
+			if code&i > 0 {
+				result = append(result, handshakeSigns[i])
+			}
 		}
 	}
 
