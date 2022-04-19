@@ -20,17 +20,17 @@ func Classify(n int64) (Classification, error) {
 		return 0, ErrOnlyPositive
 	}
 
-	var number int64
+	var sum int64
 	for i := int64(1); i <= n/2; i++ {
 		if n%i == 0 {
-			number += i
+			sum += i
 		}
 	}
 
 	switch {
-	case n > number:
+	case n > sum:
 		return ClassificationDeficient, nil
-	case n < number:
+	case n < sum:
 		return ClassificationAbundant, nil
 	default:
 		return ClassificationPerfect, nil
