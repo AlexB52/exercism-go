@@ -1,21 +1,22 @@
 package allergies
 
-import (
-	"math"
-)
-
-var ALLERGIES = []string{"eggs", "peanuts", "shellfish", "strawberries", "tomatoes", "chocolate", "pollen", "cats"}
+var ALLERGIES = []string{
+	"eggs",
+	"peanuts",
+	"shellfish",
+	"strawberries",
+	"tomatoes",
+	"chocolate",
+	"pollen",
+	"cats",
+}
 
 func Allergies(allergies uint) []string {
-	allergies %= 256
-
 	var out []string
-	for i := 7; i >= 0; i-- {
-		d := uint(math.Pow(2, float64(i)))
-		if allergies/d == 1 {
-			out = append(out, ALLERGIES[i])
+	for i, a := range ALLERGIES {
+		if allergies&(1<<i) != 0 {
+			out = append(out, a)
 		}
-		allergies %= d
 	}
 	return out
 }
