@@ -1,5 +1,10 @@
 package variablelengthquantity
 
+import (
+	"errors"
+	"math"
+)
+
 func EncodeVarint(input []uint32) []byte {
 	var result []byte
 	for _, n := range input {
@@ -20,39 +25,33 @@ func EncodeVarint(input []uint32) []byte {
 }
 
 func DecodeVarint(input []byte) ([]uint32, error) {
-	// fmt.Println(input)
-	// // a := input[0]
-	// aString := fmt.Sprintf("%08b", 128)
-	// // c := fmt.Sprintf("%x", a)
-	// fmt.Println(byte(255))
-	// fmt.Println("binary", aString)
-	// b, _ := strconv.ParseInt(aString, 2, 16)
-	// fmt.Println("hex", b)
-	// fmt.Println("byte", byte(b))
+	var numbers []uint32
+	var currentBytes []byte
 
-	return nil, nil
+	for _, b := range input {
+		currentBytes = append(currentBytes, b)
+
+		if b < 128 {
+			var number uint32
+			len := len(currentBytes) - 1
+
+			for i := 0; i <= len; i++ {
+				n := currentBytes[i]
+				if i != len {
+					n -= 128
+				}
+
+				number += uint32(float64(n) * math.Pow(128, float64(len-i)))
+			}
+
+			numbers = append(numbers, number)
+			currentBytes = []byte{}
+		}
+	}
+
+	if len(currentBytes) > 0 {
+		return nil, errors.New("sequence incomplete")
+	}
+
+	return numbers, nil
 }
-
-// fmt.Println("uint 0x40", uint(0x40))
-// fmt.Println("uint 0x00", uint(0x00))
-// fmt.Println("uint 0xff", uint(0xff))
-// fmt.Println("byte 0x40", byte(0x40))
-// fmt.Println("byte 0x00", byte(0x00))
-// fmt.Println("byte 0xff", uint32(0xfffFFFFF))
-// fmt.Println("byte 0x81", int(0xff))
-// fmt.Println("byte 0xff", math.MaxUint32)
-
-// rawHex := "60A100"
-// i, err := strconv.ParseUint(rawHex, 16, 32)
-// if err != nil {
-// 	fmt.Printf("%s", err)
-// }
-// fmt.Printf("%024b\n", i)
-// fmt.Println("i", i)
-
-// i2, err := strconv.ParseUint("40", 16, 32)
-// if err != nil {
-// 	fmt.Printf("%s", err)
-// }
-// fmt.Printf("%024b\n", i2)
-// fmt.Println("i2", i2)
