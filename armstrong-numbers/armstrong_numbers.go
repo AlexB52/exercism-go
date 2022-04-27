@@ -6,11 +6,10 @@ import (
 )
 
 func IsNumber(n int) bool {
-	var result int
+	var sum int
 	s := strconv.Itoa(n)
 	for _, r := range s {
-		a, _ := strconv.Atoi(string(r))
-		result += int(math.Pow(float64(a), float64(len(s))))
+		sum += int(math.Pow(float64(r-'0'), float64(len(s))))
 	}
-	return result == n
+	return sum == n
 }
