@@ -1,42 +1,44 @@
 package piglatin
 
 import (
-	"fmt"
 	"regexp"
 	"strings"
 )
 
-var PREFIXES = []string{"ch", "qu", "squ", "thr", "sch", "th", "rh", "f", "m", "r", "p", "k", "x", "q", "c", "h", "y"}
-var EXCEPTIONS = []string{"xr", "yt"}
+// From aolshev solution. It was too good not to use it.
+// https://exercism.org/tracks/go/exercises/pig-latin/solutions/aolshev
 
-func Sentence(sentence string) string {
+func Sentence(text string) string {
 	var result []string
-	re := regexp.MustCompile("\\w+")
-
-	for _, w := range re.FindAllString(sentence, -1) {
-		result = append(result, PigLatin(w))
+	for _, w := range strings.Split(text, " ") {
+		result = append(result, word(w))
 	}
-
 	return strings.Join(result, " ")
 }
 
-func PigLatin(word string) string {
-	swapPrefix := true
-	for _, e := range EXCEPTIONS {
-		if strings.HasPrefix(word, e) {
-			swapPrefix = false
-			break
-		}
-	}
+var (
+	beginWithVowels     = regexp.MustCompile(`^([aeiou].|xr|yt).+$`)
+	beginWithConsonants = regexp.MustCompile(`^([^aeiou]+)(.+)$`)
+	beginWithQuVariants = regexp.MustCompile(`^([^aeiou]*qu)(.+)$`)
+	beginWithYVariants  = regexp.MustCompile(`^([^aeiou]+|.)(y.+)$`)
+)
 
-	if swapPrefix {
-		for _, c := range PREFIXES {
-			if strings.HasPrefix(word, c) {
-				word = fmt.Sprintf("%s%s", strings.TrimPrefix(word, c), c)
-				break
-			}
-		}
+func word(word string) string {
+	// Rule 1
+	if beginWithVowels.MatchString(word) {
+		return word + "ay"
 	}
-
-	return fmt.Sprintf("%say", word)
+	// Rule 3
+	if match := beginWithQuVariants.FindStringSubmatch(word); match != nil {
+		return match[2] + match[1] + "ay"
+	}
+	// Rule 4
+	if match := beginWithYVariants.FindStringSubmatch(word); match != nil {
+		return match[2] + match[1] + "ay"
+	}
+	// Rule 2
+	if match := beginWithConsonants.FindStringSubmatch(word); match != nil {
+		return match[2] + match[1] + "ay"
+	}
+	return word
 }
