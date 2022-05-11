@@ -136,7 +136,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 				a += "."
 				a += centsStr[len(centsStr)-2:]
 				if negative {
-					a += ")"
+					a = fmt.Sprintf("(%s%s)", symbol, FormatChange(cents, ",", "."))
 				} else {
 					a += " "
 				}
@@ -188,5 +188,5 @@ func FormatChange(change int, tsep, csep string) (result string) {
 	}
 	result = result[:len(result)-1]
 
-	return fmt.Sprintf("%s%s%2d", result, csep, change%100)
+	return fmt.Sprintf("%s%s%02d", result, csep, change%100)
 }
