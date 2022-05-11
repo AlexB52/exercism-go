@@ -93,7 +93,6 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 				cents = cents * -1
 				negative = true
 			}
-
 			var symbol string
 			if currency == "EUR" {
 				symbol = "€"
