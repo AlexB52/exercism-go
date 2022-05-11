@@ -6,6 +6,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type Entry struct {
@@ -62,6 +63,9 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 	})
 	for i, et := range entriesCopy {
 		go func(i int, entry Entry) {
+			t, _ := time.Parse("2006-02-01", entry.Date)
+			fmt.Println(t)
+
 			d1, d2, d3, d4, d5 := entry.Date[0:4], entry.Date[4], entry.Date[5:7], entry.Date[7], entry.Date[8:10]
 			if len(entry.Date) != 10 || d2 != '-' || d4 != '-' {
 				co <- struct {
