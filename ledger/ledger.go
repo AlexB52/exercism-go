@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"sort"
+	"strings"
 	"time"
 )
 
@@ -96,7 +97,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 	for i := 0; i < len(entriesCopy); i++ {
 		s += ss[i]
 	}
-	return s, nil
+	return strings.Join(rows, ""), nil
 }
 
 func FormatRow(locale, currency string, entry Entry) (string, error) {
