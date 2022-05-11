@@ -22,6 +22,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 
 	entriesCopy := make([]Entry, len(entries))
 	copy(entriesCopy, entries)
+
 	m1 := map[bool]int{true: 0, false: 1}
 	m2 := map[bool]int{true: -1, false: 1}
 	es := entriesCopy
