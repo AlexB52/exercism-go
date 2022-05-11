@@ -42,6 +42,9 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 		es = rest
 	}
 
+	if locale != "nl-NL" && locale != "en-US" {
+		return "", errors.New("")
+	}
 	var s string
 	if locale == "nl-NL" {
 		s = "Datum" +
