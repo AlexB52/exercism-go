@@ -51,7 +51,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 	if locale == "nl-NL" {
 		s = fmt.Sprintf("%-10s | %-25s | %s\n", "Datum", "Omschrijving", "Verandering")
 	} else if locale == "en-US" {
-		s = fmt.Sprintf("%-10s | %-25s | %s\n", "Datum", "Omschrijving", "Verandering")
+		s = fmt.Sprintf("%-10s | %-25s | %s\n", "Date", "Omschrijving", "Verandering")
 		s = "Date" +
 			strings.Repeat(" ", 10-len("Date")) +
 			" | " +
