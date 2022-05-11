@@ -115,15 +115,14 @@ func FormatUSRow(currency string, entry Entry) (string, error) {
 		symbol = "$"
 	}
 
-	var a, date string
-	date = t.Format("02/01/2006")
+	var a string
 	if entry.Change < 0 {
 		a = fmt.Sprintf("(%s%s)", symbol, FormatChange(entry.Change, ",", "."))
 	} else {
 		a = fmt.Sprintf(" %s%s ", symbol, FormatChange(entry.Change, ",", "."))
 	}
 
-	return fmt.Sprintf("%10s | %s | %13s\n", date, description, a), nil
+	return fmt.Sprintf("%10s | %s | %13s\n", t.Format("02/01/2006"), description, a), nil
 }
 
 func FormatRow(locale, currency string, entry Entry) (string, error) {
