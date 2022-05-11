@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"sort"
-	"strings"
 	"time"
 )
 
@@ -116,8 +115,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 				i int
 				s string
 				e error
-			}{i: i, s: fmt.Sprintf("%10s | %s | ", d, de) +
-				strings.Repeat(" ", 13-al) + a + "\n"}
+			}{i: i, s: fmt.Sprintf("%10s | %s | %13s", d, de, a) + "\n"}
 		}(i, et)
 	}
 	ss := make([]string, len(entriesCopy))
