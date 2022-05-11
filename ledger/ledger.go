@@ -117,6 +117,11 @@ func FormatRow(locale, currency string, entry Entry) (string, error) {
 
 	var a, date string
 	if locale == "nl-NL" {
+		result, err := FormatDutchRow(currency, entry)
+		if err != nil {
+			return "", err
+		}
+		return result, nil
 		date = t.Format("01-02-2006")
 		if entry.Change < 0 {
 			a = fmt.Sprintf("%s %s-", symbol, FormatChange(entry.Change, ".", ","))
