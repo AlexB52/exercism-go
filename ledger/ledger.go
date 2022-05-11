@@ -114,6 +114,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 					a = fmt.Sprintf(" %s%s ", symbol, FormatChange(cents, ",", "."))
 				}
 			}
+
 			var al int
 			for range a {
 				al++
