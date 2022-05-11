@@ -124,11 +124,10 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 				var sign string
 				if negative {
 					sign = "-"
-					a += sign
 				} else {
 					sign = " "
-					a += sign
 				}
+				a += sign
 			} else if locale == "en-US" {
 				if negative {
 					a += "("
