@@ -74,7 +74,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 			if len(de) > 25 {
 				de = fmt.Sprintf("%-22.22s...", entry.Description)
 			} else {
-				de = fmt.Sprintf("%-25s", de)
+				de = fmt.Sprintf("%-25s", entry.Description)
 			}
 			var d string
 			if locale == "nl-NL" {
