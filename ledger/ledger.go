@@ -65,6 +65,37 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 	return strings.Join(rows, ""), nil
 }
 
+func FormatDutchRow(currency string, entry Entry) (string, error) {
+	t, err := time.Parse("2006-02-01", entry.Date)
+	if err != nil {
+		return "", errors.New("")
+	}
+
+	var description string
+	if len(entry.Description) > 25 {
+		description = fmt.Sprintf("%-22.22s...", entry.Description)
+	} else {
+		description = fmt.Sprintf("%-25s", entry.Description)
+	}
+
+	var symbol string
+	if currency == "EUR" {
+		symbol = "€"
+	} else {
+		symbol = "$"
+	}
+
+	var a, date string
+	date = t.Format("01-02-2006")
+	if entry.Change < 0 {
+		a = fmt.Sprintf("%s %s-", symbol, FormatChange(entry.Change, ".", ","))
+	} else {
+		a = fmt.Sprintf("%s %s ", symbol, FormatChange(entry.Change, ".", ","))
+	}
+
+	return fmt.Sprintf("%10s | %s | %13s\n", date, description, a), nil
+}
+
 func FormatRow(locale, currency string, entry Entry) (string, error) {
 	t, err := time.Parse("2006-02-01", entry.Date)
 	if err != nil {
