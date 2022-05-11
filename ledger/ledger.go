@@ -85,8 +85,8 @@ func FormatDutchRow(currency string, entry Entry) (string, error) {
 		symbol = "$"
 	}
 
-	var a, date string
-	date = t.Format("01-02-2006")
+	var a string
+	date := t.Format("01-02-2006")
 	if entry.Change < 0 {
 		a = fmt.Sprintf("%s %s-", symbol, FormatChange(entry.Change, ".", ","))
 	} else {
