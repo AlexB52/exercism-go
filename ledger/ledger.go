@@ -108,7 +108,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 				centsStr := strconv.Itoa(cents)
 				switch len(centsStr) {
 				case 1:
-					centsStr = "00" + centsStr
+					centsStr = fmt.Sprintf("%03s", centsStr)
 				case 2:
 					centsStr = "0" + centsStr
 				}
