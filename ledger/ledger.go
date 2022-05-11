@@ -101,13 +101,6 @@ func FormatUSRow(currency string, entry Entry) (string, error) {
 		return "", errors.New("")
 	}
 
-	var description string
-	if len(entry.Description) > 25 {
-		description = fmt.Sprintf("%-22.22s...", entry.Description)
-	} else {
-		description = fmt.Sprintf("%-25s", entry.Description)
-	}
-
 	var symbol string
 	if currency == "EUR" {
 		symbol = "€"
@@ -122,7 +115,7 @@ func FormatUSRow(currency string, entry Entry) (string, error) {
 		a = fmt.Sprintf(" %s%s ", symbol, FormatChange(entry.Change, ",", "."))
 	}
 
-	return fmt.Sprintf("%10s | %s | %13s\n", t.Format("02/01/2006"), description, a), nil
+	return fmt.Sprintf("%10s | %s | %13s\n", t.Format("02/01/2006"), FromatDescription(entry), a), nil
 }
 
 func FormatRow(locale, currency string, entry Entry) (result string, err error) {
