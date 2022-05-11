@@ -139,7 +139,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 				if currency == "EUR" {
 					a += symbol
 				} else if currency == "USD" {
-					a += "$"
+					a += symbol
 				} else {
 					co <- struct {
 						i int
