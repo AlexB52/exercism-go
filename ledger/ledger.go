@@ -2,6 +2,7 @@ package ledger
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 	"strings"
 )
@@ -48,8 +49,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 
 	var s string
 	if locale == "nl-NL" {
-		s = "Datum" +
-			strings.Repeat(" ", 10-len("Datum")) +
+		s = fmt.Sprintf("%-10s", "Datum") +
 			" | " +
 			"Omschrijving" +
 			strings.Repeat(" ", 25-len("Omschrijving")) +
