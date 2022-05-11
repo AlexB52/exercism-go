@@ -129,8 +129,8 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 	return s, nil
 }
 
-func FormatRow(locale, currency string, entry Entry) string {
-	return ""
+func FormatRow(locale, currency string, entry Entry) (string, error) {
+	return "", nil
 }
 
 func FormatChange(change int, tsep, csep string) (result string) {
