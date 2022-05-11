@@ -39,6 +39,15 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 		if es[i].Date > es[j].Date {
 			return false
 		}
+
+		if es[i].Description < es[j].Description {
+			return true
+		}
+
+		if es[i].Description > es[j].Description {
+			return false
+		}
+
 		return es[i].Date < es[j].Date
 	})
 
