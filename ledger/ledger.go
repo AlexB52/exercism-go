@@ -134,6 +134,10 @@ func FormatRow(locale, currency string, entry Entry) (result string, err error) 
 	return result, err
 }
 
+func FromatDescription(entry Entry) string {
+	return ""
+}
+
 func FormatChange(change int, tsep, csep string) (result string) {
 	if change < 0 {
 		change *= -1
