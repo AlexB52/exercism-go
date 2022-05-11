@@ -53,6 +53,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 	} else if locale == "en-US" {
 		s = fmt.Sprintf("%-10s | %-25s | %s\n", "Date", "Description", "Change")
 	}
+
 	// Parallelism, always a great idea
 	co := make(chan struct {
 		i int
