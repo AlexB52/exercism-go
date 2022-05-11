@@ -121,7 +121,12 @@ func FormatRow(locale, currency string, entry Entry) (result string, err error) 
 }
 
 func FormatSymbol(currency string) string {
-	return ""
+	if currency == "EUR" {
+		return "€"
+	} else {
+		return "$"
+	}
+
 }
 
 func FromatDescription(entry Entry) string {
