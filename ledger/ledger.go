@@ -120,6 +120,10 @@ func FormatRow(locale, currency string, entry Entry) (result string, err error) 
 	return result, err
 }
 
+func FormatSymbol(currency string) string {
+	return ""
+}
+
 func FromatDescription(entry Entry) string {
 	if len(entry.Description) > 25 {
 		return fmt.Sprintf("%-22.22s...", entry.Description)
