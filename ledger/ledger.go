@@ -98,6 +98,8 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 				var symbol string
 				if currency == "EUR" {
 					symbol = "€"
+				} else {
+					symbol = "$"
 				}
 
 				if currency == "EUR" {
