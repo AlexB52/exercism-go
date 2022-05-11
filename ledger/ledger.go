@@ -64,7 +64,6 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 	for i, et := range entriesCopy {
 		go func(i int, entry Entry) {
 			t, err := time.Parse("2006-02-01", entry.Date)
-			fmt.Println(t)
 
 			if err != nil {
 				co <- struct {
@@ -86,6 +85,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 			} else if locale == "en-US" {
 				d = t.Format("02/01/2006")
 			}
+
 			negative := false
 			cents := entry.Change
 			if cents < 0 {
