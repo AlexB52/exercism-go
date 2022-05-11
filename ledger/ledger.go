@@ -16,7 +16,7 @@ type Entry struct {
 func FormatLedger(currency string, locale string, entries []Entry) (string, error) {
 	if len(entries) == 0 {
 		if _, err := FormatLedger(currency, "en-US", []Entry{{Date: "2014-01-01", Description: "", Change: 0}}); err != nil {
-			return "", err
+			return "", errors.New("")
 		}
 	}
 
