@@ -48,14 +48,6 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 			return false
 		}
 
-		if es[i].Change < es[j].Change {
-			return true
-		}
-
-		if es[i].Change > es[j].Change {
-			return false
-		}
-
 		return es[i].Change < es[j].Change
 	})
 
