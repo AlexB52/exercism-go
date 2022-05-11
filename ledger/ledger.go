@@ -70,7 +70,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 				}{e: errors.New("")}
 			}
 			d1, d2, d3, d4, d5 := entry.Date[0:4], entry.Date[4], entry.Date[5:7], entry.Date[7], entry.Date[8:10]
-			if d2 != '-' && d4 != '-' {
+			if d2 != '-' || d4 != '-' {
 				co <- struct {
 					i int
 					s string
