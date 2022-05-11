@@ -77,13 +77,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 					e error
 				}{e: errors.New("")}
 			}
-			if d4 != '-' {
-				co <- struct {
-					i int
-					s string
-					e error
-				}{e: errors.New("")}
-			}
+
 			de := entry.Description
 			if len(de) > 25 {
 				de = de[:22] + "..."
