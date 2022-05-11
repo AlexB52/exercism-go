@@ -98,13 +98,6 @@ func FormatRow(locale, currency string, entry Entry) (string, error) {
 		return "", errors.New("")
 	}
 
-	var date string
-	if locale == "nl-NL" {
-		date = t.Format("01-02-2006")
-	} else if locale == "en-US" {
-		date = t.Format("02/01/2006")
-	}
-
 	var description string
 	if len(entry.Description) > 25 {
 		description = fmt.Sprintf("%-22.22s...", entry.Description)
@@ -119,14 +112,16 @@ func FormatRow(locale, currency string, entry Entry) (string, error) {
 		symbol = "$"
 	}
 
-	var a string
+	var a, date string
 	if locale == "nl-NL" {
+		date = t.Format("01-02-2006")
 		if entry.Change < 0 {
 			a = fmt.Sprintf("%s %s-", symbol, FormatChange(entry.Change, ".", ","))
 		} else {
 			a = fmt.Sprintf("%s %s ", symbol, FormatChange(entry.Change, ".", ","))
 		}
 	} else if locale == "en-US" {
+		date = t.Format("02/01/2006")
 		if entry.Change < 0 {
 			a = fmt.Sprintf("(%s%s)", symbol, FormatChange(entry.Change, ",", "."))
 		} else {
