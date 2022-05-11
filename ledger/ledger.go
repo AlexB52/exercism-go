@@ -52,6 +52,14 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 	if locale == "nl-NL" {
 		s = fmt.Sprintf("%-10s | %-25s | %s\n", "Datum", "Omschrijving", "Verandering")
 		rows = append(rows, s)
+		for _, e := range entriesCopy {
+			row, err := FormatDutchRow(currency, e)
+			if err != nil {
+				return "", err
+			}
+			rows = append(rows, row)
+		}
+
 	} else if locale == "en-US" {
 		s = fmt.Sprintf("%-10s | %-25s | %s\n", "Date", "Description", "Change")
 		rows = append(rows, s)
@@ -59,9 +67,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 	for _, e := range entriesCopy {
 		var row string
 		var err error
-		if locale == "nl-NL" {
-			row, err = FormatDutchRow(currency, e)
-		} else if locale == "en-US" {
+		if locale == "en-US" {
 			row, err = FormatUSRow(currency, e)
 		}
 		if err != nil {
