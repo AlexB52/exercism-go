@@ -62,41 +62,6 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 		}
 		rows = append(rows, row)
 	}
-	// Parallelism, always a great idea
-	co := make(chan struct {
-		i int
-		s string
-		e error
-	})
-	for i, et := range entriesCopy {
-		go func(i int, entry Entry) {
-			row, err := FormatRow(locale, currency, entry)
-			if err != nil {
-				co <- struct {
-					i int
-					s string
-					e error
-				}{e: err}
-			}
-
-			co <- struct {
-				i int
-				s string
-				e error
-			}{i: i, s: row}
-		}(i, et)
-	}
-	ss := make([]string, len(entriesCopy))
-	for range entriesCopy {
-		v := <-co
-		if v.e != nil {
-			return "", v.e
-		}
-		ss[v.i] = v.s
-	}
-	for i := 0; i < len(entriesCopy); i++ {
-		s += ss[i]
-	}
 	return strings.Join(rows, ""), nil
 }
 
