@@ -19,6 +19,10 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 		return "", errors.New("")
 	}
 
+	if currency != "EUR" && currency != "USD" {
+		return "", errors.New("")
+	}
+
 	if len(entries) == 0 {
 		if _, err := FormatLedger(currency, "en-US", []Entry{{Date: "2014-01-01", Description: "", Change: 0}}); err != nil {
 			return "", errors.New("")
