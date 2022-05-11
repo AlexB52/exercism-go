@@ -107,10 +107,6 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 				}
 			}
 
-			var al int
-			for range a {
-				al++
-			}
 			co <- struct {
 				i int
 				s string
