@@ -131,15 +131,9 @@ func FormatRow(locale, currency string, entry Entry) (string, error) {
 
 	if locale == "nl-NL" {
 		result, err = FormatDutchRow(currency, entry)
-		if err != nil {
-			return "", err
-		}
 		return result, nil
 	} else if locale == "en-US" {
 		result, err = FormatUSRow(currency, entry)
-		if err != nil {
-			return "", err
-		}
 	}
 	return result, err
 }
