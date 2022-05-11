@@ -112,22 +112,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 
 				a += symbol
 				a += " "
-
-				rest := fmt.Sprintf("%d", cents/100)
-				var parts []string
-				for len(rest) > 3 {
-					parts = append(parts, rest[len(rest)-3:])
-					rest = rest[:len(rest)-3]
-				}
-				if len(rest) > 0 {
-					parts = append(parts, rest)
-				}
-				for i := len(parts) - 1; i >= 0; i-- {
-					a += parts[i] + "."
-				}
-				a = a[:len(a)-1]
-				a += ","
-				a += fmt.Sprintf("%2d", cents%100)
+				a += FormatChange(cents)
 				a += sign
 			} else if locale == "en-US" {
 				if negative {
