@@ -86,14 +86,13 @@ func FormatDutchRow(currency string, entry Entry) (string, error) {
 	}
 
 	var a string
-	date := t.Format("01-02-2006")
 	if entry.Change < 0 {
 		a = fmt.Sprintf("%s %s-", symbol, FormatChange(entry.Change, ".", ","))
 	} else {
 		a = fmt.Sprintf("%s %s ", symbol, FormatChange(entry.Change, ".", ","))
 	}
 
-	return fmt.Sprintf("%10s | %s | %13s\n", date, description, a), nil
+	return fmt.Sprintf("%10s | %s | %13s\n", t.Format("01-02-2006"), description, a), nil
 }
 
 func FormatRow(locale, currency string, entry Entry) (string, error) {
