@@ -140,7 +140,6 @@ func FromatDescription(entry Entry) string {
 	} else {
 		return fmt.Sprintf("%-25s", entry.Description)
 	}
-
 }
 
 func FormatChange(change int, tsep, csep string) (result string) {
