@@ -194,6 +194,20 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 	return s, nil
 }
 
-func FormatChange(change int) string {
-	return ""
+func FormatChange(change int) (result string) {
+	rest := fmt.Sprintf("%d", change/100)
+	var parts []string
+	for len(rest) > 3 {
+		parts = append(parts, rest[len(rest)-3:])
+		rest = rest[:len(rest)-3]
+	}
+	if len(rest) > 0 {
+		parts = append(parts, rest)
+	}
+	for i := len(parts) - 1; i >= 0; i-- {
+		result += parts[i] + "."
+	}
+	result = result[:len(result)-1]
+
+	return fmt.Sprintf("%s,%2d", result, change%100)
 }
