@@ -104,9 +104,9 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 			var a string
 			if locale == "nl-NL" {
 				if negative {
-					a = fmt.Sprintf("%s %s-", symbol, FormatChange(cents))
+					a = fmt.Sprintf("%s %s-", symbol, FormatChange(cents, ".", ","))
 				} else {
-					a = fmt.Sprintf("%s %s ", symbol, FormatChange(cents))
+					a = fmt.Sprintf("%s %s ", symbol, FormatChange(cents, ".", ","))
 				}
 			} else if locale == "en-US" {
 				if negative {
@@ -173,7 +173,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 	return s, nil
 }
 
-func FormatChange(change int) (result string) {
+func FormatChange(change int, tsep, csep string) (result string) {
 	rest := fmt.Sprintf("%d", change/100)
 	var parts []string
 	for len(rest) > 3 {
@@ -184,9 +184,9 @@ func FormatChange(change int) (result string) {
 		parts = append(parts, rest)
 	}
 	for i := len(parts) - 1; i >= 0; i-- {
-		result += parts[i] + "."
+		result += parts[i] + tsep
 	}
 	result = result[:len(result)-1]
 
-	return fmt.Sprintf("%s,%2d", result, change%100)
+	return fmt.Sprintf("%s%s%2d", result, csep, change%100)
 }
