@@ -106,12 +106,6 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 				a += symbol
 				a += " "
 				centsStr := fmt.Sprintf("%03s", strconv.Itoa(cents))
-				switch len(centsStr) {
-				case 1:
-					centsStr = fmt.Sprintf("%03s", strconv.Itoa(cents))
-				case 2:
-					centsStr = fmt.Sprintf("%03s", strconv.Itoa(cents))
-				}
 				rest := centsStr[:len(centsStr)-2]
 				var parts []string
 				for len(rest) > 3 {
