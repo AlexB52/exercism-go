@@ -95,6 +95,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 			}
 			var a string
 			if locale == "nl-NL" {
+				var _ string
 				if currency == "EUR" {
 					a += "€"
 				} else if currency == "USD" {
