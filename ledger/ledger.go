@@ -86,11 +86,9 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 				de = fmt.Sprintf("%-25s", entry.Description)
 			}
 
-			negative := false
 			cents := entry.Change
 			if cents < 0 {
 				cents *= -1
-				negative = true
 			}
 
 			var symbol string
@@ -108,7 +106,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 					a = fmt.Sprintf("%s %s ", symbol, FormatChange(cents, ".", ","))
 				}
 			} else if locale == "en-US" {
-				if negative {
+				if entry.Change < 0 {
 					a = fmt.Sprintf("(%s%s)", symbol, FormatChange(cents, ",", "."))
 				} else {
 					a = fmt.Sprintf(" %s%s ", symbol, FormatChange(cents, ",", "."))
