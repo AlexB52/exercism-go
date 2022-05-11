@@ -20,7 +20,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 		}
 	}
 
-	var entriesCopy []Entry
+	entriesCopy := make([]Entry, 0, len(entries))
 	for _, e := range entries {
 		entriesCopy = append(entriesCopy, e)
 	}
