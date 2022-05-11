@@ -103,15 +103,6 @@ func FormatUSRow(currency string, entry Entry) (string, error) {
 	return fmt.Sprintf("%10s | %s | %13s\n", t.Format("02/01/2006"), FromatDescription(entry), a), nil
 }
 
-func FormatRow(locale, currency string, entry Entry) (result string, err error) {
-	if locale == "nl-NL" {
-		result, err = FormatDutchRow(currency, entry)
-	} else if locale == "en-US" {
-		result, err = FormatUSRow(currency, entry)
-	}
-	return result, err
-}
-
 func FormatSymbol(currency string) string {
 	if currency == "EUR" {
 		return "€"
