@@ -23,9 +23,6 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 		return "", errors.New("")
 	}
 
-	if len(entries) == 0 {
-	}
-
 	entriesCopy := make([]Entry, len(entries))
 	copy(entriesCopy, entries)
 
