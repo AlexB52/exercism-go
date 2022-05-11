@@ -79,7 +79,6 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 			var d string
 			if locale == "nl-NL" {
 				d = fmt.Sprintf("%s-%s-%s", d5, d3, d1)
-				d = d5 + "-" + d3 + "-" + d1
 			} else if locale == "en-US" {
 				d = d3 + "/" + d5 + "/" + d1
 			}
