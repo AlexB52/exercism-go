@@ -130,7 +130,48 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 }
 
 func FormatRow(locale, currency string, entry Entry) (string, error) {
-	return "", nil
+	t, err := time.Parse("2006-02-01", entry.Date)
+	if err != nil {
+		return "", errors.New("")
+	}
+
+	var d string
+	if locale == "nl-NL" {
+		d = t.Format("01-02-2006")
+	} else if locale == "en-US" {
+		d = t.Format("02/01/2006")
+	}
+
+	var de string
+	if len(entry.Description) > 25 {
+		de = fmt.Sprintf("%-22.22s...", entry.Description)
+	} else {
+		de = fmt.Sprintf("%-25s", entry.Description)
+	}
+
+	var symbol string
+	if currency == "EUR" {
+		symbol = "€"
+	} else {
+		symbol = "$"
+	}
+
+	var a string
+	if locale == "nl-NL" {
+		if entry.Change < 0 {
+			a = fmt.Sprintf("%s %s-", symbol, FormatChange(entry.Change, ".", ","))
+		} else {
+			a = fmt.Sprintf("%s %s ", symbol, FormatChange(entry.Change, ".", ","))
+		}
+	} else if locale == "en-US" {
+		if entry.Change < 0 {
+			a = fmt.Sprintf("(%s%s)", symbol, FormatChange(entry.Change, ",", "."))
+		} else {
+			a = fmt.Sprintf(" %s%s ", symbol, FormatChange(entry.Change, ",", "."))
+		}
+	}
+
+	return fmt.Sprintf("%10s | %s | %13s\n", d, de, a), nil
 }
 
 func FormatChange(change int, tsep, csep string) (result string) {
