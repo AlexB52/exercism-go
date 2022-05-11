@@ -114,7 +114,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 				a += " "
 
 				centsStr := fmt.Sprintf("%03d", cents)
-				rest := centsStr[:len(centsStr)-2]
+				rest := fmt.Sprintf("%d", cents/100)
 				var parts []string
 				for len(rest) > 3 {
 					parts = append(parts, rest[len(rest)-3:])
