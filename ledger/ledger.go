@@ -122,12 +122,6 @@ func FormatRow(locale, currency string, entry Entry) (string, error) {
 			return "", err
 		}
 		return result, nil
-		date = t.Format("01-02-2006")
-		if entry.Change < 0 {
-			a = fmt.Sprintf("%s %s-", symbol, FormatChange(entry.Change, ".", ","))
-		} else {
-			a = fmt.Sprintf("%s %s ", symbol, FormatChange(entry.Change, ".", ","))
-		}
 	} else if locale == "en-US" {
 		date = t.Format("02/01/2006")
 		if entry.Change < 0 {
