@@ -56,7 +56,13 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 	}
 	rows = append(rows, s)
 	for _, e := range entriesCopy {
-		row, err := FormatRow(locale, currency, e)
+		var row string
+		var err error
+		if locale == "nl-NL" {
+			row, err = FormatDutchRow(currency, e)
+		} else if locale == "en-US" {
+			row, err = FormatUSRow(currency, e)
+		}
 		if err != nil {
 			return "", err
 		}
