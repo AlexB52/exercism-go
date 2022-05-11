@@ -125,10 +125,7 @@ func FormatUSRow(currency string, entry Entry) (string, error) {
 	return fmt.Sprintf("%10s | %s | %13s\n", t.Format("02/01/2006"), description, a), nil
 }
 
-func FormatRow(locale, currency string, entry Entry) (string, error) {
-	var result string
-	var err error
-
+func FormatRow(locale, currency string, entry Entry) (result string, err error) {
 	if locale == "nl-NL" {
 		result, err = FormatDutchRow(currency, entry)
 	} else if locale == "en-US" {
