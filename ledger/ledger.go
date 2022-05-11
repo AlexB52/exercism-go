@@ -135,7 +135,12 @@ func FormatRow(locale, currency string, entry Entry) (result string, err error) 
 }
 
 func FromatDescription(entry Entry) string {
-	return ""
+	if len(entry.Description) > 25 {
+		return fmt.Sprintf("%-22.22s...", entry.Description)
+	} else {
+		return fmt.Sprintf("%-25s", entry.Description)
+	}
+
 }
 
 func FormatChange(change int, tsep, csep string) (result string) {
