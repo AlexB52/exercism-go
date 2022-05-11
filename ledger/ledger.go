@@ -32,6 +32,9 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 	es := entriesCopy
 
 	sort.Slice(es, func(i, j int) bool {
+		if es[i].Date < es[j].Date {
+			return true
+		}
 		return es[i].Date < es[j].Date
 	})
 
