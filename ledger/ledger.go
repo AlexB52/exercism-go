@@ -3,6 +3,7 @@ package ledger
 import (
 	"errors"
 	"fmt"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -29,6 +30,10 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 	m1 := map[bool]int{true: 0, false: 1}
 	m2 := map[bool]int{true: -1, false: 1}
 	es := entriesCopy
+
+	sort.Slice(es, func(i, j int) bool {
+		return es[i].Date < es[j].Date
+	})
 
 	for len(es) > 1 {
 		first, rest := es[0], es[1:]
