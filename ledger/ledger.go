@@ -89,7 +89,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 			negative := false
 			cents := entry.Change
 			if cents < 0 {
-				cents = cents * -1
+				cents *= -1
 				negative = true
 			}
 
