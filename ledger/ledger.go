@@ -54,6 +54,10 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 		s = fmt.Sprintf("%-10s | %-25s | %s\n", "Date", "Description", "Change")
 	}
 	rows = append(rows, s)
+	for _, e := range entriesCopy {
+		row, _ := FormatRow(locale, currency, e)
+		rows = append(rows, row)
+	}
 	// Parallelism, always a great idea
 	co := make(chan struct {
 		i int
