@@ -63,13 +63,13 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 	for i, et := range entriesCopy {
 		go func(i int, entry Entry) {
 			t, err := time.Parse("2006-02-01", entry.Date)
-
+			_, err = FormatRow(locale, currency, entry)
 			if err != nil {
 				co <- struct {
 					i int
 					s string
 					e error
-				}{e: errors.New("")}
+				}{e: err}
 			}
 
 			var d string
