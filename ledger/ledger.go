@@ -56,7 +56,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 			return false
 		}
 
-		return es[i].Date < es[j].Date
+		return es[i].Change < es[j].Change
 	})
 
 	for len(es) > 1 {
