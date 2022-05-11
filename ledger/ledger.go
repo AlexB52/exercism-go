@@ -94,18 +94,11 @@ func FormatUSRow(currency string, entry Entry) (string, error) {
 		return "", errors.New("")
 	}
 
-	var symbol string
-	if currency == "EUR" {
-		symbol = "€"
-	} else {
-		symbol = "$"
-	}
-
 	var a string
 	if entry.Change < 0 {
-		a = fmt.Sprintf("(%s%s)", symbol, FormatChange(entry.Change, ",", "."))
+		a = fmt.Sprintf("(%s%s)", FormatSymbol(currency), FormatChange(entry.Change, ",", "."))
 	} else {
-		a = fmt.Sprintf(" %s%s ", symbol, FormatChange(entry.Change, ",", "."))
+		a = fmt.Sprintf(" %s%s ", FormatSymbol(currency), FormatChange(entry.Change, ",", "."))
 	}
 
 	return fmt.Sprintf("%10s | %s | %13s\n", t.Format("02/01/2006"), FromatDescription(entry), a), nil
@@ -126,7 +119,6 @@ func FormatSymbol(currency string) string {
 	} else {
 		return "$"
 	}
-
 }
 
 func FromatDescription(entry Entry) string {
