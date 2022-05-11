@@ -74,8 +74,6 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 				}{e: errors.New("")}
 			}
 
-			d1, _, d3, _, d5 := entry.Date[0:4], entry.Date[4], entry.Date[5:7], entry.Date[7], entry.Date[8:10]
-
 			var de string
 			if len(entry.Description) > 25 {
 				de = fmt.Sprintf("%-22.22s...", entry.Description)
@@ -87,7 +85,6 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 				d = t.Format("01-02-2006")
 			} else if locale == "en-US" {
 				d = t.Format("02/01/2006")
-				d = fmt.Sprintf("%s/%s/%s", d3, d5, d1)
 			}
 			negative := false
 			cents := entry.Change
