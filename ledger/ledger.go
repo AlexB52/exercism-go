@@ -39,7 +39,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 				}
 			}
 		}
-		es = es[1:]
+		es = rest
 	}
 
 	var s string
