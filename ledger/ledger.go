@@ -98,11 +98,11 @@ func FormatRow(locale, currency string, entry Entry) (string, error) {
 		return "", errors.New("")
 	}
 
-	var d string
+	var date string
 	if locale == "nl-NL" {
-		d = t.Format("01-02-2006")
+		date = t.Format("01-02-2006")
 	} else if locale == "en-US" {
-		d = t.Format("02/01/2006")
+		date = t.Format("02/01/2006")
 	}
 
 	var de string
@@ -134,7 +134,7 @@ func FormatRow(locale, currency string, entry Entry) (string, error) {
 		}
 	}
 
-	return fmt.Sprintf("%10s | %s | %13s\n", d, de, a), nil
+	return fmt.Sprintf("%10s | %s | %13s\n", date, de, a), nil
 }
 
 func FormatChange(change int, tsep, csep string) (result string) {
