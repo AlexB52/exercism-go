@@ -2,9 +2,16 @@ package ledger
 
 import (
 	"errors"
-	"strconv"
+	"fmt"
+	"sort"
 	"strings"
+	"time"
 )
+
+var CURRENCY_SYMBOL = map[string]string{
+	"EUR": "€",
+	"USD": "$",
+}
 
 type Entry struct {
 	Date        string // "Y-m-d"
@@ -12,214 +19,143 @@ type Entry struct {
 	Change      int // in cents
 }
 
-func FormatLedger(currency string, locale string, entries []Entry) (string, error) {
-	var entriesCopy []Entry
-	for _, e := range entries {
-		entriesCopy = append(entriesCopy, e)
-	}
-	if len(entries) == 0 {
-		if _, err := FormatLedger(currency, "en-US", []Entry{{Date: "2014-01-01", Description: "", Change: 0}}); err != nil {
-			return "", err
-		}
-	}
-	m1 := map[bool]int{true: 0, false: 1}
-	m2 := map[bool]int{true: -1, false: 1}
-	es := entriesCopy
-	for len(es) > 1 {
-		first, rest := es[0], es[1:]
-		success := false
-		for !success {
-			success = true
-			for i, e := range rest {
-				if (m1[e.Date == first.Date]*m2[e.Date < first.Date]*4 +
-					m1[e.Description == first.Description]*m2[e.Description < first.Description]*2 +
-					m1[e.Change == first.Change]*m2[e.Change < first.Change]*1) < 0 {
-					es[0], es[i+1] = es[i+1], es[0]
-					success = false
-				}
-			}
-		}
-		es = es[1:]
-	}
+type Row struct {
+	date, description, change string
+}
 
-	var s string
-	if locale == "nl-NL" {
-		s = "Datum" +
-			strings.Repeat(" ", 10-len("Datum")) +
-			" | " +
-			"Omschrijving" +
-			strings.Repeat(" ", 25-len("Omschrijving")) +
-			" | " + "Verandering" + "\n"
-	} else if locale == "en-US" {
-		s = "Date" +
-			strings.Repeat(" ", 10-len("Date")) +
-			" | " +
-			"Description" +
-			strings.Repeat(" ", 25-len("Description")) +
-			" | " + "Change" + "\n"
-	} else {
+func FormatLedger(currency string, locale string, entries []Entry) (table string, err error) {
+	if locale != "nl-NL" && locale != "en-US" {
 		return "", errors.New("")
 	}
-	// Parallelism, always a great idea
-	co := make(chan struct {
-		i int
-		s string
-		e error
-	})
-	for i, et := range entriesCopy {
-		go func(i int, entry Entry) {
-			if len(entry.Date) != 10 {
-				co <- struct {
-					i int
-					s string
-					e error
-				}{e: errors.New("")}
-			}
-			d1, d2, d3, d4, d5 := entry.Date[0:4], entry.Date[4], entry.Date[5:7], entry.Date[7], entry.Date[8:10]
-			if d2 != '-' {
-				co <- struct {
-					i int
-					s string
-					e error
-				}{e: errors.New("")}
-			}
-			if d4 != '-' {
-				co <- struct {
-					i int
-					s string
-					e error
-				}{e: errors.New("")}
-			}
-			de := entry.Description
-			if len(de) > 25 {
-				de = de[:22] + "..."
-			} else {
-				de = de + strings.Repeat(" ", 25-len(de))
-			}
-			var d string
-			if locale == "nl-NL" {
-				d = d5 + "-" + d3 + "-" + d1
-			} else if locale == "en-US" {
-				d = d3 + "/" + d5 + "/" + d1
-			}
-			negative := false
-			cents := entry.Change
-			if cents < 0 {
-				cents = cents * -1
-				negative = true
-			}
-			var a string
-			if locale == "nl-NL" {
-				if currency == "EUR" {
-					a += "€"
-				} else if currency == "USD" {
-					a += "$"
-				} else {
-					co <- struct {
-						i int
-						s string
-						e error
-					}{e: errors.New("")}
-				}
-				a += " "
-				centsStr := strconv.Itoa(cents)
-				switch len(centsStr) {
-				case 1:
-					centsStr = "00" + centsStr
-				case 2:
-					centsStr = "0" + centsStr
-				}
-				rest := centsStr[:len(centsStr)-2]
-				var parts []string
-				for len(rest) > 3 {
-					parts = append(parts, rest[len(rest)-3:])
-					rest = rest[:len(rest)-3]
-				}
-				if len(rest) > 0 {
-					parts = append(parts, rest)
-				}
-				for i := len(parts) - 1; i >= 0; i-- {
-					a += parts[i] + "."
-				}
-				a = a[:len(a)-1]
-				a += ","
-				a += centsStr[len(centsStr)-2:]
-				if negative {
-					a += "-"
-				} else {
-					a += " "
-				}
-			} else if locale == "en-US" {
-				if negative {
-					a += "("
-				}
-				if currency == "EUR" {
-					a += "€"
-				} else if currency == "USD" {
-					a += "$"
-				} else {
-					co <- struct {
-						i int
-						s string
-						e error
-					}{e: errors.New("")}
-				}
-				centsStr := strconv.Itoa(cents)
-				switch len(centsStr) {
-				case 1:
-					centsStr = "00" + centsStr
-				case 2:
-					centsStr = "0" + centsStr
-				}
-				rest := centsStr[:len(centsStr)-2]
-				var parts []string
-				for len(rest) > 3 {
-					parts = append(parts, rest[len(rest)-3:])
-					rest = rest[:len(rest)-3]
-				}
-				if len(rest) > 0 {
-					parts = append(parts, rest)
-				}
-				for i := len(parts) - 1; i >= 0; i-- {
-					a += parts[i] + ","
-				}
-				a = a[:len(a)-1]
-				a += "."
-				a += centsStr[len(centsStr)-2:]
-				if negative {
-					a += ")"
-				} else {
-					a += " "
-				}
-			} else {
-				co <- struct {
-					i int
-					s string
-					e error
-				}{e: errors.New("")}
-			}
-			var al int
-			for range a {
-				al++
-			}
-			co <- struct {
-				i int
-				s string
-				e error
-			}{i: i, s: d + strings.Repeat(" ", 10-len(d)) + " | " + de + " | " +
-				strings.Repeat(" ", 13-al) + a + "\n"}
-		}(i, et)
+
+	if currency != "EUR" && currency != "USD" {
+		return "", errors.New("")
 	}
-	ss := make([]string, len(entriesCopy))
-	for range entriesCopy {
-		v := <-co
-		if v.e != nil {
-			return "", v.e
+
+	entriesCopy := make([]Entry, len(entries))
+	copy(entriesCopy, entries)
+
+	sort.Slice(entriesCopy, SortingEntriesAlgorithm(entriesCopy))
+
+	var (
+		header       Row
+		dateFormat   string
+		formatChange func(Entry) string
+	)
+
+	switch locale {
+	case "nl-NL":
+		header = Row{"Datum", "Omschrijving", "Verandering"}
+		dateFormat = "01-02-2006"
+		formatChange = FormatDutchChange(CURRENCY_SYMBOL[currency])
+	case "en-US":
+		header = Row{"Date", "Description", "Change"}
+		dateFormat = "02/01/2006"
+		formatChange = FormatUSChange(CURRENCY_SYMBOL[currency])
+	}
+
+	table, err = BuildTable(header, BuildRow(dateFormat, formatChange), entriesCopy)
+	if err != nil {
+		return "", err
+	}
+
+	return table, nil
+}
+
+func SortingEntriesAlgorithm(entriesCopy []Entry) func(i, j int) bool {
+	return func(i, j int) bool {
+		if entriesCopy[i].Date < entriesCopy[j].Date {
+			return true
 		}
-		ss[v.i] = v.s
+
+		if entriesCopy[i].Date > entriesCopy[j].Date {
+			return false
+		}
+
+		if entriesCopy[i].Description < entriesCopy[j].Description {
+			return true
+		}
+
+		if entriesCopy[i].Description > entriesCopy[j].Description {
+			return false
+		}
+
+		return entriesCopy[i].Change < entriesCopy[j].Change
 	}
-	for i := 0; i < len(entriesCopy); i++ {
-		s += ss[i]
+}
+
+func BuildTable(header Row, buildRow func(e Entry) (Row, error), entries []Entry) (result string, err error) {
+	var rows []string
+	rows = append(rows, fmt.Sprintf("%-10s | %-25s | %s\n", header.date, header.description, header.change))
+	for _, entry := range entries {
+		row, err := buildRow(entry)
+		if err != nil {
+			return "", err
+		}
+		rows = append(rows, fmt.Sprintf("%-10s | %-25s | %13s\n", row.date, row.description, row.change))
 	}
-	return s, nil
+
+	return strings.Join(rows, ""), nil
+}
+
+func BuildRow(dateFormat string, formatChange func(Entry) string) func(e Entry) (Row, error) {
+	return func(e Entry) (Row, error) {
+		date, err := time.Parse("2006-02-01", e.Date)
+		if err != nil {
+			return Row{}, errors.New("")
+		}
+
+		var description string
+		if len(e.Description) > 25 {
+			description = fmt.Sprintf("%-22.22s...", e.Description)
+		} else {
+			description = fmt.Sprintf("%-25s", e.Description)
+		}
+
+		return Row{date.Format(dateFormat), description, formatChange(e)}, nil
+	}
+}
+
+func FormatDutchChange(symbol string) func(e Entry) string {
+	return func(e Entry) string {
+		changeString := FormatChange(e.Change, ".", ",")
+		if e.Change < 0 {
+			return fmt.Sprintf("%s %s-", symbol, changeString)
+		} else {
+			return fmt.Sprintf("%s %s ", symbol, changeString)
+		}
+	}
+}
+
+func FormatUSChange(symbol string) func(e Entry) string {
+	return func(e Entry) string {
+		changeString := FormatChange(e.Change, ",", ".")
+		if e.Change < 0 {
+			return fmt.Sprintf("(%s%s)", symbol, changeString)
+		} else {
+			return fmt.Sprintf(" %s%s ", symbol, changeString)
+		}
+	}
+}
+
+func FormatChange(change int, tsep, csep string) (result string) {
+	if change < 0 {
+		change *= -1
+	}
+
+	rest := fmt.Sprintf("%d", change/100)
+	var parts []string
+	for len(rest) > 3 {
+		parts = append(parts, rest[len(rest)-3:])
+		rest = rest[:len(rest)-3]
+	}
+	if len(rest) > 0 {
+		parts = append(parts, rest)
+	}
+	for i := len(parts) - 1; i >= 0; i-- {
+		result += parts[i] + tsep
+	}
+	result = result[:len(result)-1]
+
+	return fmt.Sprintf("%s%s%02d", result, csep, change%100)
 }
