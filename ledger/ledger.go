@@ -105,11 +105,11 @@ func FormatRow(locale, currency string, entry Entry) (string, error) {
 		date = t.Format("02/01/2006")
 	}
 
-	var de string
+	var description string
 	if len(entry.Description) > 25 {
-		de = fmt.Sprintf("%-22.22s...", entry.Description)
+		description = fmt.Sprintf("%-22.22s...", entry.Description)
 	} else {
-		de = fmt.Sprintf("%-25s", entry.Description)
+		description = fmt.Sprintf("%-25s", entry.Description)
 	}
 
 	var symbol string
@@ -134,7 +134,7 @@ func FormatRow(locale, currency string, entry Entry) (string, error) {
 		}
 	}
 
-	return fmt.Sprintf("%10s | %s | %13s\n", date, de, a), nil
+	return fmt.Sprintf("%10s | %s | %13s\n", date, description, a), nil
 }
 
 func FormatChange(change int, tsep, csep string) (result string) {
