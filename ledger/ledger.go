@@ -110,11 +110,6 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 					sign = " "
 				}
 
-				a += symbol
-				a += " "
-				a += FormatChange(cents)
-				a += sign
-
 				a = fmt.Sprintf("%s %s%s", symbol, FormatChange(cents), sign)
 			} else if locale == "en-US" {
 				if negative {
