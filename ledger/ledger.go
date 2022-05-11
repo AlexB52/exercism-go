@@ -193,3 +193,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 	}
 	return s, nil
 }
+
+func FormatChange(change int) string {
+	return ""
+}
