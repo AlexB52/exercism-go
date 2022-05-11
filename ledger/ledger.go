@@ -46,13 +46,14 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 		return entriesCopy[i].Change < entriesCopy[j].Change
 	})
 
+	var rows []string
 	var s string
 	if locale == "nl-NL" {
 		s = fmt.Sprintf("%-10s | %-25s | %s\n", "Datum", "Omschrijving", "Verandering")
 	} else if locale == "en-US" {
 		s = fmt.Sprintf("%-10s | %-25s | %s\n", "Date", "Description", "Change")
 	}
-
+	rows = append(rows, s)
 	// Parallelism, always a great idea
 	co := make(chan struct {
 		i int
@@ -126,6 +127,10 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 		s += ss[i]
 	}
 	return s, nil
+}
+
+func FormatRow(locale, currency string, entry Entry) string {
+	return ""
 }
 
 func FormatChange(change int, tsep, csep string) (result string) {
