@@ -136,17 +136,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 				if negative {
 					a += "("
 				}
-				if currency == "EUR" {
-					a += symbol
-				} else if currency == "USD" {
-					a += symbol
-				} else {
-					co <- struct {
-						i int
-						s string
-						e error
-					}{e: errors.New("")}
-				}
+				a += symbol
 				centsStr := strconv.Itoa(cents)
 				switch len(centsStr) {
 				case 1:
