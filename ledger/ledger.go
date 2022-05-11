@@ -71,18 +71,11 @@ func FormatDutchRow(currency string, entry Entry) (string, error) {
 		return "", errors.New("")
 	}
 
-	var symbol string
-	if currency == "EUR" {
-		symbol = "€"
-	} else {
-		symbol = "$"
-	}
-
 	var a string
 	if entry.Change < 0 {
-		a = fmt.Sprintf("%s %s-", symbol, FormatChange(entry.Change, ".", ","))
+		a = fmt.Sprintf("%s %s-", FormatSymbol(currency), FormatChange(entry.Change, ".", ","))
 	} else {
-		a = fmt.Sprintf("%s %s ", symbol, FormatChange(entry.Change, ".", ","))
+		a = fmt.Sprintf("%s %s ", FormatSymbol(currency), FormatChange(entry.Change, ".", ","))
 	}
 
 	return fmt.Sprintf("%10s | %s | %13s\n", t.Format("01-02-2006"), FromatDescription(entry), a), nil
