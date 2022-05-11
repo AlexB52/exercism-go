@@ -27,8 +27,6 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 	entriesCopy := make([]Entry, len(entries))
 	copy(entriesCopy, entries)
 
-	m1 := map[bool]int{true: 0, false: 1}
-	m2 := map[bool]int{true: -1, false: 1}
 	es := entriesCopy
 
 	sort.Slice(es, func(i, j int) bool {
@@ -50,6 +48,9 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 
 		return es[i].Change < es[j].Change
 	})
+
+	m1 := map[bool]int{true: 0, false: 1}
+	m2 := map[bool]int{true: -1, false: 1}
 
 	for len(es) > 1 {
 		first, rest := es[0], es[1:]
