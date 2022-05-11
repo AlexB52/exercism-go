@@ -3,6 +3,7 @@ package ledger
 import (
 	"errors"
 	"fmt"
+	"math"
 	"sort"
 	"strings"
 	"time"
@@ -140,7 +141,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 }
 
 func FormatChange(change int, tsep, csep string) (result string) {
-	rest := fmt.Sprintf("%d", change/100)
+	rest := fmt.Sprintf("%d", int(math.Abs(float64(change)))/100)
 	var parts []string
 	for len(rest) > 3 {
 		parts = append(parts, rest[len(rest)-3:])
