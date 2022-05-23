@@ -129,7 +129,6 @@ func FormatUSTable(entries []Entry, currency string) (result string, err error) 
 		if err != nil {
 			return "", err
 		}
-
 		rows = append(rows, fmt.Sprintf("%10s | %s | %13s\n", date, presenter.description, presenter.amount()))
 	}
 
