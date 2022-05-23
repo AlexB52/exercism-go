@@ -107,22 +107,6 @@ func FormatUSTable(entries []Entry, currency string) (result string, err error) 
 	return strings.Join(rows, ""), nil
 }
 
-func FormatUSRow(currency string, entry Entry) (string, error) {
-	t, err := time.Parse("2006-02-01", entry.Date)
-	if err != nil {
-		return "", errors.New("")
-	}
-
-	var amount string
-	if entry.Change < 0 {
-		amount = fmt.Sprintf("(%s%s)", FormatSymbol(currency), FormatChange(entry.Change, ",", "."))
-	} else {
-		amount = fmt.Sprintf(" %s%s ", FormatSymbol(currency), FormatChange(entry.Change, ",", "."))
-	}
-
-	return fmt.Sprintf("%10s | %s | %13s\n", t.Format("02/01/2006"), FromatDescription(entry), amount), nil
-}
-
 func FormatSymbol(currency string) string {
 	if currency == "EUR" {
 		return "€"
