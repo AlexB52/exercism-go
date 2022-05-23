@@ -90,7 +90,7 @@ type DutchRow struct {
 	currency string
 }
 
-func (r *DutchRow) amount() (result string) {
+func (r *DutchRow) Amount() (result string) {
 	if r.entry.Change < 0 {
 		result = fmt.Sprintf("(%s%s)", Symbol(r.currency), FormatChange(r.entry.Change, ",", "."))
 	} else {
