@@ -126,42 +126,6 @@ func BuildRow(dateFormat string, formatChange func(Entry) string) func(e Entry) 
 	}
 }
 
-func BuildDutchRow(symbol string) func(e Entry) (Row, error) {
-	return func(e Entry) (Row, error) {
-		date, err := time.Parse("2006-02-01", e.Date)
-		if err != nil {
-			return Row{}, errors.New("")
-		}
-
-		var change string
-		if e.Change < 0 {
-			change = fmt.Sprintf("%s %s-", symbol, FormatChange(e.Change, ".", ","))
-		} else {
-			change = fmt.Sprintf("%s %s ", symbol, FormatChange(e.Change, ".", ","))
-		}
-
-		return Row{date.Format("01-02-2006"), FormatDescription(e.Description), change}, nil
-	}
-}
-
-func BuildUSRow(symbol string) func(e Entry) (Row, error) {
-	return func(e Entry) (Row, error) {
-		date, err := time.Parse("2006-02-01", e.Date)
-		if err != nil {
-			return Row{}, errors.New("")
-		}
-
-		var change string
-		if e.Change < 0 {
-			change = fmt.Sprintf("(%s%s)", symbol, FormatChange(e.Change, ",", "."))
-		} else {
-			change = fmt.Sprintf(" %s%s ", symbol, FormatChange(e.Change, ",", "."))
-		}
-
-		return Row{date.Format("02/01/2006"), FormatDescription(e.Description), change}, nil
-	}
-}
-
 func FormatDescription(s string) string {
 	if len(s) > 25 {
 		return fmt.Sprintf("%-22.22s...", s)
