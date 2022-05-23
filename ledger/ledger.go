@@ -14,6 +14,10 @@ type Entry struct {
 	Change      int // in cents
 }
 
+type Row struct {
+	description, amount, date string
+}
+
 func FormatLedger(currency string, locale string, entries []Entry) (table string, err error) {
 	if locale != "nl-NL" && locale != "en-US" {
 		return "", errors.New("")
@@ -61,10 +65,6 @@ func SortingEntriesAlgorithm(entriesCopy []Entry) func(i, j int) bool {
 
 		return entriesCopy[i].Change < entriesCopy[j].Change
 	}
-}
-
-type Row struct {
-	description, amount, date string
 }
 
 func FormatDutchTable(entries []Entry, currency string) (result string, err error) {
