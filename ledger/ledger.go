@@ -93,7 +93,7 @@ type Row struct {
 }
 
 func BuildRow(e Entry, currency string) (Row, error) {
-	t, err := time.Parse("2006-02-01", e.Date)
+	date, err := time.Parse("2006-02-01", e.Date)
 	if err != nil {
 		return Row{}, errors.New("")
 	}
@@ -105,7 +105,7 @@ func BuildRow(e Entry, currency string) (Row, error) {
 		amount = fmt.Sprintf("%s %s ", Symbol(currency), FormatChange(e.Change, ".", ","))
 	}
 
-	return Row{FormatDescription(e.Description), amount, t.Format("01-02-2006")}, nil
+	return Row{FormatDescription(e.Description), amount, date.Format("01-02-2006")}, nil
 }
 
 func (r *DutchRow) amount() (result string) {
