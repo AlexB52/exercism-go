@@ -85,6 +85,10 @@ func FormatDutchTable(entries []Entry, currency string) (result string, err erro
 	return strings.Join(rows, ""), nil
 }
 
+type DucthRow struct {
+	entry Entry
+}
+
 func FormatUSTable(entries []Entry, currency string) (result string, err error) {
 	var rows []string
 	rows = append(rows, fmt.Sprintf("%-10s | %-25s | %s\n", "Date", "Description", "Change"))
