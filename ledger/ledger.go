@@ -14,7 +14,7 @@ type Entry struct {
 	Change      int // in cents
 }
 
-func FormatLedger(currency string, locale string, entries []Entry) (string, error) {
+func FormatLedger(currency string, locale string, entries []Entry) (table string, err error) {
 
 	if locale != "nl-NL" && locale != "en-US" {
 		return "", errors.New("")
@@ -31,7 +31,6 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 
 	var (
 		rows string
-		err  error
 	)
 
 	if locale == "nl-NL" {
