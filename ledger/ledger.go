@@ -29,21 +29,17 @@ func FormatLedger(currency string, locale string, entries []Entry) (table string
 
 	sort.Slice(entriesCopy, SortingEntriesAlgorithm(entriesCopy))
 
-	var (
-		rows string
-	)
-
 	if locale == "nl-NL" {
-		rows, err = FormatDutchRows(entriesCopy, currency)
+		table, err = FormatDutchRows(entriesCopy, currency)
 	} else if locale == "en-US" {
-		rows, err = FormatUSRows(entriesCopy, currency)
+		table, err = FormatUSRows(entriesCopy, currency)
 	}
 
 	if err != nil {
 		return "", err
 	}
 
-	return rows, nil
+	return table, nil
 }
 
 func SortingEntriesAlgorithm(entriesCopy []Entry) func(i, j int) bool {
