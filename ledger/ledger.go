@@ -35,6 +35,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (table string
 	switch locale {
 	case "nl-NL":
 		table, err = BuildDutchTable(entriesCopy, currency)
+		table, err = BuildTable(Row{"Omschrijving", "Verandering", "Datum"}, entriesCopy, currency)
 	case "en-US":
 		table, err = BuildUSTable(entriesCopy, currency)
 	}
