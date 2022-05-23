@@ -36,7 +36,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (table string
 	case "nl-NL":
 		table, err = BuildTable(Row{"Datum", "Omschrijving", "Verandering"}, BuildDutchRow(Symbol(currency)), entriesCopy, currency)
 	case "en-US":
-		table, err = BuildTable(Row{"Date", "Description", "Change"}, BuildRow(Symbol(currency)), entriesCopy, currency)
+		table, err = BuildTable(Row{"Date", "Description", "Change"}, BuildUSRow(Symbol(currency)), entriesCopy, currency)
 	}
 
 	if err != nil {
@@ -100,7 +100,7 @@ func BuildDutchRow(symbol string) func(e Entry, currency string) (Row, error) {
 	}
 }
 
-func BuildRow(currency string) func(e Entry, currency string) (Row, error) {
+func BuildUSRow(currency string) func(e Entry, currency string) (Row, error) {
 	return func(e Entry, currency string) (Row, error) {
 		date, err := time.Parse("2006-02-01", e.Date)
 		if err != nil {
