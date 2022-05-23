@@ -100,8 +100,12 @@ func (r *DutchRow) Amount() (result string) {
 	return result
 }
 
-func (r *DutchRow) Date() (string, error) {
-	return "", nil
+func (r *DutchRow) date() (string, error) {
+	t, err := time.Parse("2006-02-01", r.Date)
+	if err != nil {
+		return "", errors.New("")
+	}
+	return t.Format("02/01/2006"), nil
 }
 
 func FormatUSTable(entries []Entry, currency string) (result string, err error) {
