@@ -85,9 +85,13 @@ func FormatDutchTable(entries []Entry, currency string) (result string, err erro
 	return strings.Join(rows, ""), nil
 }
 
-type DucthRow struct {
+type DutchRow struct {
 	entry    Entry
 	currency string
+}
+
+func (r *DutchRow) amount() string {
+	return ""
 }
 
 func FormatUSTable(entries []Entry, currency string) (result string, err error) {
