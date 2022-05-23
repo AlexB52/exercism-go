@@ -129,10 +129,11 @@ func FormatDutchChange(symbol string) func(e Entry) string {
 
 func FormatUSChange(symbol string) func(e Entry) string {
 	return func(e Entry) string {
+		change := FormatChange(e.Change, ",", ".")
 		if e.Change < 0 {
-			return fmt.Sprintf("(%s%s)", symbol, FormatChange(e.Change, ",", "."))
+			return fmt.Sprintf("(%s%s)", symbol, change)
 		} else {
-			return fmt.Sprintf(" %s%s ", symbol, FormatChange(e.Change, ",", "."))
+			return fmt.Sprintf(" %s%s ", symbol, change)
 		}
 	}
 }
