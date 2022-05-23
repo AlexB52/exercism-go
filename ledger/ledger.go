@@ -112,12 +112,12 @@ func FormatUSTable(entries []Entry, currency string) (result string, err error) 
 	rows = append(rows, fmt.Sprintf("%-10s | %-25s | %s\n", "Date", "Description", "Change"))
 	for _, entry := range entries {
 		var presenter = &DutchRow{entry, currency}
-		t, err := presenter.date()
+		date, err := presenter.date()
 		if err != nil {
 			return "", err
 		}
 
-		rows = append(rows, fmt.Sprintf("%10s | %s | %13s\n", t, FromatDescription(entry), presenter.Amount()))
+		rows = append(rows, fmt.Sprintf("%10s | %s | %13s\n", date, FromatDescription(entry), presenter.Amount()))
 	}
 
 	return strings.Join(rows, ""), nil
