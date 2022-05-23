@@ -95,7 +95,7 @@ func BuildDutchRow(e Entry, currency string) (Row, error) {
 		amount = fmt.Sprintf("%s %s ", Symbol(currency), FormatChange(e.Change, ".", ","))
 	}
 
-	return Row{FormatDescription(e.Description), amount, date.Format("01-02-2006")}, nil
+	return Row{description: FormatDescription(e.Description), amount: amount, date: date.Format("01-02-2006")}, nil
 }
 
 func BuildUSRow(e Entry, currency string) (Row, error) {
@@ -111,7 +111,7 @@ func BuildUSRow(e Entry, currency string) (Row, error) {
 		amount = fmt.Sprintf(" %s%s ", Symbol(currency), FormatChange(e.Change, ",", "."))
 	}
 
-	return Row{FormatDescription(e.Description), amount, date.Format("02/01/2006")}, nil
+	return Row{description: FormatDescription(e.Description), amount: amount, date: date.Format("02/01/2006")}, nil
 }
 
 func Symbol(currency string) string {
