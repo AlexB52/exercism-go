@@ -32,7 +32,9 @@ func FormatLedger(currency string, locale string, entries []Entry) (table string
 
 	sort.Slice(entriesCopy, SortingEntriesAlgorithm(entriesCopy))
 
-	var header Row
+	var (
+		header Row
+	)
 	var buildRow func(e Entry) (Row, error)
 	symbol := Symbol(currency)
 	switch locale {
