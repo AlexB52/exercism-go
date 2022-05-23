@@ -95,11 +95,13 @@ func BuildTable(header Row, buildRow func(e Entry) (Row, error), entries []Entry
 	return strings.Join(rows, ""), nil
 }
 
-func FormatDutchChange(symbol string, change int) string {
-	if change < 0 {
-		return fmt.Sprintf("%s %s-", symbol, FormatChange(change, ".", ","))
-	} else {
-		return fmt.Sprintf("%s %s ", symbol, FormatChange(change, ".", ","))
+func FormatDutchChange(symbol string) func(e Entry) string {
+	return func(e Entry) string {
+		if e.Change < 0 {
+			return fmt.Sprintf("%s %s-", symbol, FormatChange(e.Change, ".", ","))
+		} else {
+			return fmt.Sprintf("%s %s ", symbol, FormatChange(e.Change, ".", ","))
+		}
 	}
 }
 
