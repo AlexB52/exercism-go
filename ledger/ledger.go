@@ -83,6 +83,11 @@ type DutchRow struct {
 	symbol, description string
 }
 
+type USRow struct {
+	Entry
+	symbol, description string
+}
+
 func (r *DutchRow) amount() (result string) {
 	if r.Change < 0 {
 		return fmt.Sprintf("%s %s-", r.symbol, FormatChange(r.Change, ".", ","))
@@ -97,11 +102,6 @@ func (r *DutchRow) date() (string, error) {
 		return "", errors.New("")
 	}
 	return t.Format("01-02-2006"), nil
-}
-
-type USRow struct {
-	Entry
-	symbol, description string
 }
 
 func (r *USRow) amount() (result string) {
