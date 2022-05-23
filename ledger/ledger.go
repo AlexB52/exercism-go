@@ -75,6 +75,10 @@ func SortingEntriesAlgorithm(entriesCopy []Entry) func(i, j int) bool {
 	}
 }
 
+func FormatDutchRows(entries []Entry, currency string) []string {
+	return nil
+}
+
 func FormatDutchRow(currency string, entry Entry) (string, error) {
 	t, err := time.Parse("2006-02-01", entry.Date)
 	if err != nil {
