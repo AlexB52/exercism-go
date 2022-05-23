@@ -70,7 +70,7 @@ func FormatDutchTable(entries []Entry, currency string) (result string, err erro
 		presenter := &DutchRow{entry, Symbol(currency), Description(entry)}
 		date, err := presenter.date()
 		if err != nil {
-			return "", errors.New("")
+			return "", err
 		}
 		rows = append(rows, fmt.Sprintf("%10s | %s | %13s\n", date, presenter.description, presenter.amount()))
 	}
