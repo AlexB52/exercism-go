@@ -90,6 +90,10 @@ type USRow struct {
 	symbol, description string
 }
 
+func (r *USRow) amount() (result string) {
+	return result
+}
+
 type DutchRow struct {
 	Entry
 	symbol, description string
