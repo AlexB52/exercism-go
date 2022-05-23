@@ -39,7 +39,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (table string
 	switch locale {
 	case "nl-NL":
 		header = Row{"Datum", "Omschrijving", "Verandering"}
-		buildRow = BuildDutchRow(Symbol(currency))
+		buildRow = BuildDutchRow(symbol)
 	case "en-US":
 		header = Row{"Date", "Description", "Change"}
 		buildRow = BuildUSRow(Symbol(currency))
