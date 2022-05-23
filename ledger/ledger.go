@@ -118,22 +118,22 @@ func BuildRow(dateFormat string, formatChange func(Entry) string) func(e Entry) 
 
 func FormatDutchChange(symbol string) func(e Entry) string {
 	return func(e Entry) string {
-		change := FormatChange(e.Change, ".", ",")
+		changeString := FormatChange(e.Change, ".", ",")
 		if e.Change < 0 {
-			return fmt.Sprintf("%s %s-", symbol, change)
+			return fmt.Sprintf("%s %s-", symbol, changeString)
 		} else {
-			return fmt.Sprintf("%s %s ", symbol, change)
+			return fmt.Sprintf("%s %s ", symbol, changeString)
 		}
 	}
 }
 
 func FormatUSChange(symbol string) func(e Entry) string {
 	return func(e Entry) string {
-		change := FormatChange(e.Change, ",", ".")
+		changeString := FormatChange(e.Change, ",", ".")
 		if e.Change < 0 {
-			return fmt.Sprintf("(%s%s)", symbol, change)
+			return fmt.Sprintf("(%s%s)", symbol, changeString)
 		} else {
-			return fmt.Sprintf(" %s%s ", symbol, change)
+			return fmt.Sprintf(" %s%s ", symbol, changeString)
 		}
 	}
 }
