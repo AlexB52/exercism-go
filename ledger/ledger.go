@@ -88,7 +88,6 @@ func FormatDutchTable(entries []Entry, currency string) (result string, err erro
 type DutchRow struct {
 	Entry
 	currency string
-	time     time.Time
 }
 
 func (r *DutchRow) Amount() (result string) {
@@ -112,14 +111,13 @@ func FormatUSTable(entries []Entry, currency string) (result string, err error) 
 	var rows []string
 	rows = append(rows, fmt.Sprintf("%-10s | %-25s | %s\n", "Date", "Description", "Change"))
 	for _, entry := range entries {
-		t, err := time.Parse("2006-02-01", entry.Date)
+		var presenter = &DutchRow{entry, currency}
+		t, err := presenter.date()
 		if err != nil {
 			return "", errors.New("")
 		}
 
-		var presenter = &DutchRow{entry, currency, t}
-
-		rows = append(rows, fmt.Sprintf("%10s | %s | %13s\n", t.Format("02/01/2006"), FromatDescription(entry), presenter.Amount()))
+		rows = append(rows, fmt.Sprintf("%10s | %s | %13s\n", t, FromatDescription(entry), presenter.Amount()))
 	}
 
 	return strings.Join(rows, ""), nil
