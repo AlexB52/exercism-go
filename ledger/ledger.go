@@ -30,7 +30,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (table string
 	sort.Slice(entriesCopy, SortingEntriesAlgorithm(entriesCopy))
 
 	if locale == "nl-NL" {
-		table, err = FormatDutchRows(entriesCopy, currency)
+		table, err = FormatDutchTable(entriesCopy, currency)
 	} else if locale == "en-US" {
 		table, err = FormatUSRows(entriesCopy, currency)
 	}
@@ -64,7 +64,7 @@ func SortingEntriesAlgorithm(entriesCopy []Entry) func(i, j int) bool {
 	}
 }
 
-func FormatDutchRows(entries []Entry, currency string) (result string, err error) {
+func FormatDutchTable(entries []Entry, currency string) (result string, err error) {
 	var rows []string
 	rows = append(rows, fmt.Sprintf("%-10s | %-25s | %s\n", "Datum", "Omschrijving", "Verandering"))
 	for _, e := range entries {
