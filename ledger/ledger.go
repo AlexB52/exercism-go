@@ -77,11 +77,6 @@ func FormatDutchTable(entries []Entry, currency string) (result string, err erro
 	return strings.Join(rows, ""), nil
 }
 
-type USRow struct {
-	Entry
-	symbol, description string
-}
-
 type Row struct {
 	description, amount, date string
 }
