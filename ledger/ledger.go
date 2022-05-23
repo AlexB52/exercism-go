@@ -105,7 +105,7 @@ func BuildRow(e Entry, currency string) (Row, error) {
 		amount = fmt.Sprintf("%s %s ", Symbol(currency), FormatChange(e.Change, ".", ","))
 	}
 
-	return Row{Description(e), amount, t.Format("01-02-2006")}, nil
+	return Row{FormatDescription(e.Description), amount, t.Format("01-02-2006")}, nil
 }
 
 func (r *DutchRow) amount() (result string) {
