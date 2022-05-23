@@ -86,15 +86,15 @@ func FormatDutchTable(entries []Entry, currency string) (result string, err erro
 }
 
 type DutchRow struct {
-	entry    Entry
+	Entry
 	currency string
 }
 
 func (r *DutchRow) Amount() (result string) {
-	if r.entry.Change < 0 {
-		result = fmt.Sprintf("(%s%s)", Symbol(r.currency), FormatChange(r.entry.Change, ",", "."))
+	if r.Change < 0 {
+		result = fmt.Sprintf("(%s%s)", Symbol(r.currency), FormatChange(r.Change, ",", "."))
 	} else {
-		result = fmt.Sprintf(" %s%s ", Symbol(r.currency), FormatChange(r.entry.Change, ",", "."))
+		result = fmt.Sprintf(" %s%s ", Symbol(r.currency), FormatChange(r.Change, ",", "."))
 	}
 	return result
 }
