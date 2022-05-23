@@ -109,13 +109,7 @@ func FormatUSTable(entries []Entry, currency string) (result string, err error) 
 		}
 
 		var presenter = &DutchRow{entry, currency}
-		var amount string
-		if entry.Change < 0 {
-			amount = fmt.Sprintf("(%s%s)", Symbol(currency), FormatChange(entry.Change, ",", "."))
-		} else {
-			amount = fmt.Sprintf(" %s%s ", Symbol(currency), FormatChange(entry.Change, ",", "."))
-		}
-		var _ = amount
+
 		rows = append(rows, fmt.Sprintf("%10s | %s | %13s\n", t.Format("02/01/2006"), FromatDescription(entry), presenter.Amount()))
 	}
 
