@@ -105,6 +105,16 @@ func FormatDutchChange(symbol string) func(e Entry) string {
 	}
 }
 
+func FormatUSChange(symbol string) func(e Entry) string {
+	return func(e Entry) string {
+		if e.Change < 0 {
+			return fmt.Sprintf("(%s%s)", symbol, FormatChange(e.Change, ",", "."))
+		} else {
+			return fmt.Sprintf(" %s%s ", symbol, FormatChange(e.Change, ",", "."))
+		}
+	}
+}
+
 func BuildRow(dateFromat string, formatChange func(Entry) string) func(e Entry) (Row, error) {
 	return func(e Entry) (Row, error) {
 		date, err := time.Parse("2006-02-01", e.Date)
