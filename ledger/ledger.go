@@ -99,12 +99,12 @@ func (r *USRow2) date() (string, error) {
 	return t.Format("01-02-2006"), nil
 }
 
-type DutchRow struct {
+type USRow struct {
 	Entry
 	symbol, description string
 }
 
-func (r *DutchRow) amount() (result string) {
+func (r *USRow) amount() (result string) {
 	if r.Change < 0 {
 		return fmt.Sprintf("(%s%s)", r.symbol, FormatChange(r.Change, ",", "."))
 	} else {
@@ -112,7 +112,7 @@ func (r *DutchRow) amount() (result string) {
 	}
 }
 
-func (r *DutchRow) date() (string, error) {
+func (r *USRow) date() (string, error) {
 	t, err := time.Parse("2006-02-01", r.Date)
 	if err != nil {
 		return "", errors.New("")
@@ -124,7 +124,7 @@ func FormatUSTable(entries []Entry, currency string) (result string, err error) 
 	var rows []string
 	rows = append(rows, fmt.Sprintf("%-10s | %-25s | %s\n", "Date", "Description", "Change"))
 	for _, entry := range entries {
-		presenter := &DutchRow{entry, Symbol(currency), Description(entry)}
+		presenter := &USRow{entry, Symbol(currency), Description(entry)}
 		date, err := presenter.date()
 		if err != nil {
 			return "", err
