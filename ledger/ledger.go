@@ -63,6 +63,10 @@ func SortingEntriesAlgorithm(entriesCopy []Entry) func(i, j int) bool {
 	}
 }
 
+type Row struct {
+	description, amount, date string
+}
+
 func FormatDutchTable(entries []Entry, currency string) (result string, err error) {
 	var rows []string
 	rows = append(rows, fmt.Sprintf("%-10s | %-25s | %s\n", "Datum", "Omschrijving", "Verandering"))
@@ -75,10 +79,6 @@ func FormatDutchTable(entries []Entry, currency string) (result string, err erro
 	}
 
 	return strings.Join(rows, ""), nil
-}
-
-type Row struct {
-	description, amount, date string
 }
 
 func BuildDutchRow(e Entry, currency string) (Row, error) {
