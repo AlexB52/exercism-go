@@ -27,25 +27,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 	entriesCopy := make([]Entry, len(entries))
 	copy(entriesCopy, entries)
 
-	sort.Slice(entriesCopy, func(i, j int) bool {
-		if entriesCopy[i].Date < entriesCopy[j].Date {
-			return true
-		}
-
-		if entriesCopy[i].Date > entriesCopy[j].Date {
-			return false
-		}
-
-		if entriesCopy[i].Description < entriesCopy[j].Description {
-			return true
-		}
-
-		if entriesCopy[i].Description > entriesCopy[j].Description {
-			return false
-		}
-
-		return entriesCopy[i].Change < entriesCopy[j].Change
-	})
+	sort.Slice(entriesCopy, SortingEntriesAlgorithm(entriesCopy))
 
 	var rows []string
 	if locale == "nl-NL" {
