@@ -171,6 +171,14 @@ func Description(entry Entry) string {
 	}
 }
 
+func FormatDescription(s string) string {
+	if len(s) > 25 {
+		return fmt.Sprintf("%-22.22s...", s)
+	} else {
+		return fmt.Sprintf("%-25s", s)
+	}
+}
+
 func FormatChange(change int, tsep, csep string) (result string) {
 	if change < 0 {
 		change *= -1
