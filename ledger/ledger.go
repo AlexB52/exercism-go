@@ -15,7 +15,6 @@ type Entry struct {
 }
 
 func FormatLedger(currency string, locale string, entries []Entry) (table string, err error) {
-
 	if locale != "nl-NL" && locale != "en-US" {
 		return "", errors.New("")
 	}
