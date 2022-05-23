@@ -88,12 +88,20 @@ func FormatDutchTable(entries []Entry, currency string) (result string, err erro
 func FormatUSTable(entries []Entry, currency string) (result string, err error) {
 	var rows []string
 	rows = append(rows, fmt.Sprintf("%-10s | %-25s | %s\n", "Date", "Description", "Change"))
-	for _, e := range entries {
-		row, err := FormatUSRow(currency, e)
+	for _, entry := range entries {
+		t, err := time.Parse("2006-02-01", entry.Date)
 		if err != nil {
-			return "", err
+			return "", errors.New("")
 		}
-		rows = append(rows, row)
+
+		var amount string
+		if entry.Change < 0 {
+			amount = fmt.Sprintf("(%s%s)", FormatSymbol(currency), FormatChange(entry.Change, ",", "."))
+		} else {
+			amount = fmt.Sprintf(" %s%s ", FormatSymbol(currency), FormatChange(entry.Change, ",", "."))
+		}
+
+		rows = append(rows, fmt.Sprintf("%10s | %s | %13s\n", t.Format("02/01/2006"), FromatDescription(entry), amount))
 	}
 
 	return strings.Join(rows, ""), nil
