@@ -92,6 +92,10 @@ func (r *USRow) amount() (result string) {
 	}
 }
 
+func (r *USRow) date() (string, error) {
+	return "", nil
+}
+
 type DutchRow struct {
 	Entry
 	symbol, description string
