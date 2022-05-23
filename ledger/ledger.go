@@ -90,8 +90,13 @@ type DutchRow struct {
 	currency string
 }
 
-func (r *DutchRow) amount() string {
-	return ""
+func (r *DutchRow) amount() (result string) {
+	if r.entry.Change < 0 {
+		result = fmt.Sprintf("(%s%s)", Symbol(r.currency), FormatChange(r.entry.Change, ",", "."))
+	} else {
+		result = fmt.Sprintf(" %s%s ", Symbol(r.currency), FormatChange(r.entry.Change, ",", "."))
+	}
+	return result
 }
 
 func FormatUSTable(entries []Entry, currency string) (result string, err error) {
