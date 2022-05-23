@@ -34,9 +34,9 @@ func FormatLedger(currency string, locale string, entries []Entry) (table string
 
 	switch locale {
 	case "nl-NL":
-		table, err = BuildTable(Row{"Datum", "Omschrijving", "Verandering"}, BuildDutchRow(Symbol(currency)), entriesCopy, currency)
+		table, err = BuildTable(Row{"Datum", "Omschrijving", "Verandering"}, BuildDutchRow(Symbol(currency)), entriesCopy)
 	case "en-US":
-		table, err = BuildTable(Row{"Date", "Description", "Change"}, BuildUSRow(Symbol(currency)), entriesCopy, currency)
+		table, err = BuildTable(Row{"Date", "Description", "Change"}, BuildUSRow(Symbol(currency)), entriesCopy)
 	}
 
 	if err != nil {
@@ -68,7 +68,7 @@ func SortingEntriesAlgorithm(entriesCopy []Entry) func(i, j int) bool {
 	}
 }
 
-func BuildTable(header Row, buildDutchRow func(e Entry) (Row, error), entries []Entry, currency string) (result string, err error) {
+func BuildTable(header Row, buildDutchRow func(e Entry) (Row, error), entries []Entry) (result string, err error) {
 	var rows []string
 	rows = append(rows, fmt.Sprintf("%-10s | %-25s | %s\n", header.date, header.description, header.change))
 	for _, entry := range entries {
