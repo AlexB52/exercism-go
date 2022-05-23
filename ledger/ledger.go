@@ -29,8 +29,11 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 
 	sort.Slice(entriesCopy, SortingEntriesAlgorithm(entriesCopy))
 
-	var rows string
-	var err error
+	var (
+		rows string
+		err  error
+	)
+
 	if locale == "nl-NL" {
 		rows, err = FormatDutchRows(entriesCopy, currency)
 		if err != nil {
