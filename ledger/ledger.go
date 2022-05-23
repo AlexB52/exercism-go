@@ -114,7 +114,7 @@ func FormatUSTable(entries []Entry, currency string) (result string, err error) 
 		var presenter = &DutchRow{entry, currency}
 		t, err := presenter.date()
 		if err != nil {
-			return "", errors.New("")
+			return "", err
 		}
 
 		rows = append(rows, fmt.Sprintf("%10s | %s | %13s\n", t, FromatDescription(entry), presenter.Amount()))
