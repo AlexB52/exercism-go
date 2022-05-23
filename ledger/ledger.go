@@ -93,7 +93,11 @@ func (r *USRow) amount() (result string) {
 }
 
 func (r *USRow) date() (string, error) {
-	return "", nil
+	t, err := time.Parse("2006-02-01", r.Date)
+	if err != nil {
+		return "", errors.New("")
+	}
+	return t.Format("01-02-2006"), nil
 }
 
 type DutchRow struct {
