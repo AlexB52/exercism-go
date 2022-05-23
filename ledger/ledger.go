@@ -31,7 +31,11 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 
 	var rows []string
 	if locale == "nl-NL" {
-		var _, _ = FormatDutchRows(entriesCopy, currency)
+		var _, err = FormatDutchRows(entriesCopy, currency)
+		if err != nil {
+			return "", err
+		}
+
 		rows = append(rows, fmt.Sprintf("%-10s | %-25s | %s\n", "Datum", "Omschrijving", "Verandering"))
 		for _, e := range entriesCopy {
 			row, err := FormatDutchRow(currency, e)
