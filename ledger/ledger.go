@@ -71,6 +71,10 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 	return strings.Join(rows, ""), nil
 }
 
+func SortingEntries(i, j int) bool {
+	return false
+}
+
 func FormatDutchRow(currency string, entry Entry) (string, error) {
 	t, err := time.Parse("2006-02-01", entry.Date)
 	if err != nil {
