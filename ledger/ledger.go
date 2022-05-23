@@ -92,9 +92,9 @@ type Row struct {
 	description, amount, date string
 }
 
-// func BuildRow() Row {
-
-// }
+func BuildRow() Row {
+	return Row{}
+}
 
 func (r *DutchRow) amount() (result string) {
 	if r.Change < 0 {
