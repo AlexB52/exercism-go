@@ -68,11 +68,11 @@ func SortingEntriesAlgorithm(entriesCopy []Entry) func(i, j int) bool {
 	}
 }
 
-func BuildTable(header Row, buildDutchRow func(e Entry, currency string) (Row, error), entries []Entry, currency string) (result string, err error) {
+func BuildTable(header Row, buildDutchRow func(e Entry) (Row, error), entries []Entry, currency string) (result string, err error) {
 	var rows []string
 	rows = append(rows, fmt.Sprintf("%-10s | %-25s | %s\n", header.date, header.description, header.change))
 	for _, entry := range entries {
-		row, err := buildDutchRow(entry, currency)
+		row, err := buildDutchRow(entry)
 		if err != nil {
 			return "", err
 		}
@@ -82,8 +82,8 @@ func BuildTable(header Row, buildDutchRow func(e Entry, currency string) (Row, e
 	return strings.Join(rows, ""), nil
 }
 
-func BuildDutchRow(symbol string) func(e Entry, currency string) (Row, error) {
-	return func(e Entry, currency string) (Row, error) {
+func BuildDutchRow(symbol string) func(e Entry) (Row, error) {
+	return func(e Entry) (Row, error) {
 		date, err := time.Parse("2006-02-01", e.Date)
 		if err != nil {
 			return Row{}, errors.New("")
@@ -100,8 +100,8 @@ func BuildDutchRow(symbol string) func(e Entry, currency string) (Row, error) {
 	}
 }
 
-func BuildUSRow(currency string) func(e Entry, currency string) (Row, error) {
-	return func(e Entry, currency string) (Row, error) {
+func BuildUSRow(symbol string) func(e Entry) (Row, error) {
+	return func(e Entry) (Row, error) {
 		date, err := time.Parse("2006-02-01", e.Date)
 		if err != nil {
 			return Row{}, errors.New("")
@@ -109,9 +109,9 @@ func BuildUSRow(currency string) func(e Entry, currency string) (Row, error) {
 
 		var change string
 		if e.Change < 0 {
-			change = fmt.Sprintf("(%s%s)", Symbol(currency), FormatChange(e.Change, ",", "."))
+			change = fmt.Sprintf("(%s%s)", symbol, FormatChange(e.Change, ",", "."))
 		} else {
-			change = fmt.Sprintf(" %s%s ", Symbol(currency), FormatChange(e.Change, ",", "."))
+			change = fmt.Sprintf(" %s%s ", symbol, FormatChange(e.Change, ",", "."))
 		}
 
 		return Row{date.Format("02/01/2006"), FormatDescription(e.Description), change}, nil
