@@ -79,7 +79,7 @@ func FormatDutchTable(entries []Entry, currency string) (result string, err erro
 			amount = fmt.Sprintf("%s %s ", Symbol(currency), FormatChange(entry.Change, ".", ","))
 		}
 
-		rows = append(rows, fmt.Sprintf("%10s | %s | %13s\n", t.Format("01-02-2006"), FromatDescription(entry), amount))
+		rows = append(rows, fmt.Sprintf("%10s | %s | %13s\n", t.Format("01-02-2006"), FormatDescription(entry), amount))
 	}
 
 	return strings.Join(rows, ""), nil
@@ -116,7 +116,7 @@ func FormatUSTable(entries []Entry, currency string) (result string, err error) 
 			return "", err
 		}
 
-		rows = append(rows, fmt.Sprintf("%10s | %s | %13s\n", date, FromatDescription(entry), presenter.amount()))
+		rows = append(rows, fmt.Sprintf("%10s | %s | %13s\n", date, FormatDescription(entry), presenter.amount()))
 	}
 
 	return strings.Join(rows, ""), nil
@@ -130,7 +130,7 @@ func Symbol(currency string) string {
 	}
 }
 
-func FromatDescription(entry Entry) string {
+func FormatDescription(entry Entry) string {
 	if len(entry.Description) > 25 {
 		return fmt.Sprintf("%-22.22s...", entry.Description)
 	} else {
