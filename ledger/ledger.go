@@ -32,17 +32,19 @@ func FormatLedger(currency string, locale string, entries []Entry) (table string
 
 	sort.Slice(entriesCopy, SortingEntriesAlgorithm(entriesCopy))
 
+	var header Row
+	var buildRow func(e Entry) (Row, error)
+
 	switch locale {
 	case "nl-NL":
-		var header = Row{"Datum", "Omschrijving", "Verandering"}
-		var buildRow = BuildDutchRow(Symbol(currency))
-		table, err = BuildTable(header, buildRow, entriesCopy)
+		header = Row{"Datum", "Omschrijving", "Verandering"}
+		buildRow = BuildDutchRow(Symbol(currency))
 	case "en-US":
-		var header = Row{"Date", "Description", "Change"}
-		var buildRow = BuildUSRow(Symbol(currency))
-		table, err = BuildTable(header, buildRow, entriesCopy)
+		header = Row{"Date", "Description", "Change"}
+		buildRow = BuildUSRow(Symbol(currency))
 	}
 
+	table, err = BuildTable(header, buildRow, entriesCopy)
 	if err != nil {
 		return "", err
 	}
