@@ -8,6 +8,11 @@ import (
 	"time"
 )
 
+var CURRENCY_SYMBOL = map[string]string{
+	"EUR": "€",
+	"USD": "$",
+}
+
 type Entry struct {
 	Date        string // "Y-m-d"
 	Description string
