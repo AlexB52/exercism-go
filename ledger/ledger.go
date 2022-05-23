@@ -73,7 +73,7 @@ func BuildTable(header Row, buildRow func(e Entry, currency string) (Row, error)
 	var rows []string
 	rows = append(rows, fmt.Sprintf("%-10s | %-25s | %s\n", header.date, header.description, header.amount))
 	for _, entry := range entries {
-		row, err := BuildDutchRow(entry, currency)
+		row, err := buildRow(entry, currency)
 		if err != nil {
 			return "", err
 		}
