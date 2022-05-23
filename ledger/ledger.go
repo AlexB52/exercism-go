@@ -135,14 +135,6 @@ func Symbol(currency string) string {
 	}
 }
 
-func Description(entry Entry) string {
-	if len(entry.Description) > 25 {
-		return fmt.Sprintf("%-22.22s...", entry.Description)
-	} else {
-		return fmt.Sprintf("%-25s", entry.Description)
-	}
-}
-
 func FormatDescription(s string) string {
 	if len(s) > 25 {
 		return fmt.Sprintf("%-22.22s...", s)
