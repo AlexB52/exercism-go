@@ -32,9 +32,10 @@ func FormatLedger(currency string, locale string, entries []Entry) (table string
 
 	sort.Slice(entriesCopy, SortingEntriesAlgorithm(entriesCopy))
 
-	if locale == "nl-NL" {
+	switch locale {
+	case "nl-NL":
 		table, err = BuildDutchTable(entriesCopy, currency)
-	} else if locale == "en-US" {
+	case "en-US":
 		table, err = BuildUSTable(entriesCopy, currency)
 	}
 
