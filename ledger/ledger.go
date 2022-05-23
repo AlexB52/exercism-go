@@ -100,20 +100,22 @@ func BuildDutchRow(symbol string) func(e Entry, currency string) (Row, error) {
 	}
 }
 
-func BuildRow(e Entry, currency string) (Row, error) {
-	date, err := time.Parse("2006-02-01", e.Date)
-	if err != nil {
-		return Row{}, errors.New("")
-	}
+func BuildRow(e Entry, currency string) func(e Entry, currency string) (Row, error) {
+	return func(e Entry, currency string) (Row, error) {
+		date, err := time.Parse("2006-02-01", e.Date)
+		if err != nil {
+			return Row{}, errors.New("")
+		}
 
-	var change string
-	if e.Change < 0 {
-		change = fmt.Sprintf("(%s%s)", Symbol(currency), FormatChange(e.Change, ",", "."))
-	} else {
-		change = fmt.Sprintf(" %s%s ", Symbol(currency), FormatChange(e.Change, ",", "."))
-	}
+		var change string
+		if e.Change < 0 {
+			change = fmt.Sprintf("(%s%s)", Symbol(currency), FormatChange(e.Change, ",", "."))
+		} else {
+			change = fmt.Sprintf(" %s%s ", Symbol(currency), FormatChange(e.Change, ",", "."))
+		}
 
-	return Row{date.Format("02/01/2006"), FormatDescription(e.Description), change}, nil
+		return Row{date.Format("02/01/2006"), FormatDescription(e.Description), change}, nil
+	}
 }
 
 func BuildUSRow(e Entry, currency string) (Row, error) {
