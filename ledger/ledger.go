@@ -110,7 +110,7 @@ func FormatUSTable(entries []Entry, currency string) (result string, err error) 
 	var rows []string
 	rows = append(rows, fmt.Sprintf("%-10s | %-25s | %s\n", "Date", "Description", "Change"))
 	for _, entry := range entries {
-		var presenter = &DutchRow{entry, Symbol(currency), Description(entry)}
+		presenter := &DutchRow{entry, Symbol(currency), Description(entry)}
 		date, err := presenter.date()
 		if err != nil {
 			return "", err
