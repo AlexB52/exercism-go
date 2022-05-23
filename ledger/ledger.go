@@ -48,7 +48,8 @@ func FormatLedger(currency string, locale string, entries []Entry) (table string
 		buildRow = BuildRow("01-02-2006", FormatDutchChange(CURRENCY_SYMBOL[currency]))
 	case "en-US":
 		header = Row{"Date", "Description", "Change"}
-		buildRow = BuildRow("02/01/2006", FormatUSChange(CURRENCY_SYMBOL[currency]))
+		formatChange := FormatUSChange(CURRENCY_SYMBOL[currency])
+		buildRow = BuildRow("02/01/2006", formatChange)
 	}
 
 	table, err = BuildTable(header, buildRow, entriesCopy)
