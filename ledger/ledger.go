@@ -73,14 +73,6 @@ func FormatDutchTable(entries []Entry, currency string) (result string, err erro
 			return "", errors.New("")
 		}
 
-		var amount string
-		if entry.Change < 0 {
-			amount = fmt.Sprintf("%s %s-", Symbol(currency), FormatChange(entry.Change, ".", ","))
-		} else {
-			amount = fmt.Sprintf("%s %s ", Symbol(currency), FormatChange(entry.Change, ".", ","))
-		}
-		var _ = amount
-
 		rows = append(rows, fmt.Sprintf("%10s | %s | %13s\n", t.Format("01-02-2006"), Description(entry), presenter.amount()))
 	}
 
