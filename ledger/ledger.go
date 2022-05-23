@@ -97,6 +97,20 @@ func BuildDutchRow(e Entry, currency string) (Row, error) {
 	return Row{FormatDescription(e.Description), amount, date.Format("01-02-2006")}, nil
 }
 
+func FormatUSTable(entries []Entry, currency string) (result string, err error) {
+	var rows []string
+	rows = append(rows, fmt.Sprintf("%-10s | %-25s | %s\n", "Date", "Description", "Change"))
+	for _, entry := range entries {
+		row, err := BuildUSRow(entry, currency)
+		if err != nil {
+			return "", err
+		}
+		rows = append(rows, fmt.Sprintf("%10s | %s | %13s\n", row.date, row.description, row.amount))
+	}
+
+	return strings.Join(rows, ""), nil
+}
+
 func BuildUSRow(e Entry, currency string) (Row, error) {
 	date, err := time.Parse("2006-02-01", e.Date)
 	if err != nil {
@@ -111,20 +125,6 @@ func BuildUSRow(e Entry, currency string) (Row, error) {
 	}
 
 	return Row{FormatDescription(e.Description), amount, date.Format("02/01/2006")}, nil
-}
-
-func FormatUSTable(entries []Entry, currency string) (result string, err error) {
-	var rows []string
-	rows = append(rows, fmt.Sprintf("%-10s | %-25s | %s\n", "Date", "Description", "Change"))
-	for _, entry := range entries {
-		row, err := BuildUSRow(entry, currency)
-		if err != nil {
-			return "", err
-		}
-		rows = append(rows, fmt.Sprintf("%10s | %s | %13s\n", row.date, row.description, row.amount))
-	}
-
-	return strings.Join(rows, ""), nil
 }
 
 func Symbol(currency string) string {
