@@ -132,14 +132,6 @@ func BuildUSRow(symbol string) func(e Entry) (Row, error) {
 	}
 }
 
-func Symbol(currency string) string {
-	if currency == "EUR" {
-		return "€"
-	} else {
-		return "$"
-	}
-}
-
 func FormatDescription(s string) string {
 	if len(s) > 25 {
 		return fmt.Sprintf("%-22.22s...", s)
