@@ -89,6 +89,7 @@ type USRow struct {
 }
 
 type Row struct {
+	description, amount, date string
 }
 
 // func BuildRow() Row {
