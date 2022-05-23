@@ -92,8 +92,15 @@ type Row struct {
 	description, amount, date string
 }
 
-func BuildRow() (Row, error) {
-	return Row{}, nil
+func BuildRow(e Entry, currency string) (Row, error) {
+	var amount string
+	if e.Change < 0 {
+		amount = fmt.Sprintf("%s %s-", Symbol(currency), FormatChange(e.Change, ".", ","))
+	} else {
+		amount = fmt.Sprintf("%s %s ", Symbol(currency), FormatChange(e.Change, ".", ","))
+	}
+
+	return Row{"", amount, ""}, nil
 }
 
 func (r *DutchRow) amount() (result string) {
