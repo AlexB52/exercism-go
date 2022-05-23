@@ -86,7 +86,8 @@ func FormatDutchTable(entries []Entry, currency string) (result string, err erro
 }
 
 type DucthRow struct {
-	entry Entry
+	entry    Entry
+	currency string
 }
 
 func FormatUSTable(entries []Entry, currency string) (result string, err error) {
