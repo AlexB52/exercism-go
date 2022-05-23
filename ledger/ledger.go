@@ -112,7 +112,7 @@ func BuildRow(symbol, dateFromat string, formatChange func(Entry) string) func(e
 			return Row{}, errors.New("")
 		}
 
-		return Row{date.Format(dateFromat), FormatDescription(e.Description), FormatDutchChange(symbol)(e)}, nil
+		return Row{date.Format(dateFromat), FormatDescription(e.Description), formatChange(e)}, nil
 	}
 }
 
