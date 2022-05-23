@@ -68,12 +68,11 @@ func FormatDutchTable(entries []Entry, currency string) (result string, err erro
 	rows = append(rows, fmt.Sprintf("%-10s | %-25s | %s\n", "Datum", "Omschrijving", "Verandering"))
 	for _, entry := range entries {
 		presenter := &USRow{entry, Symbol(currency), Description(entry)}
-		t, err := time.Parse("2006-02-01", entry.Date)
+		date, err := presenter.date()
 		if err != nil {
 			return "", errors.New("")
 		}
-
-		rows = append(rows, fmt.Sprintf("%10s | %s | %13s\n", t.Format("01-02-2006"), Description(entry), presenter.amount()))
+		rows = append(rows, fmt.Sprintf("%10s | %s | %13s\n", date, Description(entry), presenter.amount()))
 	}
 
 	return strings.Join(rows, ""), nil
