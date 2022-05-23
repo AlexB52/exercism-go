@@ -95,6 +95,24 @@ func BuildTable(header Row, buildRow func(e Entry) (Row, error), entries []Entry
 	return strings.Join(rows, ""), nil
 }
 
+func BuildRow(symbol, dateFromat string) func(e Entry) (Row, error) {
+	return func(e Entry) (Row, error) {
+		date, err := time.Parse("2006-02-01", e.Date)
+		if err != nil {
+			return Row{}, errors.New("")
+		}
+
+		var change string
+		if e.Change < 0 {
+			change = fmt.Sprintf("%s %s-", symbol, FormatChange(e.Change, ".", ","))
+		} else {
+			change = fmt.Sprintf("%s %s ", symbol, FormatChange(e.Change, ".", ","))
+		}
+
+		return Row{date.Format(dateFromat), FormatDescription(e.Description), change}, nil
+	}
+}
+
 func BuildDutchRow(symbol string) func(e Entry) (Row, error) {
 	return func(e Entry) (Row, error) {
 		date, err := time.Parse("2006-02-01", e.Date)
