@@ -81,14 +81,14 @@ func FormatDutchRow(currency string, entry Entry) (string, error) {
 		return "", errors.New("")
 	}
 
-	var a string
+	var amount string
 	if entry.Change < 0 {
-		a = fmt.Sprintf("%s %s-", FormatSymbol(currency), FormatChange(entry.Change, ".", ","))
+		amount = fmt.Sprintf("%s %s-", FormatSymbol(currency), FormatChange(entry.Change, ".", ","))
 	} else {
-		a = fmt.Sprintf("%s %s ", FormatSymbol(currency), FormatChange(entry.Change, ".", ","))
+		amount = fmt.Sprintf("%s %s ", FormatSymbol(currency), FormatChange(entry.Change, ".", ","))
 	}
 
-	return fmt.Sprintf("%10s | %s | %13s\n", t.Format("01-02-2006"), FromatDescription(entry), a), nil
+	return fmt.Sprintf("%10s | %s | %13s\n", t.Format("01-02-2006"), FromatDescription(entry), amount), nil
 }
 
 func FormatUSRow(currency string, entry Entry) (string, error) {
