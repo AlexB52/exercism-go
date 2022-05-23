@@ -68,19 +68,6 @@ func SortingEntriesAlgorithm(entriesCopy []Entry) func(i, j int) bool {
 	}
 }
 
-func FormatDutchRows(entries []Entry, currency string) (rows []string, err error) {
-	rows = append(rows, fmt.Sprintf("%-10s | %-25s | %s\n", "Datum", "Omschrijving", "Verandering"))
-	for _, e := range entries {
-		row, err := FormatDutchRow(currency, e)
-		if err != nil {
-			return nil, err
-		}
-		rows = append(rows, row)
-	}
-
-	return rows, nil
-}
-
 func FormatDutchRows2(entries []Entry, currency string) (result string, err error) {
 	var rows []string
 	rows = append(rows, fmt.Sprintf("%-10s | %-25s | %s\n", "Datum", "Omschrijving", "Verandering"))
