@@ -74,9 +74,9 @@ func FormatDutchTable(entries []Entry, currency string) (result string, err erro
 
 		var amount string
 		if entry.Change < 0 {
-			amount = fmt.Sprintf("%s %s-", FormatSymbol(currency), FormatChange(entry.Change, ".", ","))
+			amount = fmt.Sprintf("%s %s-", Symbol(currency), FormatChange(entry.Change, ".", ","))
 		} else {
-			amount = fmt.Sprintf("%s %s ", FormatSymbol(currency), FormatChange(entry.Change, ".", ","))
+			amount = fmt.Sprintf("%s %s ", Symbol(currency), FormatChange(entry.Change, ".", ","))
 		}
 
 		rows = append(rows, fmt.Sprintf("%10s | %s | %13s\n", t.Format("01-02-2006"), FromatDescription(entry), amount))
@@ -96,9 +96,9 @@ func FormatUSTable(entries []Entry, currency string) (result string, err error) 
 
 		var amount string
 		if entry.Change < 0 {
-			amount = fmt.Sprintf("(%s%s)", FormatSymbol(currency), FormatChange(entry.Change, ",", "."))
+			amount = fmt.Sprintf("(%s%s)", Symbol(currency), FormatChange(entry.Change, ",", "."))
 		} else {
-			amount = fmt.Sprintf(" %s%s ", FormatSymbol(currency), FormatChange(entry.Change, ",", "."))
+			amount = fmt.Sprintf(" %s%s ", Symbol(currency), FormatChange(entry.Change, ",", "."))
 		}
 
 		rows = append(rows, fmt.Sprintf("%10s | %s | %13s\n", t.Format("02/01/2006"), FromatDescription(entry), amount))
@@ -107,7 +107,7 @@ func FormatUSTable(entries []Entry, currency string) (result string, err error) 
 	return strings.Join(rows, ""), nil
 }
 
-func FormatSymbol(currency string) string {
+func Symbol(currency string) string {
 	if currency == "EUR" {
 		return "€"
 	} else {
