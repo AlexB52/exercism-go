@@ -36,12 +36,10 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 
 	if locale == "nl-NL" {
 		rows, err = FormatDutchRows(entriesCopy, currency)
-		if err != nil {
-			return "", err
-		}
 	} else if locale == "en-US" {
 		rows, err = FormatUSRows(entriesCopy, currency)
 	}
+
 	if err != nil {
 		return "", err
 	}
