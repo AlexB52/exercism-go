@@ -91,7 +91,11 @@ type USRow struct {
 }
 
 func (r *USRow) amount() (result string) {
-	return result
+	if r.Change < 0 {
+		return fmt.Sprintf("%s %s-", r.symbol, FormatChange(r.Change, ".", ","))
+	} else {
+		return fmt.Sprintf("%s %s ", r.symbol, FormatChange(r.Change, ".", ","))
+	}
 }
 
 type DutchRow struct {
