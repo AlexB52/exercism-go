@@ -88,14 +88,14 @@ func BuildDutchRow(e Entry, currency string) (Row, error) {
 		return Row{}, errors.New("")
 	}
 
-	var amount string
+	var change string
 	if e.Change < 0 {
-		amount = fmt.Sprintf("%s %s-", Symbol(currency), FormatChange(e.Change, ".", ","))
+		change = fmt.Sprintf("%s %s-", Symbol(currency), FormatChange(e.Change, ".", ","))
 	} else {
-		amount = fmt.Sprintf("%s %s ", Symbol(currency), FormatChange(e.Change, ".", ","))
+		change = fmt.Sprintf("%s %s ", Symbol(currency), FormatChange(e.Change, ".", ","))
 	}
 
-	return Row{description: FormatDescription(e.Description), change: amount, date: date.Format("01-02-2006")}, nil
+	return Row{description: FormatDescription(e.Description), change: change, date: date.Format("01-02-2006")}, nil
 }
 
 func BuildUSRow(e Entry, currency string) (Row, error) {
@@ -104,14 +104,14 @@ func BuildUSRow(e Entry, currency string) (Row, error) {
 		return Row{}, errors.New("")
 	}
 
-	var amount string
+	var change string
 	if e.Change < 0 {
-		amount = fmt.Sprintf("(%s%s)", Symbol(currency), FormatChange(e.Change, ",", "."))
+		change = fmt.Sprintf("(%s%s)", Symbol(currency), FormatChange(e.Change, ",", "."))
 	} else {
-		amount = fmt.Sprintf(" %s%s ", Symbol(currency), FormatChange(e.Change, ",", "."))
+		change = fmt.Sprintf(" %s%s ", Symbol(currency), FormatChange(e.Change, ",", "."))
 	}
 
-	return Row{description: FormatDescription(e.Description), change: amount, date: date.Format("02/01/2006")}, nil
+	return Row{description: FormatDescription(e.Description), change: change, date: date.Format("02/01/2006")}, nil
 }
 
 func Symbol(currency string) string {
