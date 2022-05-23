@@ -71,7 +71,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 	return strings.Join(rows, ""), nil
 }
 
-func SortingEntriesAlgorithme(entriesCopy []Entry) func(i, j int) bool {
+func SortingEntriesAlgorithm(entriesCopy []Entry) func(i, j int) bool {
 	return func(i, j int) bool {
 		if entriesCopy[i].Date < entriesCopy[j].Date {
 			return true
