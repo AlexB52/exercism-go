@@ -68,6 +68,20 @@ func SortingEntriesAlgorithm(entriesCopy []Entry) func(i, j int) bool {
 	}
 }
 
+func BuildTable(header Row, entries []Entry, currency string) (result string, err error) {
+	var rows []string
+	rows = append(rows, fmt.Sprintf("%-10s | %-25s | %s\n", header.date, header.description, header.amount))
+	for _, entry := range entries {
+		row, err := BuildDutchRow(entry, currency)
+		if err != nil {
+			return "", err
+		}
+		rows = append(rows, fmt.Sprintf("%10s | %s | %13s\n", row.date, row.description, row.amount))
+	}
+
+	return strings.Join(rows, ""), nil
+}
+
 func BuildDutchTable(entries []Entry, currency string) (result string, err error) {
 	var rows []string
 	rows = append(rows, fmt.Sprintf("%-10s | %-25s | %s\n", "Datum", "Omschrijving", "Verandering"))
