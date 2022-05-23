@@ -48,6 +48,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (table string
 		buildRow = BuildRow("01-02-2006", FormatDutchChange(CURRENCY_SYMBOL[currency]))
 	case "en-US":
 		header = Row{"Date", "Description", "Change"}
+		buildRow = BuildRow("02/01/2006", FormatUSChange(CURRENCY_SYMBOL[currency]))
 		buildRow = BuildUSRow(CURRENCY_SYMBOL[currency])
 	}
 
@@ -115,14 +116,14 @@ func FormatUSChange(symbol string) func(e Entry) string {
 	}
 }
 
-func BuildRow(dateFromat string, formatChange func(Entry) string) func(e Entry) (Row, error) {
+func BuildRow(dateFormat string, formatChange func(Entry) string) func(e Entry) (Row, error) {
 	return func(e Entry) (Row, error) {
 		date, err := time.Parse("2006-02-01", e.Date)
 		if err != nil {
 			return Row{}, errors.New("")
 		}
 
-		return Row{date.Format(dateFromat), FormatDescription(e.Description), formatChange(e)}, nil
+		return Row{date.Format(dateFormat), FormatDescription(e.Description), formatChange(e)}, nil
 	}
 }
 
