@@ -100,6 +100,10 @@ func (r *DutchRow) Amount() (result string) {
 	return result
 }
 
+func (r *DutchRow) Date() (string, error) {
+	return "", nil
+}
+
 func FormatUSTable(entries []Entry, currency string) (result string, err error) {
 	var rows []string
 	rows = append(rows, fmt.Sprintf("%-10s | %-25s | %s\n", "Date", "Description", "Change"))
