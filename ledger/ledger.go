@@ -98,6 +98,24 @@ func BuildTable(header Row, buildRow func(e Entry) (Row, error), entries []Entry
 	return strings.Join(rows, ""), nil
 }
 
+func BuildRow(dateFormat string, formatChange func(Entry) string) func(e Entry) (Row, error) {
+	return func(e Entry) (Row, error) {
+		date, err := time.Parse("2006-02-01", e.Date)
+		if err != nil {
+			return Row{}, errors.New("")
+		}
+
+		var description string
+		if len(e.Description) > 25 {
+			description = fmt.Sprintf("%-22.22s...", e.Description)
+		} else {
+			description = fmt.Sprintf("%-25s", e.Description)
+		}
+
+		return Row{date.Format(dateFormat), description, formatChange(e)}, nil
+	}
+}
+
 func FormatDutchChange(symbol string) func(e Entry) string {
 	return func(e Entry) string {
 		if e.Change < 0 {
@@ -115,17 +133,6 @@ func FormatUSChange(symbol string) func(e Entry) string {
 		} else {
 			return fmt.Sprintf(" %s%s ", symbol, FormatChange(e.Change, ",", "."))
 		}
-	}
-}
-
-func BuildRow(dateFormat string, formatChange func(Entry) string) func(e Entry) (Row, error) {
-	return func(e Entry) (Row, error) {
-		date, err := time.Parse("2006-02-01", e.Date)
-		if err != nil {
-			return Row{}, errors.New("")
-		}
-
-		return Row{date.Format(dateFormat), FormatDescription(e.Description), formatChange(e)}, nil
 	}
 }
 
