@@ -88,6 +88,13 @@ type USRow struct {
 	symbol, description string
 }
 
+type Row struct {
+}
+
+// func BuildRow() Row {
+
+// }
+
 func (r *DutchRow) amount() (result string) {
 	if r.Change < 0 {
 		return fmt.Sprintf("%s %s-", r.symbol, FormatChange(r.Change, ".", ","))
