@@ -108,6 +108,7 @@ func FormatUSTable(entries []Entry, currency string) (result string, err error) 
 			return "", errors.New("")
 		}
 
+		var _ = DutchRow{entry, currency}
 		var amount string
 		if entry.Change < 0 {
 			amount = fmt.Sprintf("(%s%s)", Symbol(currency), FormatChange(entry.Change, ",", "."))
