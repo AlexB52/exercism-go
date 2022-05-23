@@ -71,8 +71,26 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 	return strings.Join(rows, ""), nil
 }
 
-func SortingEntries(i, j int) bool {
-	return false
+func SortingEntriesAlgorithme(entriesCopy []Entry) func(i, j int) bool {
+	return func(i, j int) bool {
+		if entriesCopy[i].Date < entriesCopy[j].Date {
+			return true
+		}
+
+		if entriesCopy[i].Date > entriesCopy[j].Date {
+			return false
+		}
+
+		if entriesCopy[i].Description < entriesCopy[j].Description {
+			return true
+		}
+
+		if entriesCopy[i].Description > entriesCopy[j].Description {
+			return false
+		}
+
+		return entriesCopy[i].Change < entriesCopy[j].Change
+	}
 }
 
 func FormatDutchRow(currency string, entry Entry) (string, error) {
