@@ -118,22 +118,6 @@ func BuildUSRow(e Entry, currency string) (Row, error) {
 	return Row{FormatDescription(e.Description), amount, date.Format("02/01/2006")}, nil
 }
 
-func (r *USRow) amount() (result string) {
-	if r.Change < 0 {
-		return fmt.Sprintf("(%s%s)", r.symbol, FormatChange(r.Change, ",", "."))
-	} else {
-		return fmt.Sprintf(" %s%s ", r.symbol, FormatChange(r.Change, ",", "."))
-	}
-}
-
-func (r *USRow) date() (string, error) {
-	t, err := time.Parse("2006-02-01", r.Date)
-	if err != nil {
-		return "", errors.New("")
-	}
-	return t.Format("02/01/2006"), nil
-}
-
 func FormatUSTable(entries []Entry, currency string) (result string, err error) {
 	var rows []string
 	rows = append(rows, fmt.Sprintf("%-10s | %-25s | %s\n", "Date", "Description", "Change"))
