@@ -83,20 +83,6 @@ func FormatDutchRows(entries []Entry, currency string) (result string, err error
 	return strings.Join(rows, ""), nil
 }
 
-func FormatUSRows(entries []Entry, currency string) (result string, err error) {
-	var rows []string
-	rows = append(rows, fmt.Sprintf("%-10s | %-25s | %s\n", "Date", "Description", "Change"))
-	for _, e := range entries {
-		row, err := FormatUSRow(currency, e)
-		if err != nil {
-			return "", err
-		}
-		rows = append(rows, row)
-	}
-
-	return strings.Join(rows, ""), nil
-}
-
 func FormatDutchRow(currency string, entry Entry) (string, error) {
 	t, err := time.Parse("2006-02-01", entry.Date)
 	if err != nil {
@@ -111,6 +97,20 @@ func FormatDutchRow(currency string, entry Entry) (string, error) {
 	}
 
 	return fmt.Sprintf("%10s | %s | %13s\n", t.Format("01-02-2006"), FromatDescription(entry), amount), nil
+}
+
+func FormatUSRows(entries []Entry, currency string) (result string, err error) {
+	var rows []string
+	rows = append(rows, fmt.Sprintf("%-10s | %-25s | %s\n", "Date", "Description", "Change"))
+	for _, e := range entries {
+		row, err := FormatUSRow(currency, e)
+		if err != nil {
+			return "", err
+		}
+		rows = append(rows, row)
+	}
+
+	return strings.Join(rows, ""), nil
 }
 
 func FormatUSRow(currency string, entry Entry) (string, error) {
