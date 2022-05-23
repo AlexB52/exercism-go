@@ -92,7 +92,7 @@ func BuildTable(header Row, buildRow func(e Entry) (Row, error), entries []Entry
 		if err != nil {
 			return "", err
 		}
-		rows = append(rows, fmt.Sprintf("%10s | %25s | %13s\n", row.date, row.description, row.change))
+		rows = append(rows, fmt.Sprintf("%-10s | %-25s | %13s\n", row.date, row.description, row.change))
 	}
 
 	return strings.Join(rows, ""), nil
