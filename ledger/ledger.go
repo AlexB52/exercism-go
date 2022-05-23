@@ -40,7 +40,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (table string
 	var (
 		header   Row
 		buildRow func(e Entry) (Row, error)
-		symbol   string = Symbol(currency)
+		symbol   string = CURRENCY_SYMBOL[currency]
 	)
 
 	switch locale {
