@@ -15,7 +15,7 @@ type Entry struct {
 }
 
 type Row struct {
-	description, amount, date string
+	description, change, date string
 }
 
 func FormatLedger(currency string, locale string, entries []Entry) (table string, err error) {
@@ -34,9 +34,9 @@ func FormatLedger(currency string, locale string, entries []Entry) (table string
 
 	switch locale {
 	case "nl-NL":
-		table, err = BuildTable(Row{description: "Omschrijving", amount: "Verandering", date: "Datum"}, BuildDutchRow, entriesCopy, currency)
+		table, err = BuildTable(Row{description: "Omschrijving", change: "Verandering", date: "Datum"}, BuildDutchRow, entriesCopy, currency)
 	case "en-US":
-		table, err = BuildTable(Row{description: "Description", amount: "Change", date: "Date"}, BuildUSRow, entriesCopy, currency)
+		table, err = BuildTable(Row{description: "Description", change: "Change", date: "Date"}, BuildUSRow, entriesCopy, currency)
 	}
 
 	if err != nil {
@@ -70,13 +70,13 @@ func SortingEntriesAlgorithm(entriesCopy []Entry) func(i, j int) bool {
 
 func BuildTable(header Row, buildRow func(e Entry, currency string) (Row, error), entries []Entry, currency string) (result string, err error) {
 	var rows []string
-	rows = append(rows, fmt.Sprintf("%-10s | %-25s | %s\n", header.date, header.description, header.amount))
+	rows = append(rows, fmt.Sprintf("%-10s | %-25s | %s\n", header.date, header.description, header.change))
 	for _, entry := range entries {
 		row, err := buildRow(entry, currency)
 		if err != nil {
 			return "", err
 		}
-		rows = append(rows, fmt.Sprintf("%10s | %s | %13s\n", row.date, row.description, row.amount))
+		rows = append(rows, fmt.Sprintf("%10s | %s | %13s\n", row.date, row.description, row.change))
 	}
 
 	return strings.Join(rows, ""), nil
@@ -95,7 +95,7 @@ func BuildDutchRow(e Entry, currency string) (Row, error) {
 		amount = fmt.Sprintf("%s %s ", Symbol(currency), FormatChange(e.Change, ".", ","))
 	}
 
-	return Row{description: FormatDescription(e.Description), amount: amount, date: date.Format("01-02-2006")}, nil
+	return Row{description: FormatDescription(e.Description), change: amount, date: date.Format("01-02-2006")}, nil
 }
 
 func BuildUSRow(e Entry, currency string) (Row, error) {
@@ -111,7 +111,7 @@ func BuildUSRow(e Entry, currency string) (Row, error) {
 		amount = fmt.Sprintf(" %s%s ", Symbol(currency), FormatChange(e.Change, ",", "."))
 	}
 
-	return Row{description: FormatDescription(e.Description), amount: amount, date: date.Format("02/01/2006")}, nil
+	return Row{description: FormatDescription(e.Description), change: amount, date: date.Format("02/01/2006")}, nil
 }
 
 func Symbol(currency string) string {
