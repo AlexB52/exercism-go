@@ -92,8 +92,8 @@ type Row struct {
 	description, amount, date string
 }
 
-func BuildRow() Row {
-	return Row{}
+func BuildRow() (Row, error) {
+	return Row{}, nil
 }
 
 func (r *DutchRow) amount() (result string) {
