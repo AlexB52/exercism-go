@@ -111,7 +111,7 @@ func BuildUSRow(e Entry, currency string) (Row, error) {
 		change = fmt.Sprintf(" %s%s ", Symbol(currency), FormatChange(e.Change, ",", "."))
 	}
 
-	return Row{date: date.Format("02/01/2006"), description: FormatDescription(e.Description), change: change}, nil
+	return Row{date.Format("02/01/2006"), FormatDescription(e.Description), change}, nil
 }
 
 func Symbol(currency string) string {
