@@ -32,7 +32,7 @@ func FormatLedger(currency string, locale string, entries []Entry) (table string
 	if locale == "nl-NL" {
 		table, err = FormatDutchTable(entriesCopy, currency)
 	} else if locale == "en-US" {
-		table, err = FormatUSRows(entriesCopy, currency)
+		table, err = FormatUSTable(entriesCopy, currency)
 	}
 
 	if err != nil {
@@ -94,7 +94,7 @@ func FormatDutchRow(currency string, entry Entry) (string, error) {
 	return fmt.Sprintf("%10s | %s | %13s\n", t.Format("01-02-2006"), FromatDescription(entry), amount), nil
 }
 
-func FormatUSRows(entries []Entry, currency string) (result string, err error) {
+func FormatUSTable(entries []Entry, currency string) (result string, err error) {
 	var rows []string
 	rows = append(rows, fmt.Sprintf("%-10s | %-25s | %s\n", "Date", "Description", "Change"))
 	for _, e := range entries {
