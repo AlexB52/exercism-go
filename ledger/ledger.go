@@ -92,11 +92,10 @@ type DutchRow struct {
 
 func (r *DutchRow) Amount() (result string) {
 	if r.Change < 0 {
-		result = fmt.Sprintf("(%s%s)", r.symbol, FormatChange(r.Change, ",", "."))
+		return fmt.Sprintf("(%s%s)", r.symbol, FormatChange(r.Change, ",", "."))
 	} else {
-		result = fmt.Sprintf(" %s%s ", r.symbol, FormatChange(r.Change, ",", "."))
+		return fmt.Sprintf(" %s%s ", r.symbol, FormatChange(r.Change, ",", "."))
 	}
-	return result
 }
 
 func (r *DutchRow) date() (string, error) {
