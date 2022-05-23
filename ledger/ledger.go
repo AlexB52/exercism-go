@@ -90,7 +90,7 @@ type DutchRow struct {
 	symbol string
 }
 
-func (r *DutchRow) Amount() (result string) {
+func (r *DutchRow) amount() (result string) {
 	if r.Change < 0 {
 		return fmt.Sprintf("(%s%s)", r.symbol, FormatChange(r.Change, ",", "."))
 	} else {
@@ -116,7 +116,7 @@ func FormatUSTable(entries []Entry, currency string) (result string, err error) 
 			return "", err
 		}
 
-		rows = append(rows, fmt.Sprintf("%10s | %s | %13s\n", date, FromatDescription(entry), presenter.Amount()))
+		rows = append(rows, fmt.Sprintf("%10s | %s | %13s\n", date, FromatDescription(entry), presenter.amount()))
 	}
 
 	return strings.Join(rows, ""), nil
