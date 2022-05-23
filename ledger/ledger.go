@@ -15,7 +15,7 @@ type Entry struct {
 }
 
 type Row struct {
-	description, change, date string
+	date, description, change string
 }
 
 func FormatLedger(currency string, locale string, entries []Entry) (table string, err error) {
