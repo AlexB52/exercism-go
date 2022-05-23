@@ -37,14 +37,11 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 		}
 		return strings.Join(rows, ""), nil
 	} else if locale == "en-US" {
-		rows = append(rows, fmt.Sprintf("%-10s | %-25s | %s\n", "Date", "Description", "Change"))
-		for _, e := range entriesCopy {
-			row, err := FormatUSRow(currency, e)
-			if err != nil {
-				return "", err
-			}
-			rows = append(rows, row)
+		rows, err := FormatUSRows(entriesCopy, currency)
+		if err != nil {
+			return "", err
 		}
+		return strings.Join(rows, ""), nil
 	}
 	return strings.Join(rows, ""), nil
 }
