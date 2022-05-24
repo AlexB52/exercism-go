@@ -10,28 +10,37 @@ type Node struct {
 }
 
 func Encode(message string, rails int) (result string) {
-	return Code(message, rails, DiagonalSorting, RailsSorting)
+	var nodes = BuildNodes(len(message), rails)
+	return Code(message, nodes, DiagonalSorting(nodes), RailsSorting(nodes))
 }
 
 func Decode(message string, rails int) (result string) {
-	return Code(message, rails, RailsSorting, DiagonalSorting)
+	var nodes = BuildNodes(len(message), rails)
+	return Code(message, nodes, RailsSorting(nodes), DiagonalSorting(nodes))
 }
 
-func Code(message string, rails int, sort1, sort2 func([]Node) func(int, int) bool) (result string) {
-	var nodes = BuildNodes(len(message), rails)
-
-	sort.Slice(nodes, sort1(nodes))
+func Code(message string, nodes []Node, sort1, sort2 func(int, int) bool) (result string) {
+	sort.Slice(nodes, sort1)
 
 	for i, n := range nodes {
 		nodes[i] = Node{n.x, n.y, string(message[i])}
 	}
 
-	sort.Slice(nodes, sort2(nodes))
+	sort.Slice(nodes, sort2)
 
 	for _, n := range nodes {
 		result += n.value
 	}
 	return result
+}
+
+func BuildNodes(length, rails int) []Node {
+	var nodes = make([]Node, length)
+	projection := DiagonaleProjection(rails)
+	for i := 0; i < length; i++ {
+		nodes[i] = projection(i)
+	}
+	return nodes
 }
 
 func DiagonaleProjection(rail int) func(int) Node {
@@ -42,15 +51,6 @@ func DiagonaleProjection(rail int) func(int) Node {
 		}
 		return Node{x: x, y: y}
 	}
-}
-
-func BuildNodes(length, rails int) []Node {
-	var nodes = make([]Node, length)
-	projection := DiagonaleProjection(rails)
-	for i := 0; i < length; i++ {
-		nodes[i] = projection(i)
-	}
-	return nodes
 }
 
 func RailsSorting(nodes []Node) func(int, int) bool {
