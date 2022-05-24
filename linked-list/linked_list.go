@@ -63,8 +63,7 @@ func (l *List) PopFront() (result interface{}, err error) {
 		l.first, l.last = nil, nil
 	default:
 		result = l.first.Value
-		l.first = l.first.next
-		l.first.prev = nil
+		l.first, l.first.next.prev = l.first.next, nil
 	}
 	return result, err
 }
@@ -78,8 +77,7 @@ func (l *List) PopBack() (result interface{}, err error) {
 		l.first, l.last = nil, nil
 	default:
 		result = l.last.Value
-		l.last = l.last.prev
-		l.last.next = nil
+		l.last, l.last.prev.next = l.last.prev, nil
 	}
 	return result, err
 }
