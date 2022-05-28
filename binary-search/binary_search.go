@@ -5,12 +5,14 @@ func SearchInts(list []int, key int) int {
 	var start, end = 0, len(list)
 	for len(list[start:end]) > 1 {
 		index = (end + start) / 2
+		if list[index] == key {
+			return index
+		}
+
 		if list[index] > key {
 			end = index
-		} else if list[index] < key {
+		} else {
 			start = index
-		} else if list[index] == key {
-			return index
 		}
 	}
 
