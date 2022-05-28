@@ -1,7 +1,5 @@
 package binarysearchtree
 
-// import "fmt"
-
 type BinarySearchTree struct {
 	left  *BinarySearchTree
 	data  int
@@ -29,15 +27,9 @@ func (bst *BinarySearchTree) Insert(i int) {
 }
 
 func (bst *BinarySearchTree) SortedData() (result []int) {
-	if bst.left != nil {
-		result = append(result, bst.left.SortedData()...)
+	if bst == nil {
+		return
 	}
 
-	result = append(result, bst.data)
-
-	if bst.right != nil {
-		result = append(result, bst.right.SortedData()...)
-	}
-
-	return result
+	return append(append(bst.left.SortedData(), bst.data), bst.right.SortedData()...)
 }
