@@ -1,23 +1,21 @@
 package binarysearch
 
 func SearchInts(list []int, key int) int {
-	var index int
-	var start, end = 0, len(list)
-	for len(list[start:end]) > 1 {
-		index = (end + start) / 2
-		if list[index] == key {
-			return index
-		}
+	var start, end = 0, len(list) - 1
+	for start <= end {
+		index := (end + start) / 2
 
 		if list[index] > key {
-			end = index
-		} else {
-			start = index
+			end = index - 1
+			continue
 		}
-	}
 
-	if len(list[start:end]) == 1 && list[start:end][0] == key {
-		return start
+		if list[index] < key {
+			start = index + 1
+			continue
+		}
+
+		return index
 	}
 
 	return -1
