@@ -17,6 +17,10 @@ func Solve(sizeBucketOne, sizeBucketTwo, goalAmount int, startBucket string) (st
 		return "", 0, 0, errors.New("invalid start bucket")
 	}
 
+	if sizeBucketOne > 1 && sizeBucketTwo%sizeBucketOne == 0 {
+		return "", 0, 0, errors.New("impossible solution")
+	}
+
 	b1, b2 := &Bucket{name: "one", size: sizeBucketOne}, &Bucket{name: "two", size: sizeBucketTwo}
 	if startBucket != "one" {
 		b1, b2 = b2, b1
@@ -25,7 +29,6 @@ func Solve(sizeBucketOne, sizeBucketTwo, goalAmount int, startBucket string) (st
 	var rounds int
 	for b1.quantity != goalAmount && b2.quantity != goalAmount {
 		rounds++
-
 		switch {
 		case b1.IsEmpty():
 			b1.Fill()
