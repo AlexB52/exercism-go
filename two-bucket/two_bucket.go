@@ -5,20 +5,9 @@ import (
 )
 
 func Solve(sizeBucketOne, sizeBucketTwo, goalAmount int, startBucket string) (string, int, int, error) {
-	if sizeBucketOne == 0 || sizeBucketTwo == 0 {
-		return "", 0, 0, errors.New("invalid bucket size")
-	}
-
-	if goalAmount == 0 {
-		return "", 0, 0, errors.New("invalid amount")
-	}
-
-	if startBucket != "one" && startBucket != "two" {
-		return "", 0, 0, errors.New("invalid start bucket")
-	}
-
-	if sizeBucketOne > 1 && sizeBucketTwo%sizeBucketOne == 0 {
-		return "", 0, 0, errors.New("impossible solution")
+	err := ValidateInputs(sizeBucketOne, sizeBucketTwo, goalAmount, startBucket)
+	if err != nil {
+		return "", 0, 0, err
 	}
 
 	b1, b2 := &Bucket{name: "one", size: sizeBucketOne}, &Bucket{name: "two", size: sizeBucketTwo}
@@ -44,6 +33,26 @@ func Solve(sizeBucketOne, sizeBucketTwo, goalAmount int, startBucket string) (st
 	goalBucket, otherBucket := FindBuckets(b1, b2, goalAmount)
 
 	return goalBucket.name, rounds, otherBucket.quantity, nil
+}
+
+func ValidateInputs(sizeBucketOne, sizeBucketTwo, goalAmount int, startBucket string) error {
+	if sizeBucketOne == 0 || sizeBucketTwo == 0 {
+		return errors.New("invalid bucket size")
+	}
+
+	if goalAmount == 0 {
+		return errors.New("invalid amount")
+	}
+
+	if startBucket != "one" && startBucket != "two" {
+		return errors.New("invalid start bucket")
+	}
+
+	if sizeBucketOne > 1 && sizeBucketTwo%sizeBucketOne == 0 {
+		return errors.New("impossible solution")
+	}
+
+	return nil
 }
 
 func FindBuckets(b1, b2 *Bucket, goal int) (*Bucket, *Bucket) {
