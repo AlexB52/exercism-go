@@ -14,11 +14,10 @@ func Bracket(input string) bool {
 		case '[', '{', '(':
 			inputs = append(inputs, current)
 		case ']', '}', ')':
-			if len(inputs) > 0 && inputs[len(inputs)-1] == PAIRS[current] {
-				inputs = inputs[:len(inputs)-1]
-			} else {
+			if len(inputs) <= 0 || inputs[len(inputs)-1] != PAIRS[current] {
 				return false
 			}
+			inputs = inputs[:len(inputs)-1]
 		default:
 		}
 	}
