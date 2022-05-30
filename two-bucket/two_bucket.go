@@ -58,7 +58,6 @@ func ValidateInputs(sizeBucketOne, sizeBucketTwo, goalAmount int, startBucket st
 func FindBuckets(b1, b2 *Bucket, goal int) (*Bucket, *Bucket) {
 	if b1.quantity == goal {
 		return b1, b2
-	} else {
-		return b2, b1
 	}
+	return b2, b1
 }
