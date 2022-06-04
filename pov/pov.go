@@ -1,5 +1,11 @@
 package pov
 
+import (
+	"fmt"
+	"regexp"
+	"strings"
+)
+
 type Tree struct {
 	value    string
 	children []*Tree
@@ -49,16 +55,38 @@ func (tr *Tree) String() string {
 // FromPov returns the pov from the node specified in the argument.
 func (tr *Tree) FromPov(from string) *Tree {
 	var refTree = map[string]*Tree{}
-	BuildRef(refTree, tr)
-
+	MapReferenceTree(refTree, tr)
 	return BuildTree(refTree, &Tree{value: from})
 }
 
-func BuildRef(m map[string]*Tree, t *Tree) {
+// PathTo returns the shortest path between two nodes in the tree.
+func (tr *Tree) PathTo(from, to string) []string {
+	re := regexp.MustCompile(fmt.Sprintf(".*%s", to))
+	match := re.FindString(tr.FromPov(from).String())
+
+	var result []string
+	for _, word := range strings.Split(match, " ") {
+		if word == to {
+			result = append(result, word)
+		}
+
+		if strings.HasPrefix(word, "(") {
+			result = append(result, word[1:])
+		}
+
+		if strings.HasSuffix(word, ")") {
+			result = result[:len(result)-1]
+		}
+	}
+
+	return result
+}
+
+func MapReferenceTree(m map[string]*Tree, t *Tree) {
 	m[t.Value()] = t
 	for _, n := range t.Children() {
 		m[n.Value()] = n
-		BuildRef(m, n)
+		MapReferenceTree(m, n)
 	}
 }
 
@@ -83,9 +111,4 @@ func BuildTree(ref map[string]*Tree, node *Tree) *Tree {
 	}
 
 	return node
-}
-
-// PathTo returns the shortest path between two nodes in the tree.
-func (tr *Tree) PathTo(from, to string) []string {
-	return nil
 }
