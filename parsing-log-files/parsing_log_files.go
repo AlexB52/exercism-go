@@ -22,7 +22,7 @@ func CountQuotedPasswords(lines []string) int {
 }
 
 func RemoveEndOfLineText(text string) string {
-	re := regexp.MustCompile(`end-of-line[0-9]+`)
+	re := regexp.MustCompile(`end-of-line\d+`)
 	return re.ReplaceAllString(text, "")
 }
 
