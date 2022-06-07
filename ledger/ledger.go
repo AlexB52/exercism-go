@@ -4,13 +4,73 @@ import (
 	"errors"
 	"fmt"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 )
 
+// Structs & constants defined below FormatLedger
+
+func FormatLedger(currency string, locale string, entries []Entry) (table string, err error) {
+	currency_symbol, ok := CURRENCY_SYMBOL[currency]
+	if !ok {
+		return "", errors.New("unknown currency")
+	}
+
+	presenter, ok := LOCALE_PRESENTERS[locale]
+	if !ok {
+		return "", errors.New("unknown locale")
+	}
+
+	entriesCopy := make([]Entry, len(entries))
+	copy(entriesCopy, entries)
+	sort.Slice(entriesCopy, SortingEntriesAlgorithm(entriesCopy))
+
+	table, err = BuildTable(
+		presenter.Header,
+		BuildRow(presenter.DateFormat, presenter.FormatChangeFunc(currency_symbol)),
+		entriesCopy,
+	)
+
+	if err != nil {
+		return "", err
+	}
+
+	return table, nil
+}
+
 var CURRENCY_SYMBOL = map[string]string{
 	"EUR": "€",
 	"USD": "$",
+}
+
+var LOCALE_PRESENTERS = map[string]LocalePresenter{
+	"nl-NL": LocalePresenter{
+		Header:     Row{"Datum", "Omschrijving", "Verandering"},
+		DateFormat: "01-02-2006",
+		FormatChangeFunc: func(symbol string) func(int) string {
+			return func(change int) string {
+				var format = "%s %s " // positive number format
+				if change < 0 {
+					format = "%s %s-"
+				}
+				return fmt.Sprintf(format, symbol, FormatChange(change, ".", ","))
+			}
+		},
+	},
+	"en-US": LocalePresenter{
+		Header:     Row{"Date", "Description", "Change"},
+		DateFormat: "02/01/2006",
+		FormatChangeFunc: func(symbol string) func(int) string {
+			return func(change int) string {
+				var format = " %s%s " // positive number format
+				if change < 0 {
+					format = "(%s%s)"
+				}
+				return fmt.Sprintf(format, symbol, FormatChange(change, ",", "."))
+			}
+		},
+	},
 }
 
 type Entry struct {
@@ -20,46 +80,13 @@ type Entry struct {
 }
 
 type Row struct {
-	date, description, change string
+	Date, Description, Change string
 }
 
-func FormatLedger(currency string, locale string, entries []Entry) (table string, err error) {
-	if locale != "nl-NL" && locale != "en-US" {
-		return "", errors.New("")
-	}
-
-	if currency != "EUR" && currency != "USD" {
-		return "", errors.New("")
-	}
-
-	entriesCopy := make([]Entry, len(entries))
-	copy(entriesCopy, entries)
-
-	sort.Slice(entriesCopy, SortingEntriesAlgorithm(entriesCopy))
-
-	var (
-		header       Row
-		dateFormat   string
-		formatChange func(Entry) string
-	)
-
-	switch locale {
-	case "nl-NL":
-		header = Row{"Datum", "Omschrijving", "Verandering"}
-		dateFormat = "01-02-2006"
-		formatChange = FormatDutchChange(CURRENCY_SYMBOL[currency])
-	case "en-US":
-		header = Row{"Date", "Description", "Change"}
-		dateFormat = "02/01/2006"
-		formatChange = FormatUSChange(CURRENCY_SYMBOL[currency])
-	}
-
-	table, err = BuildTable(header, BuildRow(dateFormat, formatChange), entriesCopy)
-	if err != nil {
-		return "", err
-	}
-
-	return table, nil
+type LocalePresenter struct {
+	Header           Row
+	DateFormat       string
+	FormatChangeFunc func(string) func(int) string
 }
 
 func SortingEntriesAlgorithm(entriesCopy []Entry) func(i, j int) bool {
@@ -86,23 +113,23 @@ func SortingEntriesAlgorithm(entriesCopy []Entry) func(i, j int) bool {
 
 func BuildTable(header Row, buildRow func(e Entry) (Row, error), entries []Entry) (result string, err error) {
 	var rows []string
-	rows = append(rows, fmt.Sprintf("%-10s | %-25s | %s\n", header.date, header.description, header.change))
+	rows = append(rows, fmt.Sprintf("%-10s | %-25s | %s\n", header.Date, header.Description, header.Change))
 	for _, entry := range entries {
 		row, err := buildRow(entry)
 		if err != nil {
 			return "", err
 		}
-		rows = append(rows, fmt.Sprintf("%-10s | %-25s | %13s\n", row.date, row.description, row.change))
+		rows = append(rows, fmt.Sprintf("%-10s | %-25s | %13s\n", row.Date, row.Description, row.Change))
 	}
 
 	return strings.Join(rows, ""), nil
 }
 
-func BuildRow(dateFormat string, formatChange func(Entry) string) func(e Entry) (Row, error) {
+func BuildRow(dateFormat string, formatChange func(int) string) func(e Entry) (Row, error) {
 	return func(e Entry) (Row, error) {
 		date, err := time.Parse("2006-02-01", e.Date)
 		if err != nil {
-			return Row{}, errors.New("")
+			return Row{}, errors.New("invalid date")
 		}
 
 		var description string
@@ -112,29 +139,7 @@ func BuildRow(dateFormat string, formatChange func(Entry) string) func(e Entry) 
 			description = fmt.Sprintf("%-25s", e.Description)
 		}
 
-		return Row{date.Format(dateFormat), description, formatChange(e)}, nil
-	}
-}
-
-func FormatDutchChange(symbol string) func(e Entry) string {
-	return func(e Entry) string {
-		changeString := FormatChange(e.Change, ".", ",")
-		if e.Change < 0 {
-			return fmt.Sprintf("%s %s-", symbol, changeString)
-		} else {
-			return fmt.Sprintf("%s %s ", symbol, changeString)
-		}
-	}
-}
-
-func FormatUSChange(symbol string) func(e Entry) string {
-	return func(e Entry) string {
-		changeString := FormatChange(e.Change, ",", ".")
-		if e.Change < 0 {
-			return fmt.Sprintf("(%s%s)", symbol, changeString)
-		} else {
-			return fmt.Sprintf(" %s%s ", symbol, changeString)
-		}
+		return Row{date.Format(dateFormat), description, formatChange(e.Change)}, nil
 	}
 }
 
@@ -143,7 +148,7 @@ func FormatChange(change int, tsep, csep string) (result string) {
 		change *= -1
 	}
 
-	rest := fmt.Sprintf("%d", change/100)
+	rest := strconv.Itoa(change / 100)
 	var parts []string
 	for len(rest) > 3 {
 		parts = append(parts, rest[len(rest)-3:])
