@@ -51,7 +51,7 @@ func Products(fmin, fmax int) (Product, Product, error) {
 }
 
 func IsPalindrome(value int) bool {
-	s := []byte(strconv.Itoa(value))
+	s := strconv.Itoa(value)
 	for i := 0; i < len(s)/2; i++ {
 		if s[i] != s[len(s)-i-1] {
 			return false
