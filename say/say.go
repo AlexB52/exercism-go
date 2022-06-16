@@ -18,19 +18,19 @@ func Say(n int64) (string, bool) {
 	var i int64
 	for i = 1_000_000_000; i > 100; i /= 1000 {
 		if n/i > 0 {
-			result = append(result, fmt.Sprintf("%s %s", Hundreds(n/i), NUMBERS[i]))
+			result = append(result, fmt.Sprintf("%s %s", SayHundreds(n/i), NUMBERS[i]))
 			n = n % i
 		}
 	}
 
 	if n/1 > 0 {
-		result = append(result, fmt.Sprintf("%s", Hundreds(n/1)))
+		result = append(result, fmt.Sprintf("%s", SayHundreds(n/1)))
 	}
 
 	return strings.Join(result, " "), true
 }
 
-func Hundreds(n int64) string {
+func SayHundreds(n int64) string {
 	var result []string
 	if n/100 > 0 {
 		result = append(result, fmt.Sprintf("%s %s", NUMBERS[n/100], NUMBERS[100]))
