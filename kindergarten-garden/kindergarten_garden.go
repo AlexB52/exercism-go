@@ -12,12 +12,9 @@ type Garden struct {
 	PlantsByChidren map[string][]string
 }
 
-func (g *Garden) Plants(child string) ([]string, bool) {
-	plants, ok := g.PlantsByChidren[child]
-	if !ok {
-		return nil, false
-	}
-	return plants, true
+func (g *Garden) Plants(child string) (plants []string, ok bool) {
+	plants, ok = g.PlantsByChidren[child]
+	return plants, ok
 }
 
 func NewGarden(diagram string, children []string) (*Garden, error) {
