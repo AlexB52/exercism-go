@@ -8,6 +8,13 @@ import (
 	"strings"
 )
 
+var PLANTS = map[byte]string{
+	'R': "radishes",
+	'V': "violets",
+	'C': "clover",
+	'G': "grass",
+}
+
 type Garden struct {
 	PlantsByChidren map[string][]string
 }
@@ -41,26 +48,11 @@ func NewGarden(diagram string, children []string) (*Garden, error) {
 		c := 2*len(children) + a
 		d := c + 1
 
-		plants[child] = append(plants[child], Plant(string(diagram[a])))
-		plants[child] = append(plants[child], Plant(string(diagram[b])))
-		plants[child] = append(plants[child], Plant(string(diagram[c])))
-		plants[child] = append(plants[child], Plant(string(diagram[d])))
+		plants[child] = append(plants[child], PLANTS[diagram[a]])
+		plants[child] = append(plants[child], PLANTS[diagram[b]])
+		plants[child] = append(plants[child], PLANTS[diagram[c]])
+		plants[child] = append(plants[child], PLANTS[diagram[d]])
 	}
 
 	return &Garden{PlantsByChidren: plants}, nil
-}
-
-func Plant(s string) string {
-	switch s {
-	case "R":
-		return "radishes"
-	case "V":
-		return "violets"
-	case "C":
-		return "clover"
-	case "G":
-		return "grass"
-	default:
-		panic("no flower")
-	}
 }
