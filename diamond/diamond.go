@@ -20,13 +20,13 @@ func Gen(char byte) (string, error) {
 		result[l1+i] = GenLine(letter, i, l2)
 	}
 
-	return strings.Join(result, "\n"), nil
+	return strings.Join(result, "\n") + "\n", nil
 }
 
 func GenLine(char byte, pos, length int) string {
 	var result = make([]byte, length)
 	for i := range result {
-		result[i] = '.'
+		result[i] = ' '
 	}
 	result[pos] = char
 	result[length-pos-1] = char
