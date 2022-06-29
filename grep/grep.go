@@ -5,46 +5,27 @@ import (
 	"fmt"
 	"os"
 	"regexp"
-	"sort"
 )
-
-// - `-n` Print the line numbers of each matching line.
-// - `-l` Print only the names of files that contain at least one matching line.
-// - `-i` Match line using a case-insensitive comparison.
-// - `-v` Invert the program -- collect all lines that fail to match the pattern.
-// - `-x` Only match entire lines, instead of lines that contain a match.
 
 type Options struct {
 	lineNumber      bool
 	filename        bool
 	caseInsensitive bool
-	mistmatches     bool
+	mismatches      bool
 	entireLine      bool
+	multipleFile    bool
+	regex           *regexp.Regexp
 }
 
-func buildOptions(flags []string) (result Options) {
-	for _, flag := range flags {
-		switch flag {
-		case "-n":
-			result.lineNumber = true
-		case "-l":
-			result.filename = true
-		case "-i":
-			result.caseInsensitive = true
-		case "-v":
-			result.mistmatches = true
-		case "-x":
-			result.entireLine = true
-		}
-	}
-	return result
+type Line struct {
+	Filename string
+	Content  string
+	Number   int
 }
 
-func Search(pattern string, flags, files []string) (result []string) {
-	options := buildOptions(flags)
-
-	matches, mismatches := []string{}, []string{}
-	matchedFiles := map[string]bool{}
+func Search(pattern string, flags, files []string) []string {
+	options := buildOptions(pattern, flags, files)
+	result, matched := []string{}, map[string]bool{}
 
 	for _, filename := range files {
 		file, err := os.Open(filename)
@@ -56,66 +37,71 @@ func Search(pattern string, flags, files []string) (result []string) {
 		scanner := bufio.NewScanner(file)
 		lineNumber := 0
 
-		if options.caseInsensitive {
-			pattern = fmt.Sprintf("(?i)%s", pattern)
-		}
-
-		if options.entireLine {
-			pattern = fmt.Sprintf("^%s$", pattern)
-		}
-
 		for scanner.Scan() {
 			lineNumber++
-			line := scanner.Text()
+			line := Line{Filename: filename, Content: scanner.Text(), Number: lineNumber}
 
-			re := regexp.MustCompile(pattern)
-			fmt.Println("match pattern?", re.Match([]byte(line)))
-
-			if !re.Match([]byte(line)) {
-				if options.lineNumber {
-					line = fmt.Sprintf("%d:%s", lineNumber, line)
+			if options.Match(line) {
+				formattedLine := options.Format(line)
+				if _, ok := matched[formattedLine]; !ok {
+					matched[formattedLine] = true
+					result = append(result, formattedLine)
 				}
-
-				if len(files) > 1 {
-					line = fmt.Sprintf("%s:%s", filename, line)
-				}
-
-				mismatches = append(mismatches, line)
-				continue
 			}
-
-			matchedFiles[filename] = true
-
-			if options.lineNumber {
-				line = fmt.Sprintf("%d:%s", lineNumber, line)
-			}
-
-			if len(files) > 1 {
-				line = fmt.Sprintf("%s:%s", filename, line)
-			}
-
-			matches = append(matches, line)
 		}
 	}
+	return result
+}
 
-	fmt.Println("pattern", pattern)
-	fmt.Println("flags", flags)
-	fmt.Printf("files: %q\n", files)
-	fmt.Printf("matchedFiles: %v\n", matchedFiles)
-	fmt.Println("matches:", matches)
-
+func buildOptions(pattern string, flags, files []string) (result Options) {
 	for _, flag := range flags {
 		switch flag {
+		case "-n":
+			result.lineNumber = true
 		case "-l":
-			result = []string{}
-			for k, _ := range matchedFiles {
-				result = append(result, k)
-			}
-			sort.Strings(result)
-			return result
+			result.filename = true
+		case "-i":
+			result.caseInsensitive = true
 		case "-v":
-			return mismatches
+			result.mismatches = true
+		case "-x":
+			result.entireLine = true
 		}
 	}
-	return matches
+	result.multipleFile = len(files) > 1
+	result.regex = regexp.MustCompile(result.BuildPattern(pattern))
+	return result
+}
+
+func (o Options) Match(l Line) (result bool) {
+	result = o.regex.Match([]byte(l.Content))
+	if o.mismatches {
+		result = !result
+	}
+	return result
+}
+
+func (o Options) Format(l Line) (result string) {
+	if o.filename {
+		return l.Filename
+	}
+
+	result = l.Content
+	if o.lineNumber {
+		result = fmt.Sprintf("%d:%s", l.Number, result)
+	}
+	if o.multipleFile {
+		result = fmt.Sprintf("%s:%s", l.Filename, result)
+	}
+	return result
+}
+
+func (o Options) BuildPattern(pattern string) string {
+	if o.caseInsensitive {
+		pattern = fmt.Sprintf("(?i)%s", pattern)
+	}
+	if o.entireLine {
+		pattern = fmt.Sprintf("^%s$", pattern)
+	}
+	return pattern
 }
