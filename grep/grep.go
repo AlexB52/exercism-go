@@ -25,7 +25,7 @@ type Line struct {
 
 func Search(pattern string, flags, files []string) []string {
 	options := buildOptions(pattern, flags, files)
-	result, matched := []string{}, map[string]bool{}
+	result := []string{}
 
 	for _, filename := range files {
 		file, err := os.Open(filename)
@@ -42,10 +42,10 @@ func Search(pattern string, flags, files []string) []string {
 			line := Line{Filename: filename, Content: scanner.Text(), Number: lineNumber}
 
 			if options.Match(line) {
-				formattedLine := options.Format(line)
-				if _, ok := matched[formattedLine]; !ok {
-					matched[formattedLine] = true
-					result = append(result, formattedLine)
+				result = append(result, options.Format(line))
+				if options.filename {
+					file.Close()
+					break
 				}
 			}
 		}
