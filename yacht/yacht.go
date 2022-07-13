@@ -3,14 +3,14 @@ package yacht
 func Score(dice []int, category string) int {
 	var counts = map[int]int{}
 	var scores = map[string]int{}
-	var categories = []string{"", "ones", "twos", "threes", "fours", "fives", "sixes"}
+	var numberCategories = []string{"", "ones", "twos", "threes", "fours", "fives", "sixes"}
 
 	for _, d := range dice {
 		counts[d]++
 	}
 
 	for n, c := range counts {
-		scores[categories[n]] = n * c
+		scores[numberCategories[n]] = n * c
 		scores["choice"] += n * c
 
 		if len(counts) == 2 && (c == 3 || c == 2) {
