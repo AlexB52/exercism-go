@@ -14,6 +14,7 @@ const (
 )
 
 func Sublist(l1, l2 []int) Relation {
+
 	if len(l1) != 0 && len(l2) == 0 {
 		return SuperList
 	}
@@ -22,11 +23,11 @@ func Sublist(l1, l2 []int) Relation {
 		return SubList
 	}
 
-	if len(l1) == len(l2) && reflect.DeepEqual(l1, l2) {
+	if len(l1) == len(l2) && DeepEqual(l1, l2) {
 		return Equal
 	}
 
-	var reversed = false
+	var reversed bool
 	var a, b = l1, l2
 
 	if len(a) < len(b) {
@@ -34,18 +35,20 @@ func Sublist(l1, l2 []int) Relation {
 		reversed = true
 	}
 
-	var result = Unequal
+	var result Relation = Unequal
 	for i := 0; i <= len(a)-len(b); i++ {
-		if a[i] == b[0] && reflect.DeepEqual(a[i:len(b)+i], b) {
-
+		if a[i] == b[0] && DeepEqual(a[i:len(b)+i], b) {
 			result = SuperList
+			if reversed {
+				result = SubList
+			}
 			break
 		}
 	}
 
-	if reversed && result == SuperList {
-		result = SubList
-	}
-
 	return result
+}
+
+func DeepEqual(a, b []int) bool {
+	return reflect.DeepEqual(a, b)
 }
