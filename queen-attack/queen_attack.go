@@ -2,7 +2,6 @@ package queenattack
 
 import (
 	"fmt"
-	"math"
 	"regexp"
 	"strconv"
 )
@@ -31,9 +30,9 @@ func CanQueenAttack(whitePosition, blackPosition string) (bool, error) {
 
 	sameLine := p1.x == p2.x
 	sameColumn := p1.y == p2.y
-	sameDiagonal := math.Abs(float64(p1.y-p2.y)/float64(p1.x-p2.x)) == float64(1)
+	sameDiagonal2 := p1.x-p2.x == p1.y-p2.y || p1.x-p2.x == p2.y-p1.y
 
-	if sameLine || sameColumn || sameDiagonal {
+	if sameLine || sameColumn || sameDiagonal2 {
 		return true, nil
 	}
 
