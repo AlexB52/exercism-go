@@ -2,6 +2,7 @@ package queenattack
 
 import (
 	"fmt"
+	"math"
 	"regexp"
 	"strconv"
 )
@@ -28,15 +29,12 @@ func CanQueenAttack(whitePosition, blackPosition string) (bool, error) {
 	p1 := Position{LetterMap[p1Matches[1]], y1}
 	p2 := Position{LetterMap[p2Matches[1]], y2}
 
-	for i := 1; i <= 8; i++ {
-		a := Position{i, p1.y}                      // line position
-		b := Position{p1.x, i}                      // column position
-		c := Position{i, p1.y - (p1.x - 1) - 1 + i} // 1st diagonal position
-		d := Position{i, p1.y + (p1.x - 1) + 1 - i} // 2nd diagonal position
+	sameLine := p1.x == p2.x
+	sameColumn := p1.y == p2.y
+	sameDiagonal := math.Abs(float64(p1.y-p2.y)/float64(p1.x-p2.x)) == float64(1)
 
-		if a == p2 || b == p2 || c == p2 || d == p2 {
-			return true, nil
-		}
+	if sameLine || sameColumn || sameDiagonal {
+		return true, nil
 	}
 
 	return false, nil
