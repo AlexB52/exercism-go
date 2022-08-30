@@ -4,8 +4,6 @@ import (
 	"fmt"
 )
 
-// Annotate returns an annotated board
-
 func Annotate(board []string) []string {
 	if len(board) == 0 || len(board[0]) == 0 {
 		return board
@@ -26,6 +24,7 @@ func Annotate(board []string) []string {
 			Increment(mineBoard, i-1, j)
 			Increment(mineBoard, i-1, j+1)
 			Increment(mineBoard, i, j-1)
+			Increment(mineBoard, i, j)
 			Increment(mineBoard, i, j+1)
 			Increment(mineBoard, i+1, j-1)
 			Increment(mineBoard, i+1, j)
