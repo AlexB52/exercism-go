@@ -11,14 +11,10 @@ func Change(coins []int, target int) ([]int, error) {
 	for i := 1; i <= target; i++ {
 		var min = math.MaxUint8
 		for _, coin := range coins {
-			previous, ok := coinsPerChange[i-coin]
-			if !ok {
-				continue
-			}
-
-			if min > len(previous) {
-				coinsPerChange[i] = append([]int{coin}, previous...)
-				min = len(previous)
+			remainingChange, ok := coinsPerChange[i-coin]
+			if ok && min > len(remainingChange) {
+				min = len(remainingChange)
+				coinsPerChange[i] = append([]int{coin}, remainingChange...)
 			}
 		}
 	}
@@ -27,6 +23,5 @@ func Change(coins []int, target int) ([]int, error) {
 	if !ok {
 		return nil, errors.New("no change available")
 	}
-
 	return result, nil
 }
