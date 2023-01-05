@@ -1,22 +1,17 @@
 package collatzconjecture
 
-import (
-    "errors"
-)
+import "errors"
 
 func CollatzConjecture(n int) (int, error) {
     if n <= 0 {
-        return 0, errors.New("cannot be a negative number")
+        return 0, errors.New("Number must be positive")
+    } else if n == 1 {
+        return 0, nil
+    } else if n%2 == 0 {
+        n, err := CollatzConjecture(n / 2)
+        return n + 1, err
+    } else {
+        n, err := CollatzConjecture(3*n + 1)
+        return n + 1, err
     }
-
-    var result int
-    for n > 1 {
-        if n%2 == 0 {
-            n = n / 2
-        } else {
-            n = 3*n + 1
-        }
-        result++
-    }
-    return result, nil
 }
