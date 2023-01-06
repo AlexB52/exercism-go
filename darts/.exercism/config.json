@@ -1,0 +1,26 @@
+{
+  "authors": [
+    "leenipper"
+  ],
+  "contributors": [
+    "bitfield",
+    "ekingery",
+    "eklatzer"
+  ],
+  "files": {
+    "solution": [
+      "darts.go"
+    ],
+    "test": [
+      "darts_test.go"
+    ],
+    "example": [
+      ".meta/example.go"
+    ],
+    "editor": [
+      "cases_test.go"
+    ]
+  },
+  "blurb": "Write a function that returns the earned points in a single toss of a Darts game.",
+  "source": "Inspired by an exercise created by a professor Della Paolera in Argentina"
+}
