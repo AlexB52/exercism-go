@@ -7,13 +7,14 @@ import (
 type KeySignature uint8
 
 const (
-	sharp KeySignature = iota
-	flat
+	Sharp KeySignature = iota
+	Flat
 )
 
+var STEP_INTERVALS = map[rune]int{'m': 1, 'M': 2, 'A': 3}
 var SIGNATURES = map[KeySignature][]string{
-	sharp: []string{"A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"},
-	flat:  []string{"A", "Bb", "B", "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab"},
+	Sharp: []string{"A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"},
+	Flat:  []string{"A", "Bb", "B", "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab"},
 }
 
 func Scale(tonic, interval string) []string {
@@ -27,7 +28,7 @@ func Scale(tonic, interval string) []string {
 	scale := make([]string, len(interval)+1)
 	scale[0] = signature[stepIndex]
 	for i, step := range interval {
-		stepIndex += map[rune]int{'m': 1, 'M': 2, 'A': 3}[step]
+		stepIndex += STEP_INTERVALS[step]
 		scale[i+1] = signature[stepIndex%len(signature)]
 	}
 
@@ -36,14 +37,11 @@ func Scale(tonic, interval string) []string {
 
 func Signature(tonic string) (signature []string) {
 	switch tonic {
-	case "C", "a":
-		signature = SIGNATURES[sharp]
-	case "G", "D", "A", "E", "B", "F#", "e", "b", "f#", "c#", "g#", "d#":
-		signature = SIGNATURES[sharp]
 	case "F", "Bb", "Eb", "Ab", "Db", "Gb", "d", "g", "c", "f", "bb", "eb":
-		signature = SIGNATURES[flat]
+		return SIGNATURES[Flat]
+	default:
+		return SIGNATURES[Sharp]
 	}
-	return signature
 }
 
 func TonicIndex(tonic string, scale []string) int {
