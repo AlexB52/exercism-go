@@ -1,19 +1,17 @@
 package wordsearch
 
 import (
-	"fmt"
+	"errors"
 	"regexp"
 )
 
 func Solve(words []string, puzzle []string) (map[string][2][2]int, error) {
+	var err error
 	result := map[string][2][2]int{}
 
-	var matrix = make([][]rune, len(puzzle))
-	for i := 0; i < len(puzzle); i++ {
-		matrix[i] = []rune(puzzle[i])
-	}
-
 	for _, word := range words {
+		result[word] = [2][2]int{{-1, -1}, {-1, -1}}
+
 		for i, line := range puzzle {
 			if match := regexp.MustCompile(word).FindStringIndex(line); match != nil {
 				result[word] = LeftToRight(match, i)
@@ -34,7 +32,11 @@ func Solve(words []string, puzzle []string) (map[string][2][2]int, error) {
 			}
 		}
 
-		fmt.Println("word", word)
+		var matrix = make([][]rune, len(puzzle))
+		for i := 0; i < len(puzzle); i++ {
+			matrix[i] = []rune(puzzle[i])
+		}
+
 		for i := 0; i < len(matrix); i++ {
 			if match := regexp.MustCompile(word).FindStringIndex(TopBottomDiagonalLine(i, 0, matrix)); match != nil {
 				result[word] = LeftToRightDiagonal(match, i)
@@ -57,11 +59,12 @@ func Solve(words []string, puzzle []string) (map[string][2][2]int, error) {
 			}
 		}
 
-		fmt.Println()
-		// TopBottomDiagonalLine(0, 0, matrix)
+		if result[word] == [2][2]int{{-1, -1}, {-1, -1}} {
+			err = errors.New("could not find word")
+		}
 	}
 
-	return result, nil
+	return result, err
 }
 
 func TopBottomDiagonalLine(x, y int, matrix [][]rune) string {
@@ -71,7 +74,6 @@ func TopBottomDiagonalLine(x, y int, matrix [][]rune) string {
 		x++
 		y++
 	}
-	fmt.Println("result", string(result))
 	return string(result)
 }
 
